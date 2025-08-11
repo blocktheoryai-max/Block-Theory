@@ -3,8 +3,12 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useQuery } from "@tanstack/react-query";
 import { Progress } from "@/components/ui/progress";
+import { useState } from "react";
+import LessonViewer from "./lesson-viewer";
 
 export default function LearnSection() {
+  const [selectedLessonId, setSelectedLessonId] = useState<string | null>(null);
+
   const { data: lessons, isLoading } = useQuery({
     queryKey: ['/api/lessons']
   });
@@ -54,7 +58,7 @@ export default function LearnSection() {
         </div>
 
         {/* Learning Path Progress */}
-        <div className="bg-slate-50 rounded-2xl p-8 mb-12">
+        <div className="bg-gradient-to-r from-purple-50 to-yellow-50 rounded-2xl p-8 mb-12">
           <h3 className="text-2xl font-semibold text-slate-900 mb-6">Your Learning Journey</h3>
           <div className="flex items-center space-x-4 mb-6">
             <div className="flex-1">

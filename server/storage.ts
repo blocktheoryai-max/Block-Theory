@@ -1,4 +1,4 @@
-import { type User, type InsertUser, type Lesson, type InsertLesson, type UserProgress, type InsertUserProgress, type Portfolio, type InsertPortfolio, type Trade, type InsertTrade, type ForumPost, type InsertForumPost, type CryptoPrice } from "@shared/schema";
+import { type User, type InsertUser, type Lesson, type InsertLesson, type UserProgress, type InsertUserProgress, type Portfolio, type InsertPortfolio, type Trade, type InsertTrade, type ForumPost, type InsertForumPost, type CryptoPrice, type NftCollection, type InsertNftCollection, type NftAsset, type InsertNftAsset, type NftTrade, type InsertNftTrade } from "@shared/schema";
 import { randomUUID } from "crypto";
 
 export interface IStorage {
@@ -34,6 +34,22 @@ export interface IStorage {
   // Crypto Prices
   getCryptoPrices(): Promise<CryptoPrice[]>;
   updateCryptoPrice(symbol: string, price: string, change24h?: string): Promise<CryptoPrice>;
+
+  // NFT Collections
+  getAllNftCollections(): Promise<NftCollection[]>;
+  getNftCollection(id: string): Promise<NftCollection | undefined>;
+  createNftCollection(collection: InsertNftCollection): Promise<NftCollection>;
+
+  // NFT Assets
+  getAllNftAssets(): Promise<NftAsset[]>;
+  getNftAssetsByCollection(collectionId: string): Promise<NftAsset[]>;
+  getUserNftAssets(userId: string): Promise<NftAsset[]>;
+  createNftAsset(asset: InsertNftAsset): Promise<NftAsset>;
+  updateNftAssetOwner(assetId: string, newOwnerId: string): Promise<void>;
+
+  // NFT Trades
+  getUserNftTrades(userId: string): Promise<NftTrade[]>;
+  createNftTrade(trade: InsertNftTrade): Promise<NftTrade>;
 }
 
 export class MemStorage implements IStorage {
@@ -44,6 +60,9 @@ export class MemStorage implements IStorage {
   private trades: Map<string, Trade>;
   private forumPosts: Map<string, ForumPost>;
   private cryptoPrices: Map<string, CryptoPrice>;
+  private nftCollections: Map<string, NftCollection>;
+  private nftAssets: Map<string, NftAsset>;
+  private nftTrades: Map<string, NftTrade>;
 
   constructor() {
     this.users = new Map();
@@ -53,6 +72,9 @@ export class MemStorage implements IStorage {
     this.trades = new Map();
     this.forumPosts = new Map();
     this.cryptoPrices = new Map();
+    this.nftCollections = new Map();
+    this.nftAssets = new Map();
+    this.nftTrades = new Map();
     this.initializeDefaultData();
   }
 

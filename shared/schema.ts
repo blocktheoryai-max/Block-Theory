@@ -71,6 +71,44 @@ export const cryptoPrices = pgTable("crypto_prices", {
   updatedAt: timestamp("updated_at").defaultNow(),
 });
 
+export const nftCollections = pgTable("nft_collections", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  name: text("name").notNull(),
+  description: text("description").notNull(),
+  floorPrice: decimal("floor_price", { precision: 10, scale: 4 }).notNull(),
+  totalVolume: decimal("total_volume", { precision: 15, scale: 4 }).notNull(),
+  owners: integer("owners").notNull(),
+  totalSupply: integer("total_supply").notNull(),
+  change24h: decimal("change_24h", { precision: 5, scale: 2 }),
+  imageUrl: text("image_url"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const nftAssets = pgTable("nft_assets", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  tokenId: text("token_id").notNull(),
+  collectionId: varchar("collection_id").references(() => nftCollections.id).notNull(),
+  name: text("name").notNull(),
+  description: text("description"),
+  imageUrl: text("image_url"),
+  price: decimal("price", { precision: 10, scale: 4 }),
+  rarity: text("rarity"), // "Common", "Rare", "Epic", "Legendary"
+  attributes: jsonb("attributes"), // JSON array of traits
+  ownerId: varchar("owner_id").references(() => users.id),
+  listedForSale: boolean("listed_for_sale").default(false),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const nftTrades = pgTable("nft_trades", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").references(() => users.id).notNull(),
+  nftAssetId: varchar("nft_asset_id").references(() => nftAssets.id).notNull(),
+  type: text("type").notNull(), // "buy" or "sell"
+  price: decimal("price", { precision: 10, scale: 4 }).notNull(),
+  marketplace: text("marketplace").default("TradeTutor"), // "OpenSea", "TradeTutor", etc.
+  executedAt: timestamp("executed_at").defaultNow(),
+});
+
 export const insertUserSchema = createInsertSchema(users).omit({
   id: true,
   createdAt: true,
@@ -100,6 +138,21 @@ export const insertForumPostSchema = createInsertSchema(forumPosts).omit({
   createdAt: true,
 });
 
+export const insertNftCollectionSchema = createInsertSchema(nftCollections).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertNftAssetSchema = createInsertSchema(nftAssets).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertNftTradeSchema = createInsertSchema(nftTrades).omit({
+  id: true,
+  executedAt: true,
+});
+
 export type InsertUser = z.infer<typeof insertUserSchema>;
 export type User = typeof users.$inferSelect;
 export type InsertLesson = z.infer<typeof insertLessonSchema>;
@@ -113,3 +166,9 @@ export type Trade = typeof trades.$inferSelect;
 export type InsertForumPost = z.infer<typeof insertForumPostSchema>;
 export type ForumPost = typeof forumPosts.$inferSelect;
 export type CryptoPrice = typeof cryptoPrices.$inferSelect;
+export type InsertNftCollection = z.infer<typeof insertNftCollectionSchema>;
+export type NftCollection = typeof nftCollections.$inferSelect;
+export type InsertNftAsset = z.infer<typeof insertNftAssetSchema>;
+export type NftAsset = typeof nftAssets.$inferSelect;
+export type InsertNftTrade = z.infer<typeof insertNftTradeSchema>;
+export type NftTrade = typeof nftTrades.$inferSelect;

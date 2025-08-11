@@ -27,6 +27,9 @@ export default function Header() {
               <a href="#simulate" className="text-slate-600 hover:text-primary transition-colors font-medium">
                 Simulate
               </a>
+              <a href="#nft" className="text-slate-600 hover:text-primary transition-colors font-medium">
+                NFTs
+              </a>
               <a href="#analyze" className="text-slate-600 hover:text-primary transition-colors font-medium">
                 Analyze
               </a>
