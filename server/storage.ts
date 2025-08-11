@@ -140,7 +140,7 @@ export class MemStorage implements IStorage {
 
   async createLesson(insertLesson: InsertLesson): Promise<Lesson> {
     const id = randomUUID();
-    const lesson: Lesson = { ...insertLesson, id };
+    const lesson: Lesson = { ...insertLesson, id, isLocked: insertLesson.isLocked ?? false };
     this.lessons.set(id, lesson);
     return lesson;
   }

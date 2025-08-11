@@ -14,7 +14,7 @@ export default function AnalyzeSection() {
   });
 
   const calculateWinRate = () => {
-    if (!trades || trades.length === 0) return "0";
+    if (!Array.isArray(trades) || trades.length === 0) return "0";
     const profitableTrades = trades.filter((trade: any) => {
       // Simple calculation - in a real app, this would be more complex
       return trade.type === 'sell';
@@ -23,17 +23,17 @@ export default function AnalyzeSection() {
   };
 
   const calculateTotalProfit = () => {
-    if (!trades || trades.length === 0) return "0";
+    if (!Array.isArray(trades) || trades.length === 0) return "0";
     // Simplified calculation
     return "1,247";
   };
 
   const getTotalTrades = () => {
-    return trades?.length || 0;
+    return Array.isArray(trades) ? trades.length : 0;
   };
 
   const getCompletedLessons = () => {
-    return userProgress?.filter((p: any) => p.completed).length || 0;
+    return Array.isArray(userProgress) ? userProgress.filter((p: any) => p.completed).length : 0;
   };
 
   return (
@@ -99,7 +99,7 @@ export default function AnalyzeSection() {
           <div className="bg-white border border-slate-200 rounded-2xl p-6">
             <h3 className="text-xl font-semibold text-slate-900 mb-6">Recent Trade Analysis</h3>
             <div className="space-y-4">
-              {trades?.slice(0, 4).map((trade: any, index: number) => (
+              {Array.isArray(trades) && trades.slice(0, 4).map((trade: any, index: number) => (
                 <div key={trade.id} className="flex items-center justify-between p-4 bg-slate-50 rounded-lg">
                   <div className="flex items-center space-x-3">
                     <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${

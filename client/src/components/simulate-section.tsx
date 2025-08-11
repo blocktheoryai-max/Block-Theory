@@ -74,7 +74,7 @@ export default function SimulateSection() {
       return;
     }
 
-    const btcPrice = prices?.find((p: any) => p.symbol === "BTC")?.price || "45000";
+    const btcPrice = Array.isArray(prices) ? prices.find((p: any) => p.symbol === "BTC")?.price || "45000" : "45000";
     const btcAmount = (parseFloat(buyAmount) / parseFloat(btcPrice)).toFixed(8);
 
     placeTradeMutation.mutate({
@@ -97,7 +97,7 @@ export default function SimulateSection() {
       return;
     }
 
-    const btcPrice = prices?.find((p: any) => p.symbol === "BTC")?.price || "45000";
+    const btcPrice = Array.isArray(prices) ? prices.find((p: any) => p.symbol === "BTC")?.price || "45000" : "45000";
     const totalValue = (parseFloat(sellAmount) * parseFloat(btcPrice)).toFixed(2);
 
     placeTradeMutation.mutate({
@@ -111,7 +111,7 @@ export default function SimulateSection() {
   };
 
   const calculatePortfolioValue = () => {
-    if (!portfolio || !prices) return "10,247.85";
+    if (!Array.isArray(portfolio) || !Array.isArray(prices)) return "10,247.85";
     
     let total = 2847.32; // Available USD
     portfolio.forEach((asset: any) => {
@@ -123,12 +123,14 @@ export default function SimulateSection() {
   };
 
   const getBTCHoldings = () => {
-    const btcAsset = portfolio?.find((p: any) => p.symbol === "BTC");
+    if (!Array.isArray(portfolio)) return "0.00000";
+    const btcAsset = portfolio.find((p: any) => p.symbol === "BTC");
     return btcAsset ? parseFloat(btcAsset.amount).toFixed(5) : "0.00000";
   };
 
   const getETHHoldings = () => {
-    const ethAsset = portfolio?.find((p: any) => p.symbol === "ETH");
+    if (!Array.isArray(portfolio)) return "0.0000";
+    const ethAsset = portfolio.find((p: any) => p.symbol === "ETH");
     return ethAsset ? parseFloat(ethAsset.amount).toFixed(4) : "0.0000";
   };
 
@@ -286,7 +288,7 @@ export default function SimulateSection() {
             <div className="bg-white rounded-2xl shadow-lg p-6">
               <h3 className="text-xl font-semibold text-slate-900 mb-4">Recent Orders</h3>
               <div className="space-y-3">
-                {trades?.slice(0, 3).map((trade: any) => (
+                {Array.isArray(trades) && trades.slice(0, 3).map((trade: any) => (
                   <div key={trade.id} className="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
                     <div>
                       <div className="text-sm font-medium text-slate-900">

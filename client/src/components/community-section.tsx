@@ -71,7 +71,7 @@ export default function CommunitySection() {
               </div>
 
               <div className="space-y-4">
-                {forumPosts?.length > 0 ? forumPosts.map((post: any) => (
+                {Array.isArray(forumPosts) && forumPosts.length > 0 ? forumPosts.map((post: any) => (
                   <div key={post.id} className="border border-slate-200 rounded-xl p-6 hover:shadow-md transition-shadow">
                     <div className="flex items-start space-x-4">
                       <Avatar>

@@ -25,7 +25,7 @@ export default function PriceChart() {
     ctx.clearRect(0, 0, canvas.offsetWidth, canvas.offsetHeight);
 
     // Generate mock price data for demonstration
-    const btcPrice = prices.find((p: any) => p.symbol === "BTC")?.price || "45000";
+    const btcPrice = Array.isArray(prices) ? prices.find((p: any) => p.symbol === "BTC")?.price || "45000" : "45000";
     const basePrice = parseFloat(btcPrice);
     
     const dataPoints = 50;

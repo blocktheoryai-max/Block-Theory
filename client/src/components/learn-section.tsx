@@ -14,7 +14,7 @@ export default function LearnSection() {
   });
 
   const getProgressForLesson = (lessonId: string) => {
-    return userProgress?.find((p: any) => p.lessonId === lessonId);
+    return Array.isArray(userProgress) ? userProgress.find((p: any) => p.lessonId === lessonId) : undefined;
   };
 
   const getLevelBadgeColor = (level: string) => {
@@ -26,8 +26,8 @@ export default function LearnSection() {
     }
   };
 
-  const completedLessons = userProgress?.filter((p: any) => p.completed).length || 0;
-  const totalLessons = lessons?.length || 0;
+  const completedLessons = Array.isArray(userProgress) ? userProgress.filter((p: any) => p.completed).length : 0;
+  const totalLessons = Array.isArray(lessons) ? lessons.length : 0;
   const progressPercentage = totalLessons > 0 ? (completedLessons / totalLessons) * 100 : 0;
 
   if (isLoading) {
@@ -85,7 +85,7 @@ export default function LearnSection() {
 
         {/* Lesson Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {lessons?.map((lesson: any) => {
+          {Array.isArray(lessons) && lessons.map((lesson: any) => {
             const progress = getProgressForLesson(lesson.id);
             const isCompleted = progress?.completed;
             const progressPercent = progress?.progress || 0;
