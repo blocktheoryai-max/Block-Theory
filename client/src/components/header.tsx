@@ -30,6 +30,9 @@ export default function Header() {
               <a href="#nft" className="text-slate-600 hover:text-primary transition-colors font-medium">
                 NFTs
               </a>
+              <a href="#cryptocurrency" className="text-slate-600 hover:text-primary transition-colors font-medium">
+                Cryptocurrency
+              </a>
               <a href="#analyze" className="text-slate-600 hover:text-primary transition-colors font-medium">
                 Analyze
               </a>
