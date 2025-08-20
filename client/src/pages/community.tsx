@@ -61,7 +61,7 @@ export default function Community() {
   const queryClient = useQueryClient();
   const { user, isAuthenticated } = useAuth();
 
-  const { data: posts = [], isLoading } = useQuery({
+  const { data: posts = [], isLoading } = useQuery<ForumPost[]>({
     queryKey: ["/api/forum"],
   });
 
@@ -354,9 +354,9 @@ export default function Community() {
                     <CardContent className="pt-6">
                       <div className="flex items-start space-x-4">
                         <Avatar>
-                          <AvatarImage src={post.author.avatar} />
+                          <AvatarImage src={post.author?.avatar || ""} />
                           <AvatarFallback>
-                            {post.author.name.charAt(0).toUpperCase()}
+                            {post.author?.name?.charAt(0)?.toUpperCase() || "U"}
                           </AvatarFallback>
                         </Avatar>
                         
@@ -373,10 +373,10 @@ export default function Community() {
                               </div>
                               
                               <div className="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-400 mb-2">
-                                <span className="font-medium">{post.author.name}</span>
-                                <div className={`flex items-center space-x-1 ${getTierColor(post.author.tier)}`}>
-                                  {getTierIcon(post.author.tier)}
-                                  <span className="capitalize">{post.author.tier}</span>
+                                <span className="font-medium">{post.author?.name || "Anonymous"}</span>
+                                <div className={`flex items-center space-x-1 ${getTierColor(post.author?.tier || "free")}`}>
+                                  {getTierIcon(post.author?.tier || "free")}
+                                  <span className="capitalize">{post.author?.tier || "free"}</span>
                                 </div>
                                 <span>•</span>
                                 <div className="flex items-center space-x-1">
@@ -395,7 +395,7 @@ export default function Community() {
                             {post.content}
                           </p>
                           
-                          {post.tags.length > 0 && (
+                          {post.tags && post.tags.length > 0 && (
                             <div className="flex flex-wrap gap-1 mb-3">
                               {post.tags.map((tag, index) => (
                                 <Badge key={index} variant="secondary" className="text-xs">

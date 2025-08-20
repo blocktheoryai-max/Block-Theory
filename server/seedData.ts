@@ -226,6 +226,169 @@ export async function seedInitialData() {
           isLocked: false,
           isPremium: false
         },
+        {
+          title: "Understanding Market Orders and Order Types",
+          description: "Learn different order types and when to use them for optimal trading execution.",
+          content: `<h1>Understanding Market Orders and Order Types</h1>
+<p>Mastering order types is crucial for effective trading execution and risk management.</p>
+
+<h2>Basic Order Types</h2>
+<h3>Market Orders</h3>
+<ul>
+<li>Execute immediately at current market price</li>
+<li>Guaranteed execution, but price may vary</li>
+<li>Best for urgent trades or high liquidity markets</li>
+<li>Higher slippage risk in volatile markets</li>
+</ul>
+
+<h3>Limit Orders</h3>
+<ul>
+<li>Buy/sell only at specified price or better</li>
+<li>Price protection but no execution guarantee</li>
+<li>Lower fees on many exchanges</li>
+<li>Ideal for non-urgent trades</li>
+</ul>
+
+<h2>Advanced Order Types</h2>
+<h3>Stop-Loss Orders</h3>
+<ul>
+<li>Automatically sell when price hits trigger</li>
+<li>Essential for risk management</li>
+<li>Converts to market order when triggered</li>
+<li>May not execute at exact stop price</li>
+</ul>
+
+<h3>Stop-Limit Orders</h3>
+<ul>
+<li>Stop trigger + limit order combination</li>
+<li>More price control than stop-loss</li>
+<li>Risk of non-execution in fast markets</li>
+<li>Good for volatile assets</li>
+</ul>
+
+<h2>Order Strategy Tips</h2>
+<ol>
+<li><strong>Use limits in sideways markets</strong></li>
+<li><strong>Market orders for breakout entries</strong></li>
+<li><strong>Always set stop-losses</strong></li>
+<li><strong>Consider partial fills with large orders</strong></li>
+</ol>`,
+          level: "beginner",
+          category: "trading",
+          duration: 20,
+          format: "interactive",
+          order: 4,
+          requiredTier: "free",
+          prerequisites: ["Crypto Wallet Security Fundamentals"],
+          learningObjectives: ["Master order types", "Understand execution mechanics", "Apply order strategies"],
+          tags: ["orders", "execution", "trading-basics"],
+          isLocked: false,
+          isPremium: false
+        },
+        {
+          title: "Reading Crypto Charts and Candlesticks",
+          description: "Master chart reading fundamentals including candlestick patterns and timeframes.",
+          content: `<h1>Reading Crypto Charts and Candlesticks</h1>
+<p>Chart analysis is fundamental to successful trading. Learn to read price action like a professional trader.</p>
+
+<h2>Candlestick Basics</h2>
+<h3>Anatomy of a Candlestick</h3>
+<ul>
+<li><strong>Body:</strong> Open to close price range</li>
+<li><strong>Wicks/Shadows:</strong> High and low price points</li>
+<li><strong>Color:</strong> Green (bullish) vs Red (bearish)</li>
+<li><strong>Size:</strong> Indicates market sentiment strength</li>
+</ul>
+
+<h3>Key Candlestick Patterns</h3>
+<ul>
+<li><strong>Doji:</strong> Indecision, potential reversal</li>
+<li><strong>Hammer:</strong> Bullish reversal after downtrend</li>
+<li><strong>Shooting Star:</strong> Bearish reversal after uptrend</li>
+<li><strong>Engulfing:</strong> Strong momentum shift</li>
+</ul>
+
+<h2>Timeframe Analysis</h2>
+<h3>Multiple Timeframe Strategy</h3>
+<ul>
+<li><strong>Higher timeframes:</strong> Overall trend direction</li>
+<li><strong>Lower timeframes:</strong> Entry and exit timing</li>
+<li><strong>Common combinations:</strong> Daily + 4H + 1H</li>
+</ul>
+
+<h2>Support and Resistance</h2>
+<ul>
+<li>Horizontal levels where price reacts</li>
+<li>Previous highs become resistance</li>
+<li>Previous lows become support</li>
+<li>Volume confirms level strength</li>
+</ul>`,
+          level: "beginner",
+          category: "analysis",
+          duration: 30,
+          format: "video",
+          order: 5,
+          requiredTier: "free",
+          prerequisites: ["Understanding Market Orders and Order Types"],
+          learningObjectives: ["Read candlestick charts", "Identify key patterns", "Use multiple timeframes"],
+          tags: ["charts", "candlesticks", "technical-analysis"],
+          isLocked: false,
+          isPremium: false
+        },
+        {
+          title: "Risk Management Fundamentals",
+          description: "Essential risk management principles every crypto trader must know.",
+          content: `<h1>Risk Management Fundamentals</h1>
+<p>Risk management is the most important skill for long-term trading success. Learn to protect your capital.</p>
+
+<h2>The 1% Rule</h2>
+<ul>
+<li>Never risk more than 1-2% per trade</li>
+<li>Preserves capital during losing streaks</li>
+<li>Allows for recovery from losses</li>
+<li>Professional standard across all markets</li>
+</ul>
+
+<h2>Position Sizing Formula</h2>
+<p><strong>Position Size = (Account Size × Risk %) ÷ (Entry Price - Stop Loss)</strong></p>
+
+<h3>Example Calculation</h3>
+<ul>
+<li>Account: $10,000</li>
+<li>Risk: 1% = $100</li>
+<li>Entry: $50,000 (BTC)</li>
+<li>Stop: $48,000</li>
+<li>Position: $100 ÷ $2,000 = 0.05 BTC</li>
+</ul>
+
+<h2>Risk-Reward Ratios</h2>
+<h3>Minimum 1:2 Ratio</h3>
+<ul>
+<li>Risk $100 to make $200+</li>
+<li>Allows profit even with 50% win rate</li>
+<li>Focus on quality setups</li>
+<li>Patience for proper entries</li>
+</ul>
+
+<h2>Emotional Discipline</h2>
+<ul>
+<li>Stick to predetermined plan</li>
+<li>No revenge trading after losses</li>
+<li>Take breaks during drawdowns</li>
+<li>Keep detailed trading journal</li>
+</ul>`,
+          level: "beginner",
+          category: "risk-management",
+          duration: 25,
+          format: "interactive",
+          order: 6,
+          requiredTier: "free",
+          prerequisites: ["Reading Crypto Charts and Candlesticks"],
+          learningObjectives: ["Apply the 1% rule", "Calculate position sizes", "Manage emotions"],
+          tags: ["risk-management", "position-sizing", "discipline"],
+          isLocked: false,
+          isPremium: false
+        },
         
         // Intermediate Trading Content (Basic Tier)
         {
@@ -277,9 +440,9 @@ export async function seedInitialData() {
           category: "trading",
           duration: 35,
           format: "video",
-          order: 4,
+          order: 7,
           requiredTier: "basic",
-          prerequisites: ["Crypto Wallet Security Fundamentals"],
+          prerequisites: ["Risk Management Fundamentals"],
           learningObjectives: ["Understand trading types", "Learn analysis methods", "Apply risk management"],
           tags: ["trading", "risk-management", "analysis"],
           isLocked: false,
