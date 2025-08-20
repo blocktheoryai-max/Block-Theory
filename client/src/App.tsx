@@ -18,19 +18,14 @@ function Router() {
 
   return (
     <Switch>
-      {isLoading || !isAuthenticated ? (
+      <Route path="/" component={Home} />
+      <Route path="/pricing" component={Pricing} />
+      <Route path="/analyze" component={Analyze} />
+      {isAuthenticated && (
         <>
-          <Route path="/" component={Home} />
-          <Route path="/pricing" component={Pricing} />
-        </>
-      ) : (
-        <>
-          <Route path="/" component={Home} />
           <Route path="/learn" component={Learn} />
           <Route path="/simulate" component={Simulate} />
-          <Route path="/analyze" component={Analyze} />
           <Route path="/community" component={Community} />
-          <Route path="/pricing" component={Pricing} />
           <Route path="/checkout" component={Checkout} />
         </>
       )}

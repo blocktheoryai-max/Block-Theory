@@ -61,6 +61,11 @@ export default function Home() {
               >
                 Start Learning Free
               </Button>
+              <Link href="/analyze">
+                <Button size="lg" variant="outline" className="text-lg px-8 py-3">
+                  Try Analysis Demo
+                </Button>
+              </Link>
               <Link href="/pricing">
                 <Button size="lg" variant="outline" className="text-lg px-8 py-3">
                   View Pricing
@@ -102,11 +107,11 @@ export default function Home() {
               <Card>
                 <CardHeader className="text-center">
                   <BarChart3 className="h-12 w-12 text-purple-600 mx-auto mb-4" />
-                  <CardTitle>Analytics Dashboard</CardTitle>
+                  <CardTitle>Whitepaper Analysis</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <p className="text-center text-gray-600 dark:text-gray-300">
-                    Track your progress and trading performance with detailed insights
+                    Professional-grade analysis tools for evaluating crypto projects
                   </p>
                 </CardContent>
               </Card>
