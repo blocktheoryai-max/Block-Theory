@@ -268,7 +268,9 @@ export default function Home() {
               <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">
                 Pick up where you left off
               </p>
-              <Button className="w-full">Start Lesson</Button>
+              <Link href="/learn">
+                <Button className="w-full">Start Lesson</Button>
+              </Link>
             </CardContent>
           </Card>
 
@@ -281,7 +283,9 @@ export default function Home() {
               <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">
                 Practice with live market data
               </p>
-              <Button className="w-full" variant="outline">Open Simulator</Button>
+              <Link href="/simulate">
+                <Button className="w-full" variant="outline">Open Simulator</Button>
+              </Link>
             </CardContent>
           </Card>
 
@@ -307,7 +311,9 @@ export default function Home() {
               <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">
                 Connect with traders
               </p>
-              <Button className="w-full" variant="outline">Join Discussion</Button>
+              <Link href="/community">
+                <Button className="w-full" variant="outline">Join Discussion</Button>
+              </Link>
             </CardContent>
           </Card>
         </div>
