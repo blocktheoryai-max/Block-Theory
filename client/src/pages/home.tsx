@@ -292,13 +292,15 @@ export default function Home() {
           <Card className="cursor-pointer hover:shadow-lg transition-shadow">
             <CardHeader className="text-center">
               <BarChart3 className="h-12 w-12 text-purple-600 mx-auto mb-4" />
-              <CardTitle>Analytics</CardTitle>
+              <CardTitle>Analyze Projects</CardTitle>
             </CardHeader>
             <CardContent className="text-center">
               <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">
-                View your performance
+                Professional whitepaper analysis
               </p>
-              <Button className="w-full" variant="outline">View Analytics</Button>
+              <Link href="/analyze">
+                <Button className="w-full" variant="outline">Start Analysis</Button>
+              </Link>
             </CardContent>
           </Card>
 

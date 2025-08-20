@@ -431,6 +431,136 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Whitepaper Analysis routes
+  app.get("/api/whitepapers", async (req, res) => {
+    try {
+      const whitepapers = [
+        {
+          id: "1",
+          projectName: "Bitcoin",
+          symbol: "BTC",
+          category: "Layer 1",
+          difficulty: "Beginner",
+          overallRating: 9.5,
+          technicalScore: 95,
+          teamScore: 90,
+          useCaseScore: 100,
+          tokenomicsScore: 85,
+          marketCap: "1200000000000",
+          launchDate: "2009-01-03",
+          summary: "The original cryptocurrency and digital gold standard. Learn how Bitcoin's revolutionary proof-of-work consensus mechanism changed finance forever.",
+          keyPoints: ["Decentralized peer-to-peer network", "Fixed supply of 21 million", "Proof-of-work consensus"],
+          strengths: ["First mover advantage", "Network security", "Store of value"],
+          risks: ["Energy consumption", "Scalability limits", "Regulatory uncertainty"],
+          requiredTier: "free"
+        },
+        {
+          id: "2", 
+          projectName: "Ethereum",
+          symbol: "ETH",
+          category: "Layer 1",
+          difficulty: "Intermediate",
+          overallRating: 9.2,
+          technicalScore: 98,
+          teamScore: 95,
+          useCaseScore: 95,
+          tokenomicsScore: 80,
+          marketCap: "400000000000",
+          launchDate: "2015-07-30",
+          summary: "The world computer that enabled smart contracts and DeFi. Analyze Ethereum's transition to proof-of-stake and its ecosystem dominance.",
+          keyPoints: ["Smart contract platform", "EVM compatibility", "Proof-of-stake transition"],
+          strengths: ["Developer ecosystem", "DeFi infrastructure", "Network effects"],
+          risks: ["High gas fees", "Competition from L2s", "Complexity"],
+          requiredTier: "basic"
+        },
+        {
+          id: "3",
+          projectName: "Polygon",
+          symbol: "MATIC", 
+          category: "Layer 2",
+          difficulty: "Expert",
+          overallRating: 8.1,
+          technicalScore: 85,
+          teamScore: 80,
+          useCaseScore: 90,
+          tokenomicsScore: 75,
+          marketCap: "8500000000",
+          launchDate: "2020-05-31",
+          summary: "Ethereum's scaling solution with sidechains and rollups. Deep dive into Layer 2 architecture and multi-chain interoperability strategies.",
+          keyPoints: ["Ethereum Layer 2", "Multi-chain approach", "zkEVM development"],
+          strengths: ["Low transaction costs", "Fast finality", "Ethereum compatibility"],
+          risks: ["Centralization concerns", "Bridge security", "Token utility"],
+          requiredTier: "pro"
+        }
+      ];
+      
+      res.json(whitepapers);
+    } catch (error) {
+      console.error("Error fetching whitepapers:", error);
+      res.status(500).json({ message: "Failed to fetch whitepapers" });
+    }
+  });
+
+  app.get("/api/whitepapers/:id", async (req, res) => {
+    try {
+      const { id } = req.params;
+      const mockData = {
+        "1": {
+          id: "1",
+          projectName: "Bitcoin",
+          symbol: "BTC",
+          whitepaperUrl: "https://bitcoin.org/bitcoin.pdf",
+          category: "Layer 1",
+          difficulty: "Beginner",
+          analysis: {
+            technology: "Bitcoin uses proof-of-work consensus with SHA-256 hashing algorithm. The network maintains a distributed ledger through mining, ensuring security through computational work.",
+            tokenomics: "Fixed supply of 21 million BTC with halving every 4 years. Deflationary monetary policy with predictable issuance schedule.",
+            team: "Pseudonymous creator Satoshi Nakamoto, now maintained by core developers and Bitcoin Core team with transparent development process.",
+            market: "First cryptocurrency with largest market cap and institutional adoption. Digital gold narrative with store of value proposition."
+          }
+        },
+        "2": {
+          id: "2",
+          projectName: "Ethereum",
+          symbol: "ETH",
+          whitepaperUrl: "https://ethereum.org/en/whitepaper/",
+          category: "Layer 1",
+          difficulty: "Intermediate",
+          analysis: {
+            technology: "Smart contract platform with Ethereum Virtual Machine (EVM). Transitioned from proof-of-work to proof-of-stake consensus for energy efficiency.",
+            tokenomics: "No fixed supply cap, minimal issuance post-merge. EIP-1559 fee burning mechanism creates deflationary pressure during high network usage.",
+            team: "Founded by Vitalik Buterin and core team. Strong developer community with Ethereum Foundation governance and funding ecosystem.",
+            market: "Dominant smart contract platform powering DeFi, NFTs, and Web3 applications. Network effects and developer adoption create strong moat."
+          }
+        },
+        "3": {
+          id: "3",
+          projectName: "Polygon",
+          symbol: "MATIC",
+          whitepaperUrl: "https://polygon.technology/lightpaper-polygon.pdf",
+          category: "Layer 2",
+          difficulty: "Expert",
+          analysis: {
+            technology: "Multi-chain scaling solution with sidechains, plasma, and zk-rollups. Ethereum-compatible with faster finality and lower costs.",
+            tokenomics: "MATIC token used for staking, governance, and gas fees. Inflationary supply with validator rewards and potential fee burning.",
+            team: "Experienced team with Sandeep Nailwal, Jaynti Kanani, and Anurag Arjun. Strong partnerships and institutional backing.",
+            market: "Leading Ethereum Layer 2 solution with growing ecosystem. Competition from other L2s like Arbitrum, Optimism, and direct Ethereum scaling."
+          }
+        }
+      };
+      
+      const whitepaper = mockData[id as keyof typeof mockData];
+      if (!whitepaper) {
+        return res.status(404).json({ message: "Whitepaper not found" });
+      }
+      
+      res.json(whitepaper);
+    } catch (error) {
+      console.error("Error fetching whitepaper:", error);
+      res.status(500).json({ message: "Failed to fetch whitepaper" });
+    }
+  });
+
   const httpServer = createServer(app);
 
   return httpServer;

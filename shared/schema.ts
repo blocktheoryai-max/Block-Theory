@@ -341,7 +341,81 @@ export const insertTradingConnectionSchema = createInsertSchema(tradingConnectio
 
 export const insertCryptoPriceSchema = createInsertSchema(cryptoPrices).omit({
   id: true,
-  lastUpdated: true,
+  updatedAt: true,
+});
+
+// Whitepaper Analysis System
+export const whitepapers = pgTable("whitepapers", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  projectName: text("project_name").notNull(),
+  symbol: text("symbol").notNull(), // BTC, ETH, MATIC, etc.
+  whitepaperUrl: text("whitepaper_url").notNull(),
+  summary: text("summary").notNull(),
+  category: text("category").notNull(), // "DeFi", "Layer 1", "Layer 2", "NFT", "Gaming", etc.
+  marketCap: decimal("market_cap", { precision: 15, scale: 2 }),
+  launchDate: timestamp("launch_date"),
+  difficulty: text("difficulty").notNull(), // "Beginner", "Intermediate", "Expert"
+  // Analysis metadata
+  technicalScore: integer("technical_score"), // 1-100
+  teamScore: integer("team_score"), // 1-100
+  useCaseScore: integer("use_case_score"), // 1-100
+  tokenomicsScore: integer("tokenomics_score"), // 1-100
+  overallRating: decimal("overall_rating", { precision: 3, scale: 1 }), // 1.0-10.0
+  // Content structure
+  keyPoints: jsonb("key_points"), // Array of main takeaways
+  redFlags: jsonb("red_flags"), // Array of warning signs
+  strengths: jsonb("strengths"), // Array of positive aspects
+  risks: jsonb("risks"), // Array of identified risks
+  competitiveAnalysis: text("competitive_analysis"),
+  // Premium content tiers
+  requiredTier: text("required_tier").default("free"), // "free", "basic", "pro", "elite"
+  isPremium: boolean("is_premium").default(false),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+export const whitepaperAnalysis = pgTable("whitepaper_analysis", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  whitepaperId: varchar("whitepaper_id").references(() => whitepapers.id).notNull(),
+  analysisType: text("analysis_type").notNull(), // "technology", "tokenomics", "team", "market", "risks"
+  difficulty: text("difficulty").notNull(), // "Beginner", "Intermediate", "Expert"
+  title: text("title").notNull(),
+  content: text("content").notNull(),
+  framework: text("framework"), // Analysis framework used (e.g., "SWOT", "Porter's Five Forces")
+  templates: jsonb("templates"), // Analysis templates and checklists
+  requiredTier: text("required_tier").default("free"),
+  order: integer("order").default(1),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const userWhitepaperProgress = pgTable("user_whitepaper_progress", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").references(() => users.id).notNull(),
+  whitepaperId: varchar("whitepaper_id").references(() => whitepapers.id).notNull(),
+  analysisId: varchar("analysis_id").references(() => whitepaperAnalysis.id),
+  completed: boolean("completed").default(false),
+  userRating: integer("user_rating"), // 1-10 user's own rating
+  userNotes: text("user_notes"),
+  timeSpent: integer("time_spent").default(0), // in minutes
+  completedAt: timestamp("completed_at"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const insertWhitepaperSchema = createInsertSchema(whitepapers).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const insertWhitepaperAnalysisSchema = createInsertSchema(whitepaperAnalysis).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertUserWhitepaperProgressSchema = createInsertSchema(userWhitepaperProgress).omit({
+  id: true,
+  createdAt: true,
+  completedAt: true,
 });
 
 // Badge and Achievement System
@@ -399,6 +473,9 @@ export type InsertUser = z.infer<typeof insertUserSchema>;
 export type User = typeof users.$inferSelect;
 export type InsertLesson = z.infer<typeof insertLessonSchema>;
 export type Lesson = typeof lessons.$inferSelect;
+export type Whitepaper = typeof whitepapers.$inferSelect;
+export type WhitepaperAnalysis = typeof whitepaperAnalysis.$inferSelect;
+export type UserWhitepaperProgress = typeof userWhitepaperProgress.$inferSelect;
 export type InsertUserProgress = z.infer<typeof insertUserProgressSchema>;
 export type UserProgress = typeof userProgress.$inferSelect;
 export type InsertPortfolio = z.infer<typeof insertPortfolioSchema>;
