@@ -75,6 +75,27 @@ export interface IStorage {
   // User Stats
   updateUserXp(userId: string, xpToAdd: number): Promise<void>;
   updateUserStreak(userId: string, streak: number): Promise<void>;
+
+  // Chat Rooms
+  getAllChatRooms(): Promise<ChatRoom[]>;
+  getChatRoom(id: string): Promise<ChatRoom | undefined>;
+  getChatRoomsByType(type: string): Promise<ChatRoom[]>;
+  getChatRoomByCoinSymbol(coinSymbol: string): Promise<ChatRoom | undefined>;
+  createChatRoom(room: InsertChatRoom): Promise<ChatRoom>;
+  updateChatRoomMemberCount(roomId: string, memberCount: number): Promise<void>;
+
+  // Chat Messages
+  getChatMessages(roomId: string, limit?: number): Promise<ChatMessage[]>;
+  getChatMessage(id: string): Promise<ChatMessage | undefined>;
+  createChatMessage(message: InsertChatMessage): Promise<ChatMessage>;
+  updateChatMessage(messageId: string, content: string): Promise<void>;
+
+  // Chat Room Members
+  getChatRoomMembers(roomId: string): Promise<ChatRoomMember[]>;
+  getChatRoomMember(roomId: string, userId: string): Promise<ChatRoomMember | undefined>;
+  joinChatRoom(member: InsertChatRoomMember): Promise<ChatRoomMember>;
+  leaveChatRoom(roomId: string, userId: string): Promise<void>;
+  updateMemberOnlineStatus(roomId: string, userId: string, isOnline: boolean): Promise<void>;
 }
 
 export class MemStorage implements IStorage {
@@ -93,6 +114,9 @@ export class MemStorage implements IStorage {
   private achievements: Map<string, Achievement>;
   private quizzes: Map<string, Quiz>;
   private userQuizAttempts: Map<string, UserQuizAttempt>;
+  private chatRooms: Map<string, ChatRoom>;
+  private chatMessages: Map<string, ChatMessage>;
+  private chatRoomMembers: Map<string, ChatRoomMember>;
 
   constructor() {
     this.users = new Map();
@@ -110,172 +134,290 @@ export class MemStorage implements IStorage {
     this.achievements = new Map();
     this.quizzes = new Map();
     this.userQuizAttempts = new Map();
+    this.chatRooms = new Map();
+    this.chatMessages = new Map();
+    this.chatRoomMembers = new Map();
     this.initializeDefaultData();
   }
 
   private initializeDefaultData() {
-    // Initialize comprehensive gamified lessons
+    // Initialize comprehensive video-enhanced lessons with flexible durations
     const comprehensiveLessons = [
-      // Beginner - Fundamentals Track
+      // 10-Minute Quick Lessons - Beginner Track
       {
-        title: "What is Blockchain?",
-        description: "Understanding the foundation of cryptocurrency technology",
-        content: "Blockchain is a distributed ledger technology that maintains a continuously growing list of records called blocks...",
-        level: "Beginner",
-        category: "Fundamentals",
-        duration: 15,
-        order: 1,
-        prerequisites: [],
-        learningObjectives: ["Understand distributed ledger technology", "Learn about decentralization", "Grasp immutability concepts"],
-        xpReward: 100,
-        badgeReward: "blockchain-basics",
-        isLocked: false,
-        hasQuiz: true,
-        hasSimulation: false,
-      },
-      {
-        title: "Bitcoin Fundamentals", 
-        description: "Deep dive into the first cryptocurrency",
-        content: "Bitcoin was created by Satoshi Nakamoto in 2009 as the world's first cryptocurrency...",
-        level: "Beginner",
-        category: "Fundamentals",
-        duration: 20,
-        order: 2,
-        prerequisites: [],
-        learningObjectives: ["Learn Bitcoin history", "Understand mining", "Study monetary policy"],
-        xpReward: 120,
-        isLocked: false,
-        hasQuiz: true,
-        hasSimulation: true,
-      },
-      {
-        title: "Ethereum & Smart Contracts",
-        description: "Explore programmable blockchain technology",
-        content: "Ethereum introduced the concept of smart contracts to blockchain technology...",
+        title: "Blockchain Basics (Quick Start)",
+        description: "Fast introduction to blockchain technology in 10 minutes",
+        content: "Blockchain is a distributed ledger technology that maintains a continuously growing list of records called blocks. In this quick lesson, you'll learn the core concepts without diving deep into technical details...",
         level: "Beginner",
         category: "Fundamentals", 
-        duration: 25,
-        order: 3,
+        duration: 10,
+        format: "Quick",
+        order: 1,
         prerequisites: [],
-        learningObjectives: ["Understand smart contracts", "Learn about gas fees", "Explore dApps"],
-        xpReward: 150,
+        learningObjectives: ["Understand what blockchain is", "Learn basic terminology", "Recognize blockchain benefits"],
+        xpReward: 75,
         isLocked: false,
         hasQuiz: true,
-        hasSimulation: true,
+        hasSimulation: false,
+        hasVideo: true,
+        videoUrl: "/public-objects/videos/blockchain-basics-10min.mp4",
+        videoThumbnail: "/public-objects/thumbnails/blockchain-basics.jpg",
+        videoDuration: 600,
+        videoTranscript: "Welcome to Blockchain Basics! In the next 10 minutes, we'll explore...",
+        interactiveElements: {
+          "quizPoints": [300, 600],
+          "keyTerms": ["blockchain", "decentralization", "immutability"],
+          "animations": ["blockchain-visual", "network-diagram"]
+        }
       },
       {
-        title: "Wallet Security Best Practices",
-        description: "Keep your crypto assets safe and secure",
-        content: "Cryptocurrency security is paramount in the digital asset space...",
+        title: "Bitcoin Essentials (Quick Start)",
+        description: "Learn Bitcoin fundamentals in just 10 minutes",
+        content: "Bitcoin, the first cryptocurrency, revolutionized digital money. This quick overview covers the essential concepts every crypto trader should know...",
         level: "Beginner",
         category: "Fundamentals",
-        duration: 18,
+        duration: 10,
+        format: "Quick",
+        order: 2,
+        prerequisites: [],
+        learningObjectives: ["Understand Bitcoin basics", "Learn about digital scarcity", "Explore mining concepts"],
+        xpReward: 75,
+        isLocked: false,
+        hasQuiz: true,
+        hasSimulation: false,
+        hasVideo: true,
+        videoUrl: "/public-objects/videos/bitcoin-essentials-10min.mp4",
+        videoThumbnail: "/public-objects/thumbnails/bitcoin-essentials.jpg",
+        videoDuration: 600,
+        videoTranscript: "Bitcoin is the world's first cryptocurrency...",
+        interactiveElements: {
+          "quizPoints": [240, 480],
+          "keyTerms": ["Bitcoin", "mining", "halving"],
+          "priceChart": "BTC-historical"
+        }
+      },
+
+      // 20-Minute Standard Lessons
+      {
+        title: "Blockchain Technology Deep Dive",
+        description: "Comprehensive 20-minute exploration of blockchain fundamentals", 
+        content: "This standard lesson provides a thorough understanding of blockchain technology, covering distributed ledgers, consensus mechanisms, cryptographic hashing, and real-world applications...",
+        level: "Beginner",
+        category: "Fundamentals",
+        duration: 20,
+        format: "Standard", 
+        order: 3,
+        prerequisites: [],
+        learningObjectives: ["Master blockchain architecture", "Understand consensus mechanisms", "Explore use cases", "Learn security principles"],
+        xpReward: 150,
+        badgeReward: "blockchain-explorer",
+        isLocked: false,
+        hasQuiz: true,
+        hasSimulation: true,
+        hasVideo: true,
+        videoUrl: "/public-objects/videos/blockchain-deep-dive-20min.mp4",
+        videoThumbnail: "/public-objects/thumbnails/blockchain-deep-dive.jpg",
+        videoDuration: 1200,
+        videoTranscript: "In this comprehensive lesson on blockchain technology...",
+        interactiveElements: {
+          "quizPoints": [600, 1200],
+          "simulations": ["hash-demo", "consensus-game"],
+          "diagrams": ["merkle-tree", "blockchain-structure"]
+        }
+      },
+      {
+        title: "Bitcoin: The Digital Gold Standard",
+        description: "Complete 20-minute guide to Bitcoin technology and economics",
+        content: "This comprehensive lesson covers Bitcoin's revolutionary technology, economic principles, mining mechanics, and role in the global financial system...",
+        level: "Beginner",
+        category: "Fundamentals",
+        duration: 20,
+        format: "Standard",
         order: 4,
         prerequisites: [],
-        learningObjectives: ["Master private key management", "Learn about hardware wallets", "Understand seed phrases"],
-        xpReward: 130,
-        badgeReward: "security-guardian",
+        learningObjectives: ["Understand Bitcoin's monetary policy", "Learn mining and security", "Explore economic implications", "Master wallet concepts"],
+        xpReward: 150,
+        badgeReward: "bitcoin-scholar",
         isLocked: false,
         hasQuiz: true,
-        hasSimulation: false,
+        hasSimulation: true,
+        hasVideo: true,
+        videoUrl: "/public-objects/videos/bitcoin-standard-20min.mp4",
+        videoThumbnail: "/public-objects/thumbnails/bitcoin-standard.jpg",
+        videoDuration: 1200,
+        videoTranscript: "Bitcoin represents a fundamental shift in how we think about money...",
+        interactiveElements: {
+          "quizPoints": [600, 1200],
+          "simulations": ["mining-calculator", "transaction-builder"],
+          "charts": ["supply-curve", "difficulty-adjustment"]
+        }
       },
-      // Intermediate - Technical Analysis
+
+      // 30-Minute Deep Dive Lessons
       {
-        title: "Reading Candlestick Charts",
-        description: "Decode market psychology through price action",
-        content: "Candlestick charts provide visual insight into market sentiment and price movements...",
+        title: "Ethereum & Smart Contracts Mastery",
+        description: "30-minute comprehensive guide to Ethereum ecosystem",
+        content: "This deep dive explores Ethereum's revolutionary smart contract platform, covering development, DeFi applications, NFTs, and the transition to Proof of Stake...",
         level: "Intermediate",
-        category: "Technical Analysis",
-        duration: 22,
+        category: "Fundamentals",
+        duration: 30,
+        format: "Deep Dive",
         order: 5,
         prerequisites: [],
-        learningObjectives: ["Identify candlestick patterns", "Understand market sentiment", "Apply pattern recognition"],
-        xpReward: 180,
+        learningObjectives: ["Master smart contract concepts", "Understand gas mechanics", "Explore DeFi protocols", "Learn about Ethereum 2.0"],
+        xpReward: 250,
+        badgeReward: "ethereum-developer",
         isLocked: false,
         hasQuiz: true,
         hasSimulation: true,
+        hasVideo: true,
+        videoUrl: "/public-objects/videos/ethereum-mastery-30min.mp4",
+        videoThumbnail: "/public-objects/thumbnails/ethereum-mastery.jpg",
+        videoDuration: 1800,
+        videoTranscript: "Ethereum transformed blockchain from a simple ledger to a world computer...",
+        interactiveElements: {
+          "quizPoints": [900, 1800],
+          "simulations": ["smart-contract-deploy", "defi-interaction"],
+          "codeExamples": ["solidity-basics", "web3-integration"]
+        }
       },
       {
-        title: "Support & Resistance Levels",
-        description: "Find key price levels that matter",
-        content: "Support and resistance levels are fundamental concepts in technical analysis...",
+        title: "Technical Analysis Masterclass",
+        description: "30-minute comprehensive trading analysis course",
+        content: "Master the art of technical analysis with this in-depth course covering candlestick patterns, indicators, chart patterns, and market psychology...",
         level: "Intermediate",
         category: "Technical Analysis",
-        duration: 20,
+        duration: 30,
+        format: "Deep Dive",
         order: 6,
         prerequisites: [],
-        learningObjectives: ["Draw support/resistance lines", "Identify breakouts", "Set stop losses"],
-        xpReward: 170,
+        learningObjectives: ["Master candlestick patterns", "Use technical indicators", "Identify chart patterns", "Understand market psychology"],
+        xpReward: 250,
+        badgeReward: "chart-master",
         isLocked: false,
         hasQuiz: true,
         hasSimulation: true,
+        hasVideo: true,
+        videoUrl: "/public-objects/videos/technical-analysis-30min.mp4",
+        videoThumbnail: "/public-objects/thumbnails/technical-analysis.jpg",
+        videoDuration: 1800,
+        videoTranscript: "Technical analysis is the study of market action...",
+        interactiveElements: {
+          "quizPoints": [900, 1800],
+          "simulations": ["chart-reading", "pattern-recognition"],
+          "tools": ["drawing-tools", "indicator-overlay"]
+        }
       },
-      // Expert Track
+
+      // 45-Minute Masterclass Lessons
       {
-        title: "Options Trading Strategies",
-        description: "Advanced derivatives trading techniques",
-        content: "Options trading in cryptocurrency markets requires sophisticated understanding of derivatives...",
+        title: "DeFi Protocols & Yield Farming Masterclass",
+        description: "45-minute comprehensive guide to decentralized finance",
+        content: "This masterclass covers the complete DeFi ecosystem: AMMs, lending protocols, yield farming strategies, liquidity mining, and risk management...",
         level: "Expert",
-        category: "Advanced Trading",
-        duration: 35,
+        category: "DeFi",
+        duration: 45,
+        format: "Masterclass",
         order: 7,
         prerequisites: [],
-        learningObjectives: ["Master options Greeks", "Build complex strategies", "Manage risk effectively"],
-        xpReward: 300,
-        badgeReward: "options-expert",
-        isLocked: true,
+        learningObjectives: ["Master DeFi protocols", "Understand yield farming", "Learn risk management", "Explore governance tokens"],
+        xpReward: 400,
+        badgeReward: "defi-expert",
+        isLocked: false,
         hasQuiz: true,
         hasSimulation: true,
+        hasVideo: true,
+        videoUrl: "/public-objects/videos/defi-masterclass-45min.mp4",
+        videoThumbnail: "/public-objects/thumbnails/defi-masterclass.jpg",
+        videoDuration: 2700,
+        videoTranscript: "Decentralized Finance represents the future of financial services...",
+        interactiveElements: {
+          "quizPoints": [1350, 2700],
+          "simulations": ["defi-farming", "liquidity-provision"],
+          "calculators": ["apy-calculator", "impermanent-loss"]
+        }
       },
-      // DeFi Track
       {
-        title: "Liquidity Pools & AMMs",
-        description: "Understanding automated market makers",
-        content: "Automated Market Makers (AMMs) revolutionized decentralized trading...",
-        level: "Intermediate",
-        category: "DeFi",
-        duration: 30,
+        title: "Advanced Trading Psychology & Risk Management",
+        description: "45-minute masterclass on trading mindset and risk control",
+        content: "This comprehensive masterclass covers advanced trading psychology, emotional control, risk management strategies, position sizing, and developing a winning mindset...",
+        level: "Expert",
+        category: "Trading Psychology",
+        duration: 45,
+        format: "Masterclass",
         order: 8,
         prerequisites: [],
-        learningObjectives: ["Understand liquidity provision", "Learn about impermanent loss", "Use decentralized exchanges"],
-        xpReward: 220,
+        learningObjectives: ["Master trading psychology", "Control emotions", "Implement risk management", "Develop discipline"],
+        xpReward: 400,
+        badgeReward: "zen-master",
         isLocked: false,
         hasQuiz: true,
         hasSimulation: true,
+        hasVideo: true,
+        videoUrl: "/public-objects/videos/psychology-masterclass-45min.mp4",
+        videoThumbnail: "/public-objects/thumbnails/psychology-masterclass.jpg",
+        videoDuration: 2700,
+        videoTranscript: "The difference between successful and unsuccessful traders is psychology...",
+        interactiveElements: {
+          "quizPoints": [1350, 2700],
+          "simulations": ["stress-test", "position-sizing"],
+          "assessments": ["risk-tolerance", "psychology-profile"]
+        }
       },
-      // NFT Track
+
+      // Quick Technical Lessons
       {
-        title: "NFT Rarity Analysis",
-        description: "Evaluate digital collectible value",
-        content: "NFT rarity analysis involves understanding the traits and characteristics that make tokens valuable...",
-        level: "Intermediate",
-        category: "NFTs",
-        duration: 25,
+        title: "Reading Candlesticks (Quick Guide)",
+        description: "10-minute introduction to candlestick chart basics",
+        content: "Learn to read candlestick charts quickly and effectively in this focused lesson covering the most important patterns...",
+        level: "Beginner",
+        category: "Technical Analysis",
+        duration: 10,
+        format: "Quick",
         order: 9,
         prerequisites: [],
-        learningObjectives: ["Analyze rarity traits", "Value NFT collections", "Identify investment opportunities"],
-        xpReward: 190,
-        badgeReward: "nft-expert",
+        learningObjectives: ["Read basic candlesticks", "Identify key patterns", "Understand market sentiment"],
+        xpReward: 75,
         isLocked: false,
         hasQuiz: true,
         hasSimulation: true,
+        hasVideo: true,
+        videoUrl: "/public-objects/videos/candlesticks-quick-10min.mp4",
+        videoThumbnail: "/public-objects/thumbnails/candlesticks-quick.jpg",
+        videoDuration: 600,
+        videoTranscript: "Candlestick charts are the foundation of technical analysis...",
+        interactiveElements: {
+          "quizPoints": [300, 600],
+          "simulations": ["pattern-quiz"],
+          "animations": ["candle-formation"]
+        }
       },
-      // Trading Psychology
       {
-        title: "Managing Trading Emotions",
-        description: "Master your psychology for consistent profits",
-        content: "Trading psychology is often the difference between successful and unsuccessful traders...",
+        title: "NFT Trading & Evaluation",
+        description: "20-minute guide to NFT markets and valuation",
+        content: "Learn to evaluate and trade NFTs with this comprehensive guide covering rarity analysis, market trends, and trading strategies...",
         level: "Intermediate",
-        category: "Trading Psychology",
+        category: "NFTs",
         duration: 20,
+        format: "Standard",
         order: 10,
         prerequisites: [],
-        learningObjectives: ["Control fear and greed", "Develop trading discipline", "Build emotional resilience"],
-        xpReward: 160,
-        badgeReward: "zen-trader",
+        learningObjectives: ["Analyze NFT rarity", "Understand market dynamics", "Develop trading strategies"],
+        xpReward: 150,
+        badgeReward: "nft-trader",
         isLocked: false,
         hasQuiz: true,
-        hasSimulation: false,
+        hasSimulation: true,
+        hasVideo: true,
+        videoUrl: "/public-objects/videos/nft-trading-20min.mp4",
+        videoThumbnail: "/public-objects/thumbnails/nft-trading.jpg",
+        videoDuration: 1200,
+        videoTranscript: "NFTs have created a new digital asset class...",
+        interactiveElements: {
+          "quizPoints": [600, 1200],
+          "simulations": ["nft-valuation"],
+          "tools": ["rarity-scanner", "market-tracker"]
+        }
       }
     ];
 
@@ -346,6 +488,87 @@ export class MemStorage implements IStorage {
 
     defaultPrices.forEach(({ symbol, price, change24h }) => {
       this.updateCryptoPrice(symbol, price, change24h);
+    });
+
+    // Initialize default chat rooms
+    const defaultChatRooms = [
+      {
+        name: "General Trading",
+        description: "Open discussion about trading strategies and market insights",
+        type: "general",
+        coinSymbol: null,
+        memberCount: 1247
+      },
+      {
+        name: "Bitcoin (BTC)",
+        description: "Dedicated discussion for Bitcoin analysis and news",
+        type: "coin-specific",
+        coinSymbol: "BTC",
+        memberCount: 892
+      },
+      {
+        name: "Ethereum (ETH)",
+        description: "Ethereum ecosystem, DeFi, and smart contracts",
+        type: "coin-specific",
+        coinSymbol: "ETH",
+        memberCount: 756
+      },
+      {
+        name: "Technical Analysis",
+        description: "Charts, patterns, and technical trading strategies",
+        type: "technical-analysis",
+        coinSymbol: null,
+        memberCount: 634
+      },
+      {
+        name: "Trading Signals",
+        description: "Share and discuss trading signals and alerts",
+        type: "trading-signals",
+        coinSymbol: null,
+        memberCount: 512
+      }
+    ];
+
+    defaultChatRooms.forEach(room => {
+      const id = randomUUID();
+      this.chatRooms.set(id, {
+        id,
+        name: room.name,
+        description: room.description,
+        type: room.type,
+        coinSymbol: room.coinSymbol,
+        isActive: true,
+        memberCount: room.memberCount,
+        createdAt: new Date()
+      });
+    });
+
+    // Initialize sample chat messages
+    const sampleMessages = [
+      "Bitcoin looking strong at these levels 📈",
+      "Anyone else seeing this bullish divergence on the 4h chart?",
+      "DCA strategy is working well in this market",
+      "What's everyone's take on the latest Fed announcement?",
+      "Support level holding nicely around $42k"
+    ];
+
+    Array.from(this.chatRooms.values()).forEach(room => {
+      for (let i = 0; i < 3; i++) {
+        const messageId = randomUUID();
+        const content = sampleMessages[Math.floor(Math.random() * sampleMessages.length)];
+        this.chatMessages.set(messageId, {
+          id: messageId,
+          roomId: room.id,
+          userId: "demo-user",
+          username: `Trader${Math.floor(Math.random() * 999) + 1}`,
+          content: content,
+          messageType: "text",
+          metadata: null,
+          timestamp: new Date(Date.now() - Math.random() * 3600000),
+          isEdited: false,
+          replyToId: null
+        });
+      }
     });
   }
 
@@ -672,6 +895,129 @@ export class MemStorage implements IStorage {
     const trade: NftTrade = { ...insertTrade, id, executedAt: new Date() };
     this.nftTrades.set(id, trade);
     return trade;
+  }
+
+  // Chat Room Methods
+  async getAllChatRooms(): Promise<ChatRoom[]> {
+    return Array.from(this.chatRooms.values())
+      .filter(room => room.isActive)
+      .sort((a, b) => b.memberCount - a.memberCount);
+  }
+
+  async getChatRoom(id: string): Promise<ChatRoom | undefined> {
+    return this.chatRooms.get(id);
+  }
+
+  async getChatRoomsByType(type: string): Promise<ChatRoom[]> {
+    return Array.from(this.chatRooms.values())
+      .filter(room => room.type === type && room.isActive)
+      .sort((a, b) => b.memberCount - a.memberCount);
+  }
+
+  async getChatRoomByCoinSymbol(coinSymbol: string): Promise<ChatRoom | undefined> {
+    return Array.from(this.chatRooms.values())
+      .find(room => room.coinSymbol === coinSymbol && room.isActive);
+  }
+
+  async createChatRoom(insertRoom: InsertChatRoom): Promise<ChatRoom> {
+    const id = randomUUID();
+    const room: ChatRoom = { 
+      ...insertRoom, 
+      id, 
+      isActive: true,
+      memberCount: 0,
+      createdAt: new Date() 
+    };
+    this.chatRooms.set(id, room);
+    return room;
+  }
+
+  async updateChatRoomMemberCount(roomId: string, memberCount: number): Promise<void> {
+    const room = this.chatRooms.get(roomId);
+    if (room) {
+      const updatedRoom = { ...room, memberCount };
+      this.chatRooms.set(roomId, updatedRoom);
+    }
+  }
+
+  // Chat Message Methods
+  async getChatMessages(roomId: string, limit: number = 50): Promise<ChatMessage[]> {
+    return Array.from(this.chatMessages.values())
+      .filter(message => message.roomId === roomId)
+      .sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime())
+      .slice(-limit);
+  }
+
+  async getChatMessage(id: string): Promise<ChatMessage | undefined> {
+    return this.chatMessages.get(id);
+  }
+
+  async createChatMessage(insertMessage: InsertChatMessage): Promise<ChatMessage> {
+    const id = randomUUID();
+    const message: ChatMessage = { 
+      ...insertMessage, 
+      id, 
+      timestamp: new Date(),
+      isEdited: false,
+      replyToId: insertMessage.replyToId || null
+    };
+    this.chatMessages.set(id, message);
+    return message;
+  }
+
+  async updateChatMessage(messageId: string, content: string): Promise<void> {
+    const message = this.chatMessages.get(messageId);
+    if (message) {
+      const updatedMessage = { ...message, content, isEdited: true };
+      this.chatMessages.set(messageId, updatedMessage);
+    }
+  }
+
+  // Chat Room Member Methods
+  async getChatRoomMembers(roomId: string): Promise<ChatRoomMember[]> {
+    return Array.from(this.chatRoomMembers.values())
+      .filter(member => member.roomId === roomId);
+  }
+
+  async getChatRoomMember(roomId: string, userId: string): Promise<ChatRoomMember | undefined> {
+    return Array.from(this.chatRoomMembers.values())
+      .find(member => member.roomId === roomId && member.userId === userId);
+  }
+
+  async joinChatRoom(insertMember: InsertChatRoomMember): Promise<ChatRoomMember> {
+    const id = randomUUID();
+    const member: ChatRoomMember = { 
+      ...insertMember, 
+      id, 
+      joinedAt: new Date(),
+      lastSeen: new Date(),
+      isOnline: true
+    };
+    this.chatRoomMembers.set(id, member);
+    return member;
+  }
+
+  async leaveChatRoom(roomId: string, userId: string): Promise<void> {
+    const memberToRemove = Array.from(this.chatRoomMembers.entries())
+      .find(([_, member]) => member.roomId === roomId && member.userId === userId);
+    
+    if (memberToRemove) {
+      this.chatRoomMembers.delete(memberToRemove[0]);
+    }
+  }
+
+  async updateMemberOnlineStatus(roomId: string, userId: string, isOnline: boolean): Promise<void> {
+    const member = Array.from(this.chatRoomMembers.values())
+      .find(m => m.roomId === roomId && m.userId === userId);
+    
+    if (member) {
+      const updatedMember = { 
+        ...member, 
+        isOnline, 
+        lastSeen: new Date() 
+      };
+      this.chatRoomMembers.set(member.id, updatedMember);
+    }
   }
 }
 

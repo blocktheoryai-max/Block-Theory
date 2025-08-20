@@ -167,6 +167,66 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Chat Routes
+  app.get("/api/chat/rooms", async (req, res) => {
+    try {
+      const { type, coinSymbol } = req.query;
+      let rooms;
+      
+      if (coinSymbol) {
+        const room = await storage.getChatRoomByCoinSymbol(coinSymbol as string);
+        rooms = room ? [room] : [];
+      } else if (type) {
+        rooms = await storage.getChatRoomsByType(type as string);
+      } else {
+        rooms = await storage.getAllChatRooms();
+      }
+      
+      res.json(rooms);
+    } catch (error) {
+      console.error("Error fetching chat rooms:", error);
+      res.status(500).json({ error: "Failed to fetch chat rooms" });
+    }
+  });
+
+  app.get("/api/chat/rooms/:roomId/messages", async (req, res) => {
+    try {
+      const { roomId } = req.params;
+      const { limit } = req.query;
+      const messages = await storage.getChatMessages(roomId, limit ? parseInt(limit as string) : 50);
+      res.json(messages);
+    } catch (error) {
+      console.error("Error fetching messages:", error);
+      res.status(500).json({ error: "Failed to fetch messages" });
+    }
+  });
+
+  app.post("/api/chat/rooms/:roomId/messages", async (req, res) => {
+    try {
+      const { roomId } = req.params;
+      const { content, messageType = "text", metadata = null } = req.body;
+      
+      if (!content || content.trim().length === 0) {
+        return res.status(400).json({ error: "Message content is required" });
+      }
+
+      const message = await storage.createChatMessage({
+        roomId,
+        userId: "demo-user",
+        username: "DemoUser",
+        content: content.trim(),
+        messageType,
+        metadata,
+        replyToId: null
+      });
+
+      res.status(201).json(message);
+    } catch (error) {
+      console.error("Error creating message:", error);
+      res.status(500).json({ error: "Failed to create message" });
+    }
+  });
+
   const httpServer = createServer(app);
 
   return httpServer;

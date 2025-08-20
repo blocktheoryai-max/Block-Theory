@@ -23,7 +23,8 @@ export const lessons = pgTable("lessons", {
   content: text("content").notNull(),
   level: text("level").notNull(), // "Beginner", "Intermediate", "Expert"
   category: text("category").notNull(), // "Fundamentals", "Technical Analysis", "DeFi", "NFTs", "Trading Psychology"
-  duration: integer("duration").notNull(), // in minutes
+  duration: integer("duration").notNull(), // in minutes: 10, 20, 30, 45
+  format: text("format").notNull(), // "Quick", "Standard", "Deep Dive", "Masterclass"
   order: integer("order").notNull(),
   prerequisites: text("prerequisites").array().default([]),
   learningObjectives: text("learning_objectives").array().default([]),
@@ -32,6 +33,12 @@ export const lessons = pgTable("lessons", {
   isLocked: boolean("is_locked").default(false),
   hasQuiz: boolean("has_quiz").default(false),
   hasSimulation: boolean("has_simulation").default(false),
+  hasVideo: boolean("has_video").default(false),
+  videoUrl: text("video_url"), // URL for lesson video
+  videoThumbnail: text("video_thumbnail"), // Video thumbnail image
+  videoDuration: integer("video_duration"), // Video length in seconds
+  videoTranscript: text("video_transcript"), // Video transcript for accessibility
+  interactiveElements: jsonb("interactive_elements"), // Video overlays, timestamps, etc.
 });
 
 export const userProgress = pgTable("user_progress", {
@@ -123,6 +130,40 @@ export const nftTrades = pgTable("nft_trades", {
   executedAt: timestamp("executed_at").defaultNow(),
 });
 
+export const chatRooms = pgTable("chat_rooms", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  name: text("name").notNull(),
+  description: text("description"),
+  type: text("type").notNull(), // "general", "coin-specific", "trading-signals", "technical-analysis"
+  coinSymbol: text("coin_symbol"), // For coin-specific rooms (BTC, ETH, etc.)
+  isActive: boolean("is_active").default(true),
+  memberCount: integer("member_count").default(0),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const chatMessages = pgTable("chat_messages", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  roomId: varchar("room_id").references(() => chatRooms.id).notNull(),
+  userId: varchar("user_id").references(() => users.id).notNull(),
+  username: text("username").notNull(),
+  content: text("content").notNull(),
+  messageType: text("message_type").default("text"), // "text", "trade-signal", "price-alert", "image"
+  metadata: jsonb("metadata"), // For trade signals, price data, etc.
+  timestamp: timestamp("timestamp").defaultNow(),
+  isEdited: boolean("is_edited").default(false),
+  replyToId: varchar("reply_to_id").references(() => chatMessages.id),
+});
+
+export const chatRoomMembers = pgTable("chat_room_members", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  roomId: varchar("room_id").references(() => chatRooms.id).notNull(),
+  userId: varchar("user_id").references(() => users.id).notNull(),
+  role: text("role").default("member"), // "member", "moderator", "admin"
+  joinedAt: timestamp("joined_at").defaultNow(),
+  lastSeen: timestamp("last_seen").defaultNow(),
+  isOnline: boolean("is_online").default(false),
+});
+
 export const insertUserSchema = createInsertSchema(users).omit({
   id: true,
   createdAt: true,
@@ -165,6 +206,22 @@ export const insertNftAssetSchema = createInsertSchema(nftAssets).omit({
 export const insertNftTradeSchema = createInsertSchema(nftTrades).omit({
   id: true,
   executedAt: true,
+});
+
+export const insertChatRoomSchema = createInsertSchema(chatRooms).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertChatMessageSchema = createInsertSchema(chatMessages).omit({
+  id: true,
+  timestamp: true,
+});
+
+export const insertChatRoomMemberSchema = createInsertSchema(chatRoomMembers).omit({
+  id: true,
+  joinedAt: true,
+  lastSeen: true,
 });
 
 // Badge and Achievement System
@@ -237,6 +294,12 @@ export type InsertNftAsset = z.infer<typeof insertNftAssetSchema>;
 export type NftAsset = typeof nftAssets.$inferSelect;
 export type InsertNftTrade = z.infer<typeof insertNftTradeSchema>;
 export type NftTrade = typeof nftTrades.$inferSelect;
+export type InsertChatRoom = z.infer<typeof insertChatRoomSchema>;
+export type ChatRoom = typeof chatRooms.$inferSelect;
+export type InsertChatMessage = z.infer<typeof insertChatMessageSchema>;
+export type ChatMessage = typeof chatMessages.$inferSelect;
+export type InsertChatRoomMember = z.infer<typeof insertChatRoomMemberSchema>;
+export type ChatRoomMember = typeof chatRoomMembers.$inferSelect;
 
 export const insertBadgeSchema = createInsertSchema(badges).omit({
   id: true,

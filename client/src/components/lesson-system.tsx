@@ -25,11 +25,16 @@ interface Lesson {
   level: "Beginner" | "Intermediate" | "Expert";
   category: string;
   duration: number;
+  format: "Quick" | "Standard" | "Deep Dive" | "Masterclass";
   xpReward: number;
   badgeReward?: string;
   isLocked: boolean;
   hasQuiz: boolean;
   hasSimulation: boolean;
+  hasVideo: boolean;
+  videoUrl?: string;
+  videoThumbnail?: string;
+  videoDuration?: number;
   prerequisites: string[];
   learningObjectives: string[];
   completed?: boolean;
@@ -95,23 +100,48 @@ const lessonCategories: LessonCategory[] = [
 ];
 
 const comprehensiveLessons: Lesson[] = [
-  // Beginner - Fundamentals
+  // 10-Minute Quick Lessons
   {
     id: "1",
-    title: "What is Blockchain?",
-    description: "Understanding the foundation of cryptocurrency technology",
+    title: "Blockchain Basics (Quick Start)",
+    description: "Fast introduction to blockchain technology in 10 minutes",
     level: "Beginner",
     category: "fundamentals",
-    duration: 15,
-    xpReward: 100,
-    badgeReward: "blockchain-basics",
+    duration: 10,
+    format: "Quick",
+    xpReward: 75,
     isLocked: false,
     hasQuiz: true,
     hasSimulation: false,
+    hasVideo: true,
+    videoUrl: "/public-objects/videos/blockchain-basics-10min.mp4",
+    videoThumbnail: "/public-objects/thumbnails/blockchain-basics.jpg",
+    videoDuration: 600,
     prerequisites: [],
-    learningObjectives: ["Understand distributed ledger technology", "Learn about decentralization", "Grasp immutability concepts"],
+    learningObjectives: ["Understand what blockchain is", "Learn basic terminology", "Recognize blockchain benefits"],
     completed: true,
     progress: 100
+  },
+  {
+    id: "1b",
+    title: "Bitcoin Essentials (Quick Start)",
+    description: "Learn Bitcoin fundamentals in just 10 minutes",
+    level: "Beginner",
+    category: "fundamentals",
+    duration: 10,
+    format: "Quick",
+    xpReward: 75,
+    isLocked: false,
+    hasQuiz: true,
+    hasSimulation: false,
+    hasVideo: true,
+    videoUrl: "/public-objects/videos/bitcoin-essentials-10min.mp4",
+    videoThumbnail: "/public-objects/thumbnails/bitcoin-essentials.jpg",
+    videoDuration: 600,
+    prerequisites: [],
+    learningObjectives: ["Understand Bitcoin basics", "Learn about digital scarcity", "Explore mining concepts"],
+    completed: false,
+    progress: 0
   },
   {
     id: "2", 
@@ -304,6 +334,8 @@ const userBadges: UserBadge[] = [
 export default function LessonSystem() {
   const [selectedLevel, setSelectedLevel] = useState<"all" | "Beginner" | "Intermediate" | "Expert">("all");
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const [selectedDuration, setSelectedDuration] = useState<string>("all");
+  const [selectedFormat, setSelectedFormat] = useState<string>("all");
   const { toast } = useToast();
 
   const { data: lessons } = useQuery({
@@ -330,10 +362,16 @@ export default function LessonSystem() {
     });
   };
 
-  const filteredLessons = comprehensiveLessons.filter(lesson => {
+  const filteredLessons = (lessons || comprehensiveLessons).filter((lesson: any) => {
     const levelMatch = selectedLevel === "all" || lesson.level === selectedLevel;
     const categoryMatch = selectedCategory === "all" || lesson.category === selectedCategory;
-    return levelMatch && categoryMatch;
+    const durationMatch = selectedDuration === "all" || 
+      (selectedDuration === "10" && lesson.duration <= 10) ||
+      (selectedDuration === "20" && lesson.duration > 10 && lesson.duration <= 20) ||
+      (selectedDuration === "30" && lesson.duration > 20 && lesson.duration <= 30) ||
+      (selectedDuration === "45" && lesson.duration > 30);
+    const formatMatch = selectedFormat === "all" || lesson.format === selectedFormat;
+    return levelMatch && categoryMatch && durationMatch && formatMatch;
   });
 
   const getUserXP = () => {
@@ -447,9 +485,11 @@ export default function LessonSystem() {
         </TabsList>
 
         <TabsContent value="lessons" className="space-y-6">
-          {/* Filters */}
-          <div className="flex flex-wrap gap-4">
-            <div className="flex gap-2">
+          {/* Enhanced Filters */}
+          <div className="space-y-4">
+            {/* Level Filter */}
+            <div className="flex flex-wrap gap-2">
+              <span className="text-sm font-medium text-gray-700 dark:text-gray-300 self-center mr-2">Level:</span>
               <Button
                 variant={selectedLevel === "all" ? "default" : "outline"}
                 size="sm"
@@ -479,6 +519,90 @@ export default function LessonSystem() {
                 Expert
               </Button>
             </div>
+
+            {/* Duration Filter */}
+            <div className="flex flex-wrap gap-2">
+              <span className="text-sm font-medium text-gray-700 dark:text-gray-300 self-center mr-2">Duration:</span>
+              <Button
+                variant={selectedDuration === "all" ? "default" : "outline"}
+                size="sm"
+                onClick={() => setSelectedDuration("all")}
+              >
+                Any Length
+              </Button>
+              <Button
+                variant={selectedDuration === "10" ? "default" : "outline"}
+                size="sm"
+                onClick={() => setSelectedDuration("10")}
+              >
+                ⚡ 10 min
+              </Button>
+              <Button
+                variant={selectedDuration === "20" ? "default" : "outline"}
+                size="sm"
+                onClick={() => setSelectedDuration("20")}
+              >
+                📚 20 min
+              </Button>
+              <Button
+                variant={selectedDuration === "30" ? "default" : "outline"}
+                size="sm"
+                onClick={() => setSelectedDuration("30")}
+              >
+                🔍 30 min
+              </Button>
+              <Button
+                variant={selectedDuration === "45" ? "default" : "outline"}
+                size="sm"
+                onClick={() => setSelectedDuration("45")}
+              >
+                🎓 45 min
+              </Button>
+            </div>
+
+            {/* Format Filter */}
+            <div className="flex flex-wrap gap-2">
+              <span className="text-sm font-medium text-gray-700 dark:text-gray-300 self-center mr-2">Format:</span>
+              <Button
+                variant={selectedFormat === "all" ? "default" : "outline"}
+                size="sm"
+                onClick={() => setSelectedFormat("all")}
+              >
+                All Formats
+              </Button>
+              <Button
+                variant={selectedFormat === "Quick" ? "default" : "outline"}
+                size="sm"
+                onClick={() => setSelectedFormat("Quick")}
+                className="bg-green-50 hover:bg-green-100 border-green-200 text-green-700"
+              >
+                Quick Start
+              </Button>
+              <Button
+                variant={selectedFormat === "Standard" ? "default" : "outline"}
+                size="sm"
+                onClick={() => setSelectedFormat("Standard")}
+                className="bg-blue-50 hover:bg-blue-100 border-blue-200 text-blue-700"
+              >
+                Standard
+              </Button>
+              <Button
+                variant={selectedFormat === "Deep Dive" ? "default" : "outline"}
+                size="sm"
+                onClick={() => setSelectedFormat("Deep Dive")}
+                className="bg-purple-50 hover:bg-purple-100 border-purple-200 text-purple-700"
+              >
+                Deep Dive
+              </Button>
+              <Button
+                variant={selectedFormat === "Masterclass" ? "default" : "outline"}
+                size="sm"
+                onClick={() => setSelectedFormat("Masterclass")}
+                className="bg-orange-50 hover:bg-orange-100 border-orange-200 text-orange-700"
+              >
+                Masterclass
+              </Button>
+            </div>
           </div>
 
           {/* Lessons Grid */}
@@ -487,11 +611,30 @@ export default function LessonSystem() {
               <Card key={lesson.id} className={`relative ${lesson.isLocked ? 'opacity-60' : ''}`}>
                 <CardHeader className="pb-3">
                   <div className="flex items-start justify-between mb-2">
-                    <Badge className={getLevelBadgeColor(lesson.level)}>
-                      {lesson.level}
-                    </Badge>
-                    {lesson.isLocked && <Lock className="h-4 w-4 text-slate-400" />}
-                    {lesson.completed && <CheckCircle className="h-4 w-4 text-green-500" />}
+                    <div className="flex gap-2">
+                      <Badge className={getLevelBadgeColor(lesson.level)}>
+                        {lesson.level}
+                      </Badge>
+                      {lesson.format && (
+                        <Badge 
+                          variant="outline" 
+                          className={
+                            lesson.format === "Quick" ? "bg-green-100 text-green-800 border-green-300" :
+                            lesson.format === "Standard" ? "bg-blue-100 text-blue-800 border-blue-300" :
+                            lesson.format === "Deep Dive" ? "bg-purple-100 text-purple-800 border-purple-300" :
+                            lesson.format === "Masterclass" ? "bg-orange-100 text-orange-800 border-orange-300" :
+                            "bg-gray-100 text-gray-800"
+                          }
+                        >
+                          {lesson.format}
+                        </Badge>
+                      )}
+                    </div>
+                    <div className="flex items-center gap-1">
+                      {lesson.hasVideo && <span className="text-red-500">🎥</span>}
+                      {lesson.isLocked && <Lock className="h-4 w-4 text-slate-400" />}
+                      {lesson.completed && <CheckCircle className="h-4 w-4 text-green-500" />}
+                    </div>
                   </div>
                   <CardTitle className="text-lg">{lesson.title}</CardTitle>
                   <CardDescription>{lesson.description}</CardDescription>
@@ -517,7 +660,12 @@ export default function LessonSystem() {
                       </div>
                     )}
 
-                    <div className="flex gap-2">
+                    <div className="flex gap-2 flex-wrap">
+                      {lesson.hasVideo && (
+                        <Badge variant="outline" className="text-xs bg-red-50 text-red-700 border-red-200">
+                          🎥 Video
+                        </Badge>
+                      )}
                       {lesson.hasQuiz && (
                         <Badge variant="outline" className="text-xs">
                           📝 Quiz
