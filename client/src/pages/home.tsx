@@ -54,21 +54,24 @@ export default function Home() {
               simulation, analytics, and community - all in one place.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button 
-                size="lg" 
-                onClick={() => window.location.href = "/api/login"}
-                className="text-lg px-8 py-3"
-              >
-                Start Learning Free
-              </Button>
-              <Link href="/analyze">
-                <Button size="lg" variant="outline" className="text-lg px-8 py-3">
-                  Try Analysis Demo
+              <Link href="/learn">
+                <Button size="lg" className="text-lg px-8 py-3">
+                  Start Learning
                 </Button>
               </Link>
-              <Link href="/pricing">
+              <Link href="/simulate">
                 <Button size="lg" variant="outline" className="text-lg px-8 py-3">
-                  View Pricing
+                  Try Simulator
+                </Button>
+              </Link>
+              <Link href="/analyze">
+                <Button size="lg" variant="outline" className="text-lg px-8 py-3">
+                  View Analysis
+                </Button>
+              </Link>
+              <Link href="/community">
+                <Button size="lg" variant="outline" className="text-lg px-8 py-3">
+                  Join Community
                 </Button>
               </Link>
             </div>

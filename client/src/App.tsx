@@ -19,16 +19,12 @@ function Router() {
   return (
     <Switch>
       <Route path="/" component={Home} />
-      <Route path="/pricing" component={Pricing} />
+      <Route path="/learn" component={Learn} />
+      <Route path="/simulate" component={Simulate} />
       <Route path="/analyze" component={Analyze} />
-      {isAuthenticated && (
-        <>
-          <Route path="/learn" component={Learn} />
-          <Route path="/simulate" component={Simulate} />
-          <Route path="/community" component={Community} />
-          <Route path="/checkout" component={Checkout} />
-        </>
-      )}
+      <Route path="/community" component={Community} />
+      <Route path="/pricing" component={Pricing} />
+      <Route path="/checkout" component={Checkout} />
       <Route component={NotFound} />
     </Switch>
   );

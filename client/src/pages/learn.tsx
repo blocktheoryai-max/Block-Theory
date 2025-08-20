@@ -23,6 +23,7 @@ import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
 import { isUnauthorizedError } from "@/lib/authUtils";
 import { Link } from "wouter";
+import Navigation from "@/components/Navigation";
 
 interface Lesson {
   id: string;
@@ -180,9 +181,7 @@ export default function Learn() {
                 <CardHeader>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-2">
-                      {React.createElement(getCategoryIcon(selectedLesson.category), { 
-                        className: "h-6 w-6 text-blue-600" 
-                      })}
+{getCategoryIcon(selectedLesson.category)}
                       <CardTitle className="text-2xl">{selectedLesson.title}</CardTitle>
                     </div>
                     {isCompleted && (
@@ -309,7 +308,9 @@ export default function Learn() {
 
   // Main lessons list view
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
+    <>
+      <Navigation />
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="mb-8">
@@ -444,6 +445,7 @@ export default function Learn() {
           </div>
         )}
       </div>
-    </div>
+      </div>
+    </>
   );
 }

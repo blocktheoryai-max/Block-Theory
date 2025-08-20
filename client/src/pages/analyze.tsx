@@ -24,6 +24,7 @@ import {
   Target
 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
+import Navigation from "@/components/Navigation";
 
 // Mock whitepaper data for demonstration
 const mockWhitepapers = [
@@ -358,9 +359,11 @@ export default function Analyze() {
 
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* Hero Section */}
-      <div className="gradient-hero dark:gradient-hero-dark border-b border-border">
+    <>
+      <Navigation />
+      <div className="min-h-screen bg-background">
+        {/* Hero Section */}
+        <div className="gradient-hero dark:gradient-hero-dark border-b border-border">
         <div className="container mx-auto px-4 py-12">
           <div className="text-center max-w-4xl mx-auto">
             <h1 className="text-4xl font-bold text-gradient mb-4">
@@ -795,6 +798,7 @@ export default function Analyze() {
           </TabsContent>
         </Tabs>
       </div>
-    </div>
+      </div>
+    </>
   );
 }
