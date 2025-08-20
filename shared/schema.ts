@@ -259,6 +259,105 @@ export const tradingConnections = pgTable("trading_connections", {
   createdAt: timestamp("created_at").defaultNow(),
 });
 
+// Achievement system for gamification
+export const achievements = pgTable("achievements", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  name: text("name").notNull(),
+  description: text("description").notNull(),
+  category: text("category").notNull(), // "learning", "trading", "community", "streak"
+  iconName: text("icon_name").notNull(),
+  pointsReward: integer("points_reward").default(100),
+  requirements: jsonb("requirements").notNull(), // {"type": "lessons_completed", "count": 10}
+  isHidden: boolean("is_hidden").default(false),
+  requiredTier: text("required_tier").default("free"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// User achievements tracking
+export const userAchievements = pgTable("user_achievements", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").references(() => users.id).notNull(),
+  achievementId: varchar("achievement_id").references(() => achievements.id).notNull(),
+  progress: integer("progress").default(0),
+  isCompleted: boolean("is_completed").default(false),
+  completedAt: timestamp("completed_at"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// User referrals for growth
+export const userReferrals = pgTable("user_referrals", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  referrerId: varchar("referrer_id").references(() => users.id).notNull(),
+  referredId: varchar("referred_id").references(() => users.id).notNull(),
+  referralCode: text("referral_code").notNull().unique(),
+  status: text("status").default("pending"), // "pending", "completed", "expired"
+  rewardType: text("reward_type").default("points"), // "points", "subscription_discount", "cash"
+  rewardValue: decimal("reward_value", { precision: 10, scale: 2 }),
+  isActive: boolean("is_active").default(true),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Premium content for monetization
+export const premiumContent = pgTable("premium_content", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  title: text("title").notNull(),
+  description: text("description").notNull(),
+  contentType: text("content_type").notNull(), // "video", "masterclass", "guide", "tool"
+  category: text("category").notNull(),
+  duration: integer("duration"), // in minutes
+  requiredTier: text("required_tier").notNull(), // "basic", "pro", "elite"
+  views: integer("views").default(0),
+  likes: integer("likes").default(0),
+  isExclusive: boolean("is_exclusive").default(false),
+  thumbnailUrl: text("thumbnail_url"),
+  videoUrl: text("video_url"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Learning streaks for engagement
+export const learningStreaks = pgTable("learning_streaks", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").references(() => users.id).notNull(),
+  currentStreak: integer("current_streak").default(0),
+  longestStreak: integer("longest_streak").default(0),
+  lastActivityDate: timestamp("last_activity_date"),
+  streakRewards: jsonb("streak_rewards").default([]), // Track rewards claimed
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Removed duplicate - using the first definition above
+
+// Mentoring sessions for Elite tier
+export const mentoringBookings = pgTable("mentoring_bookings", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").references(() => users.id).notNull(),
+  mentorId: varchar("mentor_id").references(() => users.id).notNull(),
+  sessionType: text("session_type").notNull(), // "trading_review", "strategy_planning", "q_and_a"
+  sessionTitle: text("session_title").notNull(),
+  scheduledAt: timestamp("scheduled_at").notNull(),
+  duration: integer("duration").default(60), // minutes
+  meetingUrl: text("meeting_url"),
+  notes: text("notes"),
+  status: text("status").default("scheduled"), // "scheduled", "completed", "cancelled", "no_show"
+  feedback: jsonb("feedback"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Analytics for admin dashboard
+export const userAnalytics = pgTable("user_analytics", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").references(() => users.id).notNull(),
+  date: timestamp("date").notNull(),
+  sessionsCount: integer("sessions_count").default(0),
+  timeSpentMinutes: integer("time_spent_minutes").default(0),
+  lessonsCompleted: integer("lessons_completed").default(0),
+  tradesExecuted: integer("trades_executed").default(0),
+  forumPosts: integer("forum_posts").default(0),
+  revenueGenerated: decimal("revenue_generated", { precision: 10, scale: 2 }).default("0"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
 export const insertUserSchema = createInsertSchema(users).omit({
   id: true,
   createdAt: true,
@@ -440,7 +539,7 @@ export const userBadges = pgTable("user_badges", {
   progress: integer("progress").default(0), // For progressive badges
 });
 
-export const achievements = pgTable("achievements", {
+export const userAchievementLogs = pgTable("user_achievement_logs", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
   userId: varchar("user_id").references(() => users.id).notNull(),
   type: text("type").notNull(), // "lesson_complete", "streak", "trade_profit", etc.

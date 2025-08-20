@@ -561,6 +561,36 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Achievement endpoints
+  app.get("/api/achievements", async (_req, res) => {
+    try {
+      const achievements = await storage.getAchievements();
+      res.json(achievements);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch achievements" });
+    }
+  });
+
+  // Premium content endpoints
+  app.get("/api/premium-content", async (_req, res) => {
+    try {
+      const content = await storage.getPremiumContent();
+      res.json(content);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch premium content" });
+    }
+  });
+
+  // Trading signals endpoints
+  app.get("/api/trading-signals", async (_req, res) => {
+    try {
+      const signals = await storage.getTradingSignals();
+      res.json(signals);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch trading signals" });
+    }
+  });
+
   const httpServer = createServer(app);
 
   return httpServer;

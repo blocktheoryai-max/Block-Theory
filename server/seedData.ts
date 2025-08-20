@@ -1,5 +1,5 @@
 import { db } from "./db";
-import { subscriptionPlans, lessons, cryptoPrices, forumPosts, users } from "@shared/schema";
+import { subscriptionPlans, lessons, cryptoPrices, forumPosts, users, achievements, premiumContent, tradingSignals } from "@shared/schema";
 
 export async function seedInitialData() {
   try {
@@ -935,6 +935,202 @@ Also open to hiring a crypto-specialized CPA if the software route doesn't work 
         }
       ]);
       console.log("✅ Sample forum posts created");
+    }
+
+    // Check if achievements exist - temporarily disabled due to database schema sync issues
+    // const existingAchievements = await db.select().from(achievements);
+    
+    if (false) { // Temporarily disabled
+      // Create gamification achievements
+      await db.insert(achievements).values([
+        {
+          name: "First Steps",
+          description: "Complete your first lesson",
+          category: "learning",
+          iconName: "BookOpen",
+          pointsReward: 50,
+          requirements: { type: "lessons_completed", count: 1 },
+          requiredTier: "free"
+        },
+        {
+          name: "Knowledge Seeker",
+          description: "Complete 10 lessons",
+          category: "learning", 
+          iconName: "GraduationCap",
+          pointsReward: 250,
+          requirements: { type: "lessons_completed", count: 10 },
+          requiredTier: "free"
+        },
+        {
+          name: "Trading Master",
+          description: "Complete 50 lessons",
+          category: "learning",
+          iconName: "Trophy",
+          pointsReward: 1000,
+          requirements: { type: "lessons_completed", count: 50 },
+          requiredTier: "basic"
+        },
+        {
+          name: "First Trade",
+          description: "Execute your first simulated trade",
+          category: "trading",
+          iconName: "TrendingUp",
+          pointsReward: 100,
+          requirements: { type: "trades_executed", count: 1 },
+          requiredTier: "free"
+        },
+        {
+          name: "Portfolio Builder",
+          description: "Execute 25 trades",
+          category: "trading",
+          iconName: "BarChart3",
+          pointsReward: 500,
+          requirements: { type: "trades_executed", count: 25 },
+          requiredTier: "free"
+        },
+        {
+          name: "Consistent Learner",
+          description: "Maintain a 7-day learning streak",
+          category: "streak",
+          iconName: "Flame",
+          pointsReward: 300,
+          requirements: { type: "streak_days", count: 7 },
+          requiredTier: "free"
+        },
+        {
+          name: "Community Helper",
+          description: "Make 5 helpful forum posts",
+          category: "community",
+          iconName: "Users",
+          pointsReward: 200,
+          requirements: { type: "forum_posts", count: 5 },
+          requiredTier: "free"
+        },
+        {
+          name: "Crypto Scholar",
+          description: "Complete all foundation lessons",
+          category: "learning",
+          iconName: "Crown",
+          pointsReward: 1500,
+          requirements: { type: "foundation_complete", count: 1 },
+          requiredTier: "basic"
+        }
+      ]);
+      console.log("✅ Achievement system created");
+    }
+
+    // Check if premium content exists - temporarily disabled due to database schema sync issues
+    // const existingPremium = await db.select().from(premiumContent);
+    
+    if (false) { // Temporarily disabled
+      // Create premium content for upselling
+      await db.insert(premiumContent).values([
+        {
+          title: "Advanced DeFi Yield Strategies",
+          description: "Learn professional yield farming techniques with 6-figure DeFi portfolio management strategies used by institutional traders.",
+          contentType: "masterclass",
+          category: "defi",
+          duration: 90,
+          requiredTier: "pro",
+          views: 1247,
+          likes: 189,
+          isExclusive: true
+        },
+        {
+          title: "NFT Flipping Masterclass",
+          description: "Complete guide to profitable NFT trading including rarity analysis, market timing, and whale tracking techniques.",
+          contentType: "video",
+          category: "nft", 
+          duration: 75,
+          requiredTier: "pro",
+          views: 2156,
+          likes: 298,
+          isExclusive: true
+        },
+        {
+          title: "Algorithmic Trading Bot Development",
+          description: "Build your own crypto trading bots with Python. Includes backtesting frameworks and risk management systems.",
+          contentType: "masterclass",
+          category: "trading",
+          duration: 120,
+          requiredTier: "elite",
+          views: 845,
+          likes: 156,
+          isExclusive: true
+        },
+        {
+          title: "Market Psychology & Sentiment Analysis",
+          description: "Advanced behavioral finance techniques for crypto markets. Learn to read market fear, greed, and timing cycles.",
+          contentType: "webinar",
+          category: "trading",
+          duration: 60,
+          requiredTier: "pro",
+          views: 1834,
+          likes: 267,
+          isExclusive: false
+        },
+        {
+          title: "Institutional Trading Strategies",
+          description: "Learn how hedge funds and institutions trade crypto. Exclusive insights from Wall Street professionals.",
+          contentType: "masterclass",
+          category: "trading",
+          duration: 150,
+          requiredTier: "elite",
+          views: 623,
+          likes: 94,
+          isExclusive: true
+        }
+      ]);
+      console.log("✅ Premium content library created");
+    }
+
+    // Check if trading signals exist
+    const existingSignals = await db.select().from(tradingSignals);
+    
+    if (existingSignals.length === 0) {
+      // Create sample trading signals for premium users
+      await db.insert(tradingSignals).values([
+        {
+          createdBy: "demo-user-2", // TechAnalystPro
+          symbol: "BTC",
+          signalType: "buy",
+          entryPrice: "67250.00",
+          targetPrice: "72000.00",
+          stopLoss: "64500.00",
+          confidence: 85,
+          reasoning: "Strong breakout above $67k resistance with high volume confirmation. RSI reset from overbought levels provides healthy entry point.",
+          status: "active",
+          requiredTier: "pro",
+          expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) // 7 days
+        },
+        {
+          createdBy: "demo-user-4", // BlockchainDev
+          symbol: "ETH",
+          signalType: "buy",
+          entryPrice: "3420.00",
+          targetPrice: "3800.00",
+          stopLoss: "3200.00",
+          confidence: 78,
+          reasoning: "Ethereum showing strength vs BTC. Layer 2 adoption accelerating and staking yield attractive at current levels.",
+          status: "active",
+          requiredTier: "pro",
+          expiresAt: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000) // 5 days
+        },
+        {
+          createdBy: "demo-user-5", // SolanaBuilder
+          symbol: "SOL",
+          signalType: "hold",
+          entryPrice: "145.00",
+          targetPrice: "180.00",
+          stopLoss: "125.00",
+          confidence: 72,
+          reasoning: "Solana ecosystem growth strong but waiting for broader market confirmation before increasing position size.",
+          status: "active",
+          requiredTier: "basic",
+          expiresAt: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000) // 3 days
+        }
+      ]);
+      console.log("✅ Trading signals created");
     }
 
     console.log("🎉 Database seeding completed successfully!");

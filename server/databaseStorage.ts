@@ -18,6 +18,8 @@ import {
   paymentTransactions,
   tradingSignals,
   tradingConnections,
+  achievements,
+  premiumContent,
 } from "@shared/schema";
 import type {
   User,
@@ -147,6 +149,10 @@ export interface IStorage {
   updateUserXp(userId: string, xp: number): Promise<void>;
   updateUserLevel(userId: string, level: number): Promise<void>;
   updateUserStreak(userId: string, streak: number): Promise<void>;
+
+  // New monetization feature operations
+  getAchievements(): Promise<any[]>;
+  getPremiumContent(): Promise<any[]>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -515,6 +521,16 @@ export class DatabaseStorage implements IStorage {
 
   async updateTradingConnectionStatus(id: string, isActive: boolean): Promise<void> {
     await db.update(tradingConnections).set({ isActive, lastUsed: new Date() }).where(eq(tradingConnections.id, id));
+  }
+
+  // Achievement operations
+  async getAchievements(): Promise<any[]> {
+    return await db.select().from(achievements);
+  }
+
+  // Premium content operations  
+  async getPremiumContent(): Promise<any[]> {
+    return await db.select().from(premiumContent);
   }
 
   // User analytics operations

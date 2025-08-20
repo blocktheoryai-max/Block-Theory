@@ -2,7 +2,8 @@ import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { BookOpen, TrendingUp, Users, BarChart3, Crown, Star, Zap } from "lucide-react";
+import { Progress } from "@/components/ui/progress";
+import { BookOpen, TrendingUp, Users, BarChart3, Crown, Star, Zap, Trophy, Gift, Lock, Play, Clock, Target, Flame } from "lucide-react";
 import { useAuth, useSubscriptionStatus } from "@/hooks/useAuth";
 import { Link } from "wouter";
 
@@ -18,6 +19,21 @@ export default function Home() {
   const { data: progress = [] } = useQuery({
     queryKey: ["/api/progress", user?.id],
     enabled: isAuthenticated && !!user?.id,
+  });
+
+  const { data: achievements = [] } = useQuery({
+    queryKey: ["/api/achievements"],
+    enabled: isAuthenticated,
+  });
+
+  const { data: premiumContent = [] } = useQuery({
+    queryKey: ["/api/premium-content"],
+    enabled: isAuthenticated,
+  });
+
+  const { data: tradingSignals = [] } = useQuery({
+    queryKey: ["/api/trading-signals"],
+    enabled: isAuthenticated,
   });
 
   // Landing page for non-authenticated users
@@ -264,6 +280,147 @@ export default function Home() {
             </CardContent>
           </Card>
         </div>
+
+        {/* Achievement System */}
+        <Card className="mb-8">
+          <CardHeader>
+            <CardTitle className="flex items-center">
+              <Trophy className="h-5 w-5 mr-2 text-yellow-500" />
+              Your Achievements
+            </CardTitle>
+            <CardDescription>
+              Earn points and unlock rewards as you progress
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              {achievements.slice(0, 4).map((achievement, index) => {
+                const IconComponent = achievement.iconName === "BookOpen" ? BookOpen :
+                  achievement.iconName === "Trophy" ? Trophy :
+                  achievement.iconName === "TrendingUp" ? TrendingUp :
+                  achievement.iconName === "Flame" ? Flame : Star;
+                
+                return (
+                  <div key={index} className="flex items-center space-x-3 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                    <IconComponent className="h-8 w-8 text-blue-500" />
+                    <div className="flex-1">
+                      <h4 className="font-semibold text-sm">{achievement.name}</h4>
+                      <p className="text-xs text-gray-600 dark:text-gray-400">{achievement.description}</p>
+                      <Badge variant="secondary" className="text-xs mt-1">
+                        +{achievement.pointsReward} XP
+                      </Badge>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+            <div className="mt-4 text-center">
+              <Button variant="outline" size="sm">
+                View All Achievements
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Premium Content Teasers */}
+        {tier === "free" || tier === "basic" ? (
+          <Card className="mb-8 border-purple-200 bg-gradient-to-r from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20">
+            <CardHeader>
+              <CardTitle className="flex items-center text-purple-700 dark:text-purple-300">
+                <Crown className="h-5 w-5 mr-2" />
+                Exclusive Premium Content
+              </CardTitle>
+              <CardDescription>
+                Unlock advanced masterclasses and expert strategies
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {premiumContent.slice(0, 2).map((content, index) => (
+                  <div key={index} className="relative p-4 bg-white dark:bg-gray-800 rounded-lg border">
+                    <div className="absolute top-2 right-2">
+                      <Badge variant="secondary" className="text-xs">
+                        {content.requiredTier.toUpperCase()}
+                      </Badge>
+                    </div>
+                    <div className="flex items-start space-x-3">
+                      <div className="bg-purple-100 dark:bg-purple-900 p-2 rounded">
+                        <Play className="h-4 w-4 text-purple-600" />
+                      </div>
+                      <div className="flex-1">
+                        <h4 className="font-semibold text-sm mb-1">{content.title}</h4>
+                        <p className="text-xs text-gray-600 dark:text-gray-400 mb-2">{content.description.substring(0, 80)}...</p>
+                        <div className="flex items-center space-x-3 text-xs text-gray-500">
+                          <div className="flex items-center">
+                            <Clock className="h-3 w-3 mr-1" />
+                            {content.duration}min
+                          </div>
+                          <div className="flex items-center">
+                            <Users className="h-3 w-3 mr-1" />
+                            {content.views} views
+                          </div>
+                        </div>
+                      </div>
+                      <Lock className="h-4 w-4 text-gray-400" />
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div className="mt-4 text-center">
+                <Link href="/pricing">
+                  <Button className="mr-2">Upgrade Now</Button>
+                </Link>
+                <Button variant="outline" size="sm">
+                  View All Premium Content
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        ) : null}
+
+        {/* Trading Signals for Premium Users */}
+        {(tier === "pro" || tier === "elite") && tradingSignals.length > 0 ? (
+          <Card className="mb-8">
+            <CardHeader>
+              <CardTitle className="flex items-center">
+                <Target className="h-5 w-5 mr-2 text-green-500" />
+                Live Trading Signals
+              </CardTitle>
+              <CardDescription>
+                Expert trading recommendations updated daily
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3">
+                {tradingSignals.slice(0, 3).map((signal, index) => (
+                  <div key={index} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                    <div className="flex items-center space-x-3">
+                      <Badge variant={signal.signalType === "buy" ? "default" : 
+                                     signal.signalType === "sell" ? "destructive" : "secondary"}>
+                        {signal.signalType.toUpperCase()}
+                      </Badge>
+                      <div>
+                        <h4 className="font-semibold">{signal.symbol}</h4>
+                        <p className="text-sm text-gray-600 dark:text-gray-400">
+                          Entry: ${signal.entryPrice} | Target: ${signal.targetPrice}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-sm font-medium">{signal.confidence}% confidence</div>
+                      <div className="text-xs text-gray-500">{signal.status}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div className="mt-4 text-center">
+                <Button variant="outline" size="sm">
+                  View All Signals
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        ) : null}
 
         {/* Quick Actions */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
