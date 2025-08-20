@@ -86,10 +86,264 @@ const mockWhitepapers = [
   }
 ];
 
+// Helper functions
+const getDifficultyColor = (difficulty: string) => {
+  switch(difficulty) {
+    case "Beginner": return "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200";
+    case "Intermediate": return "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200";
+    case "Expert": return "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200";
+    default: return "bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200";
+  }
+};
+
+const getCategoryIcon = (category: string) => {
+  switch(category) {
+    case "Layer 1": return <Zap className="h-4 w-4" />;
+    case "Layer 2": return <BarChart3 className="h-4 w-4" />;
+    case "DeFi": return <DollarSign className="h-4 w-4" />;
+    case "NFT": return <Award className="h-4 w-4" />;
+    default: return <FileText className="h-4 w-4" />;
+  }
+};
+
+const formatMarketCap = (marketCap: string) => {
+  const value = parseInt(marketCap);
+  if (value >= 1e12) return `$${(value / 1e12).toFixed(1)}T`;
+  if (value >= 1e9) return `$${(value / 1e9).toFixed(1)}B`;
+  if (value >= 1e6) return `$${(value / 1e6).toFixed(1)}M`;
+  return `$${value.toLocaleString()}`;
+};
+
+// Detailed whitepaper analysis view component
+function WhitepaperDetailView({ whitepaper, onBack }: { whitepaper: any; onBack: () => void }) {
+  const [activeTab, setActiveTab] = useState("overview");
+
+  return (
+    <div className="min-h-screen bg-background">
+      {/* Header */}
+      <div className="gradient-hero dark:gradient-hero-dark border-b border-border">
+        <div className="container mx-auto px-4 py-8">
+          <Button onClick={onBack} variant="outline" className="mb-4">
+            ← Back to Analysis Hub
+          </Button>
+          
+          <div className="flex items-start justify-between">
+            <div className="flex items-center gap-4">
+              <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center">
+                <span className="text-2xl font-bold">{whitepaper.symbol.charAt(0)}</span>
+              </div>
+              <div>
+                <h1 className="text-3xl font-bold">{whitepaper.projectName}</h1>
+                <p className="text-xl text-muted-foreground">{whitepaper.symbol} • {whitepaper.category}</p>
+              </div>
+            </div>
+            
+            <div className="text-right">
+              <div className="flex items-center gap-1 mb-2">
+                <Star className="h-5 w-5 fill-yellow-400 text-yellow-400" />
+                <span className="text-2xl font-bold">{whitepaper.overallRating}</span>
+              </div>
+              <Badge variant="outline" className={getDifficultyColor(whitepaper.difficulty)}>
+                {whitepaper.difficulty}
+              </Badge>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Analysis Content */}
+      <div className="container mx-auto px-4 py-8">
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
+          <TabsList className="grid w-full grid-cols-5">
+            <TabsTrigger value="overview">Overview</TabsTrigger>
+            <TabsTrigger value="technology">Technology</TabsTrigger>
+            <TabsTrigger value="tokenomics">Tokenomics</TabsTrigger>
+            <TabsTrigger value="team">Team</TabsTrigger>
+            <TabsTrigger value="risks">Risk Analysis</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="overview" className="space-y-6">
+            <div className="grid gap-6 md:grid-cols-2">
+              <Card className="kraken-card">
+                <CardHeader>
+                  <CardTitle>Analysis Scores</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <span>Technology</span>
+                      <span className="font-medium">{whitepaper.technicalScore}%</span>
+                    </div>
+                    <div className="h-2 bg-muted rounded-full">
+                      <div className="h-full bg-primary rounded-full" style={{ width: `${whitepaper.technicalScore}%` }} />
+                    </div>
+                  </div>
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <span>Team</span>
+                      <span className="font-medium">{whitepaper.teamScore}%</span>
+                    </div>
+                    <div className="h-2 bg-muted rounded-full">
+                      <div className="h-full bg-success rounded-full" style={{ width: `${whitepaper.teamScore}%` }} />
+                    </div>
+                  </div>
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <span>Use Case</span>
+                      <span className="font-medium">{whitepaper.useCaseScore}%</span>
+                    </div>
+                    <div className="h-2 bg-muted rounded-full">
+                      <div className="h-full bg-warning rounded-full" style={{ width: `${whitepaper.useCaseScore}%` }} />
+                    </div>
+                  </div>
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <span>Tokenomics</span>
+                      <span className="font-medium">{whitepaper.tokenomicsScore}%</span>
+                    </div>
+                    <div className="h-2 bg-muted rounded-full">
+                      <div className="h-full bg-destructive rounded-full" style={{ width: `${whitepaper.tokenomicsScore}%` }} />
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="kraken-card">
+                <CardHeader>
+                  <CardTitle>Key Information</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <span className="text-muted-foreground">Market Cap</span>
+                    <span className="font-medium">${parseFloat(whitepaper.marketCap).toLocaleString()}</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-muted-foreground">Launch Date</span>
+                    <span className="font-medium">{new Date(whitepaper.launchDate).toLocaleDateString()}</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-muted-foreground">Category</span>
+                    <Badge variant="outline">{whitepaper.category}</Badge>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-muted-foreground">Access Level</span>
+                    <Badge variant="default">{whitepaper.requiredTier.toUpperCase()}</Badge>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+
+            <Card className="kraken-card">
+              <CardHeader>
+                <CardTitle>Project Summary</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-muted-foreground leading-relaxed">{whitepaper.summary}</p>
+              </CardContent>
+            </Card>
+
+            <div className="grid gap-6 md:grid-cols-2">
+              <Card className="kraken-card">
+                <CardHeader>
+                  <CardTitle>Key Strengths</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <ul className="space-y-2">
+                    {whitepaper.strengths.map((strength: string, index: number) => (
+                      <li key={index} className="flex items-center gap-2">
+                        <CheckCircle className="h-4 w-4 text-green-500" />
+                        <span className="text-sm">{strength}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </CardContent>
+              </Card>
+
+              <Card className="kraken-card">
+                <CardHeader>
+                  <CardTitle>Risk Factors</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <ul className="space-y-2">
+                    {whitepaper.risks.map((risk: string, index: number) => (
+                      <li key={index} className="flex items-center gap-2">
+                        <AlertTriangle className="h-4 w-4 text-yellow-500" />
+                        <span className="text-sm">{risk}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="technology" className="space-y-6">
+            <Card className="kraken-card">
+              <CardHeader>
+                <CardTitle>Technical Analysis</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-muted-foreground">
+                  Detailed technical analysis content would go here based on the whitepaper review...
+                </p>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="tokenomics" className="space-y-6">
+            <Card className="kraken-card">
+              <CardHeader>
+                <CardTitle>Token Economics</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-muted-foreground">
+                  Detailed tokenomics analysis would go here...
+                </p>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="team" className="space-y-6">
+            <Card className="kraken-card">
+              <CardHeader>
+                <CardTitle>Team Analysis</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-muted-foreground">
+                  Team background and credibility analysis would go here...
+                </p>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="risks" className="space-y-6">
+            <Card className="kraken-card">
+              <CardHeader>
+                <CardTitle>Risk Assessment</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-muted-foreground">
+                  Comprehensive risk analysis would go here...
+                </p>
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
+      </div>
+    </div>
+  );
+}
+
 export default function Analyze() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [selectedDifficulty, setSelectedDifficulty] = useState("all");
+  const [selectedWhitepaper, setSelectedWhitepaper] = useState<any>(null);
+
+  // Show detailed analysis view if a whitepaper is selected
+  if (selectedWhitepaper) {
+    return <WhitepaperDetailView whitepaper={selectedWhitepaper} onBack={() => setSelectedWhitepaper(null)} />;
+  }
 
   // Filter whitepapers based on search and filters
   const filteredWhitepapers = mockWhitepapers.filter(wp => {
@@ -101,32 +355,7 @@ export default function Analyze() {
     return matchesSearch && matchesCategory && matchesDifficulty;
   });
 
-  const getDifficultyColor = (difficulty: string) => {
-    switch(difficulty) {
-      case "Beginner": return "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200";
-      case "Intermediate": return "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200";
-      case "Expert": return "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200";
-      default: return "bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200";
-    }
-  };
 
-  const getCategoryIcon = (category: string) => {
-    switch(category) {
-      case "Layer 1": return <Zap className="h-4 w-4" />;
-      case "Layer 2": return <BarChart3 className="h-4 w-4" />;
-      case "DeFi": return <DollarSign className="h-4 w-4" />;
-      case "NFT": return <Award className="h-4 w-4" />;
-      default: return <FileText className="h-4 w-4" />;
-    }
-  };
-
-  const formatMarketCap = (marketCap: string) => {
-    const value = parseInt(marketCap);
-    if (value >= 1e12) return `$${(value / 1e12).toFixed(1)}T`;
-    if (value >= 1e9) return `$${(value / 1e9).toFixed(1)}B`;
-    if (value >= 1e6) return `$${(value / 1e6).toFixed(1)}M`;
-    return `$${value.toLocaleString()}`;
-  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -286,7 +515,11 @@ export default function Analyze() {
                       </div>
                     </div>
 
-                    <Button className="w-full" variant="outline">
+                    <Button 
+                      className="w-full" 
+                      variant="outline"
+                      onClick={() => setSelectedWhitepaper(whitepaper)}
+                    >
                       <FileText className="h-4 w-4 mr-2" />
                       Start Analysis
                     </Button>
