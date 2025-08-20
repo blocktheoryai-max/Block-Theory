@@ -169,7 +169,7 @@ export const chatMessages = pgTable("chat_messages", {
   metadata: jsonb("metadata"), // For trade signals, price data, etc.
   timestamp: timestamp("timestamp").defaultNow(),
   isEdited: boolean("is_edited").default(false),
-  replyToId: varchar("reply_to_id").references(() => chatMessages.id),
+  replyToId: varchar("reply_to_id"),
 });
 
 export const chatRoomMembers = pgTable("chat_room_members", {
