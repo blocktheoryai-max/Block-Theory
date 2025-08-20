@@ -1203,19 +1203,19 @@ export async function seedInitialData() {
         {
           symbol: "BTC",
           name: "Bitcoin",
-          price: "67350.00",
-          change24h: "2.85",
-          marketCap: "1325000000000",
-          volume24h: "28000000000",
+          price: "96875.00",
+          change24h: "1.45",
+          marketCap: "1918000000000",
+          volume24h: "34500000000",
           lastUpdated: new Date()
         },
         {
           symbol: "ETH", 
           name: "Ethereum",
-          price: "3420.00",
-          change24h: "4.12",
-          marketCap: "411000000000",
-          volume24h: "18500000000",
+          price: "3680.00",
+          change24h: "2.85",
+          marketCap: "442000000000",
+          volume24h: "19800000000",
           lastUpdated: new Date()
         },
         {
@@ -1424,21 +1424,21 @@ Currently considering Binance and Coinbase Pro. Would love to hear your experien
         {
           userId: "demo-user-2", 
           title: "Technical Analysis: Bitcoin Breaking Major Resistance",
-          content: `BTC just broke through the $67,000 resistance level with strong volume. Key technical indicators:
+          content: `BTC consolidating near $97,000 after breaking major resistance with institutional volume. Key technical indicators:
 
 📈 **Bullish Signals:**
-- RSI cooling from overbought (68 → 62)
-- MACD showing positive momentum
-- Volume confirmation on breakout
-- 20-day MA acting as support
+- RSI cooling from overbought (78 → 65) 
+- MACD showing sustained momentum
+- ETF inflow volume confirmation
+- 50-day MA providing strong support at $92k
 
 🎯 **Targets:**
-- Next resistance: $72,000
-- Major target: $78,000-$80,000 range
+- Immediate resistance: $102,000
+- Major psychological level: $110,000-$115,000 range
 
 ⚠️ **Risk Management:**
-- Stop loss below $64,500 
-- Take profits incrementally
+- Stop loss below $94,500 
+- Take profits incrementally above $100k
 
 What's your take on this setup? Are you positioning for the next leg up?`,
           likes: 67,
@@ -2046,11 +2046,11 @@ Questions? Drop them below!`,
           createdBy: "demo-user-2", // TechAnalystPro
           symbol: "BTC",
           signalType: "buy",
-          entryPrice: "67250.00",
-          targetPrice: "72000.00",
-          stopLoss: "64500.00",
+          entryPrice: "96875.00",
+          targetPrice: "102500.00",
+          stopLoss: "94200.00",
           confidence: 85,
-          reasoning: "Strong breakout above $67k resistance with high volume confirmation. RSI reset from overbought levels provides healthy entry point.",
+          reasoning: "Consolidation near $97k with institutional accumulation. ETF inflows driving sustained demand while RSI cooling provides entry opportunity.",
           status: "active",
           requiredTier: "pro",
           expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) // 7 days
