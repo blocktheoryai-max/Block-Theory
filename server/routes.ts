@@ -1,13 +1,217 @@
-import type { Express } from "express";
+import express, { type Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
+import { setupAuth, isAuthenticated, requiresSubscription } from "./replitAuth";
 import { insertTradeSchema, insertForumPostSchema } from "@shared/schema";
+import Stripe from "stripe";
+
+if (!process.env.STRIPE_SECRET_KEY) {
+  throw new Error('Missing required Stripe secret: STRIPE_SECRET_KEY');
+}
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+  apiVersion: "2024-12-18.acacia",
+});
 
 export async function registerRoutes(app: Express): Promise<Server> {
-  // Lessons endpoints
-  app.get("/api/lessons", async (_req, res) => {
+  // Setup authentication
+  await setupAuth(app);
+
+  // Auth routes
+  app.get('/api/auth/user', isAuthenticated, async (req: any, res) => {
     try {
-      const lessons = await storage.getAllLessons();
+      const userId = req.user.claims.sub;
+      const user = await storage.getUser(userId);
+      res.json(user);
+    } catch (error) {
+      console.error("Error fetching user:", error);
+      res.status(500).json({ message: "Failed to fetch user" });
+    }
+  });
+
+  // Subscription plans
+  app.get('/api/subscription-plans', async (req, res) => {
+    try {
+      const plans = await storage.getAllSubscriptionPlans();
+      res.json(plans);
+    } catch (error) {
+      console.error("Error fetching subscription plans:", error);
+      res.status(500).json({ message: "Failed to fetch subscription plans" });
+    }
+  });
+
+  // Get user subscription status
+  app.get('/api/subscription/status', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const user = await storage.getUser(userId);
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+      
+      const currentPlan = await storage.getSubscriptionPlanByTier(user.subscriptionTier || 'free');
+      res.json({
+        tier: user.subscriptionTier,
+        status: user.subscriptionStatus,
+        stripeSubscriptionId: user.stripeSubscriptionId,
+        trialEndDate: user.trialEndDate,
+        plan: currentPlan
+      });
+    } catch (error) {
+      console.error("Error fetching subscription status:", error);
+      res.status(500).json({ message: "Failed to fetch subscription status" });
+    }
+  });
+
+  // Create Stripe payment intent for subscription
+  app.post('/api/subscription/create-payment-intent', isAuthenticated, async (req: any, res) => {
+    try {
+      const { planId, isYearly = false } = req.body;
+      const userId = req.user.claims.sub;
+      const user = await storage.getUser(userId);
+      
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+      
+      // Get the plan details
+      const plan = await storage.getSubscriptionPlan(planId);
+      if (!plan) {
+        return res.status(404).json({ message: "Plan not found" });
+      }
+      
+      // Calculate amount (convert to cents)
+      const price = isYearly && plan.priceYearly ? plan.priceYearly : plan.priceMonthly;
+      const amount = Math.round(parseFloat(price) * 100);
+      
+      // Create or get Stripe customer
+      let stripeCustomerId = user.stripeCustomerId;
+      if (!stripeCustomerId) {
+        const customer = await stripe.customers.create({
+          email: user.email || '',
+          name: user.firstName && user.lastName ? `${user.firstName} ${user.lastName}` : undefined,
+          metadata: { userId }
+        });
+        stripeCustomerId = customer.id;
+        await storage.updateUserStripeInfo(userId, stripeCustomerId, undefined);
+      }
+      
+      // Create payment intent
+      const paymentIntent = await stripe.paymentIntents.create({
+        amount,
+        currency: "usd",
+        customer: stripeCustomerId,
+        metadata: {
+          userId,
+          planId,
+          planTier: plan.tier,
+          isYearly: isYearly.toString()
+        },
+        automatic_payment_methods: {
+          enabled: true,
+        },
+      });
+      
+      res.json({ 
+        clientSecret: paymentIntent.client_secret,
+        amount,
+        planName: plan.name
+      });
+    } catch (error) {
+      console.error("Error creating payment intent:", error);
+      res.status(500).json({ message: "Failed to create payment intent" });
+    }
+  });
+
+  // Stripe webhook for payment confirmation
+  app.post('/api/webhooks/stripe', express.raw({ type: 'application/json' }), async (req, res) => {
+    const sig = req.headers['stripe-signature'];
+    
+    try {
+      // For now, we'll handle payment confirmation directly
+      // In production, you'd set up webhook endpoints in Stripe dashboard
+      res.status(200).send('OK');
+    } catch (error) {
+      console.error('Webhook error:', error);
+      res.status(400).send('Webhook Error');
+    }
+  });
+
+  // Confirm payment and activate subscription
+  app.post('/api/subscription/confirm-payment', isAuthenticated, async (req: any, res) => {
+    try {
+      const { paymentIntentId } = req.body;
+      const userId = req.user.claims.sub;
+      
+      // Retrieve payment intent from Stripe
+      const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
+      
+      if (paymentIntent.status === 'succeeded' && paymentIntent.metadata.userId === userId) {
+        const planTier = paymentIntent.metadata.planTier;
+        const isYearly = paymentIntent.metadata.isYearly === 'true';
+        
+        // Activate subscription
+        await storage.updateUserSubscription(userId, planTier, "active");
+        
+        res.json({ 
+          message: "Subscription activated successfully",
+          tier: planTier,
+          isYearly
+        });
+      } else {
+        res.status(400).json({ message: "Payment not completed" });
+      }
+    } catch (error) {
+      console.error("Error confirming payment:", error);
+      res.status(500).json({ message: "Failed to confirm payment" });
+    }
+  });
+
+  // Start trial for authenticated users
+  app.post('/api/subscription/start-trial', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const user = await storage.getUser(userId);
+      
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+      
+      // Start 14-day trial if not already active
+      if (!user.trialEndDate || new Date(user.trialEndDate) < new Date()) {
+        const trialEndDate = new Date();
+        trialEndDate.setDate(trialEndDate.getDate() + 14);
+        
+        await storage.updateUserSubscription(userId, "pro", "trialing", undefined, trialEndDate);
+        
+        res.json({ 
+          message: "14-day Pro trial started",
+          trialEndDate,
+          tier: "pro"
+        });
+      } else {
+        res.json({ 
+          message: "Trial already active",
+          trialEndDate: user.trialEndDate,
+          tier: user.subscriptionTier
+        });
+      }
+    } catch (error) {
+      console.error("Error starting trial:", error);
+      res.status(500).json({ message: "Failed to start trial" });
+    }
+  });
+  // Protected lessons (require subscription for premium content)
+  app.get("/api/lessons", async (req: any, res) => {
+    try {
+      let userTier = 'free';
+      
+      if (req.isAuthenticated && req.isAuthenticated()) {
+        const userId = req.user.claims.sub;
+        const user = await storage.getUser(userId);
+        userTier = user?.subscriptionTier || 'free';
+      }
+      
+      const lessons = await storage.getLessonsByTier(userTier);
       res.json(lessons);
     } catch (error) {
       res.status(500).json({ error: "Failed to fetch lessons" });
