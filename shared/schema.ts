@@ -1,5 +1,5 @@
 import { sql } from "drizzle-orm";
-import { pgTable, text, varchar, integer, decimal, timestamp, boolean, jsonb } from "drizzle-orm/pg-core";
+import { pgTable, text, varchar, integer, decimal, timestamp, boolean, jsonb, index } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
@@ -8,12 +8,27 @@ export const users = pgTable("users", {
   username: text("username").notNull().unique(),
   email: text("email").notNull().unique(),
   password: text("password").notNull(),
+  firstName: text("first_name"),
+  lastName: text("last_name"),
+  profileImageUrl: text("profile_image_url"),
   portfolioValue: decimal("portfolio_value", { precision: 10, scale: 2 }).default("10000.00"),
   totalXp: integer("total_xp").default(0),
   currentLevel: integer("current_level").default(1),
   streak: integer("streak").default(0),
   lastActivityDate: timestamp("last_activity_date"),
+  // Subscription fields
+  subscriptionTier: text("subscription_tier").default("free"), // "free", "basic", "pro", "elite"
+  subscriptionStatus: text("subscription_status").default("active"), // "active", "canceled", "past_due"
+  subscriptionStartDate: timestamp("subscription_start_date"),
+  subscriptionEndDate: timestamp("subscription_end_date"),
+  stripeCustomerId: text("stripe_customer_id"),
+  stripeSubscriptionId: text("stripe_subscription_id"),
+  // Trial and promotional
+  trialEndDate: timestamp("trial_end_date"),
+  referralCode: text("referral_code"),
+  referredBy: text("referred_by"),
   createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
 });
 
 export const lessons = pgTable("lessons", {
@@ -39,6 +54,9 @@ export const lessons = pgTable("lessons", {
   videoDuration: integer("video_duration"), // Video length in seconds
   videoTranscript: text("video_transcript"), // Video transcript for accessibility
   interactiveElements: jsonb("interactive_elements"), // Video overlays, timestamps, etc.
+  // Premium content restrictions
+  requiredTier: text("required_tier").default("free"), // "free", "basic", "pro", "elite"
+  isPremium: boolean("is_premium").default(false),
 });
 
 export const userProgress = pgTable("user_progress", {
@@ -164,6 +182,83 @@ export const chatRoomMembers = pgTable("chat_room_members", {
   isOnline: boolean("is_online").default(false),
 });
 
+// Session storage table for authentication
+export const sessions = pgTable(
+  "sessions",
+  {
+    sid: varchar("sid").primaryKey(),
+    sess: jsonb("sess").notNull(),
+    expire: timestamp("expire").notNull(),
+  },
+  (table) => [index("IDX_session_expire").on(table.expire)],
+);
+
+// Subscription plans table
+export const subscriptionPlans = pgTable("subscription_plans", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  name: text("name").notNull(), // "Free", "Basic", "Pro", "Elite"
+  tier: text("tier").notNull(), // "free", "basic", "pro", "elite"
+  priceMonthly: decimal("price_monthly", { precision: 8, scale: 2 }).notNull(),
+  priceYearly: decimal("price_yearly", { precision: 8, scale: 2 }),
+  stripePriceIdMonthly: text("stripe_price_id_monthly"),
+  stripePriceIdYearly: text("stripe_price_id_yearly"),
+  features: jsonb("features").notNull(), // Array of feature descriptions
+  maxLessons: integer("max_lessons"), // null = unlimited
+  hasSimulator: boolean("has_simulator").default(false),
+  hasCommunity: boolean("has_community").default(false),
+  hasAnalytics: boolean("has_analytics").default(false),
+  hasLiveTrading: boolean("has_live_trading").default(false),
+  hasMentoring: boolean("has_mentoring").default(false),
+  hasSignals: boolean("has_signals").default(false),
+  isActive: boolean("is_active").default(true),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Payment transactions
+export const paymentTransactions = pgTable("payment_transactions", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").references(() => users.id).notNull(),
+  stripePaymentIntentId: text("stripe_payment_intent_id"),
+  stripeSubscriptionId: text("stripe_subscription_id"),
+  amount: decimal("amount", { precision: 10, scale: 2 }).notNull(),
+  currency: text("currency").default("usd"),
+  status: text("status").notNull(), // "pending", "succeeded", "failed", "canceled"
+  type: text("type").notNull(), // "subscription", "one_time", "upgrade", "downgrade"
+  planId: varchar("plan_id").references(() => subscriptionPlans.id),
+  metadata: jsonb("metadata"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Trading signals for premium users
+export const tradingSignals = pgTable("trading_signals", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  createdBy: varchar("created_by").references(() => users.id).notNull(),
+  symbol: text("symbol").notNull(), // "BTC", "ETH", etc.
+  signalType: text("signal_type").notNull(), // "buy", "sell", "hold"
+  entryPrice: decimal("entry_price", { precision: 15, scale: 8 }),
+  targetPrice: decimal("target_price", { precision: 15, scale: 8 }),
+  stopLoss: decimal("stop_loss", { precision: 15, scale: 8 }),
+  confidence: integer("confidence"), // 1-100
+  reasoning: text("reasoning"),
+  status: text("status").default("active"), // "active", "hit_target", "hit_stop", "expired"
+  requiredTier: text("required_tier").default("pro"), // Minimum tier to see signal
+  expiresAt: timestamp("expires_at"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Live trading API connections for advanced users
+export const tradingConnections = pgTable("trading_connections", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").references(() => users.id).notNull(),
+  exchangeName: text("exchange_name").notNull(), // "binance", "coinbase", "kraken"
+  apiKeyEncrypted: text("api_key_encrypted").notNull(),
+  apiSecretEncrypted: text("api_secret_encrypted").notNull(),
+  permissions: text("permissions").array().default([]), // ["read", "trade", "withdraw"]
+  isActive: boolean("is_active").default(true),
+  lastUsed: timestamp("last_used"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
 export const insertUserSchema = createInsertSchema(users).omit({
   id: true,
   createdAt: true,
@@ -222,6 +317,31 @@ export const insertChatRoomMemberSchema = createInsertSchema(chatRoomMembers).om
   id: true,
   joinedAt: true,
   lastSeen: true,
+});
+
+export const insertSubscriptionPlanSchema = createInsertSchema(subscriptionPlans).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertPaymentTransactionSchema = createInsertSchema(paymentTransactions).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertTradingSignalSchema = createInsertSchema(tradingSignals).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertTradingConnectionSchema = createInsertSchema(tradingConnections).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertCryptoPriceSchema = createInsertSchema(cryptoPrices).omit({
+  id: true,
+  lastUpdated: true,
 });
 
 // Badge and Achievement System
@@ -300,6 +420,16 @@ export type InsertChatMessage = z.infer<typeof insertChatMessageSchema>;
 export type ChatMessage = typeof chatMessages.$inferSelect;
 export type InsertChatRoomMember = z.infer<typeof insertChatRoomMemberSchema>;
 export type ChatRoomMember = typeof chatRoomMembers.$inferSelect;
+export type InsertCryptoPrice = z.infer<typeof insertCryptoPriceSchema>;
+export type InsertSubscriptionPlan = z.infer<typeof insertSubscriptionPlanSchema>;
+export type SubscriptionPlan = typeof subscriptionPlans.$inferSelect;
+export type InsertPaymentTransaction = z.infer<typeof insertPaymentTransactionSchema>;
+export type PaymentTransaction = typeof paymentTransactions.$inferSelect;
+export type InsertTradingSignal = z.infer<typeof insertTradingSignalSchema>;
+export type TradingSignal = typeof tradingSignals.$inferSelect;
+export type InsertTradingConnection = z.infer<typeof insertTradingConnectionSchema>;
+export type TradingConnection = typeof tradingConnections.$inferSelect;
+export type UpsertUser = typeof users.$inferInsert;
 
 export const insertBadgeSchema = createInsertSchema(badges).omit({
   id: true,
