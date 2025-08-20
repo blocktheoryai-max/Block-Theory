@@ -12,6 +12,7 @@ import Pricing from "@/pages/pricing";
 import Checkout from "@/pages/checkout";
 import NotFound from "@/pages/not-found";
 import { useAuth } from "@/hooks/useAuth";
+import { Navigation } from "@/components/ui/navigation";
 
 function Router() {
   const { isAuthenticated, isLoading } = useAuth();
@@ -34,8 +35,13 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
+        <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+          <Navigation />
+          <div className="flex-1">
+            <Router />
+          </div>
+        </div>
         <Toaster />
-        <Router />
       </TooltipProvider>
     </QueryClientProvider>
   );

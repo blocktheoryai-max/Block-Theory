@@ -3,13 +3,17 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { BookOpen, TrendingUp, Users, BarChart3, Crown, Star, Zap, Trophy, Gift, Lock, Play, Clock, Target, Flame } from "lucide-react";
+import { BookOpen, TrendingUp, Users, BarChart3, Crown, Star, Zap, Trophy, Gift, Lock, Play, Clock, Target, Flame, HelpCircle } from "lucide-react";
 import { useAuth, useSubscriptionStatus } from "@/hooks/useAuth";
 import { Link } from "wouter";
+import { TutorialOverlay, useTutorial } from "@/components/ui/tutorial-overlay";
+import { homeTutorialSteps } from "@/components/tutorial-steps";
+import { useEffect } from "react";
 
 export default function Home() {
   const { user, isAuthenticated, isLoading } = useAuth();
   const { subscription, tier } = useSubscriptionStatus();
+  const tutorial = useTutorial();
 
   const { data: lessons = [] } = useQuery({
     queryKey: ["/api/lessons"],
@@ -35,6 +39,16 @@ export default function Home() {
     queryKey: ["/api/trading-signals"],
     enabled: isAuthenticated,
   });
+
+  // Auto-start tutorial for first-time users
+  useEffect(() => {
+    if (isAuthenticated && !tutorial.isTutorialCompleted('home-tutorial')) {
+      const timer = setTimeout(() => {
+        tutorial.startTutorial();
+      }, 1000); // Delay to ensure page is loaded
+      return () => clearTimeout(timer);
+    }
+  }, [isAuthenticated, tutorial]);
 
   // Landing page for non-authenticated users
   if (!isAuthenticated && !isLoading) {
@@ -433,7 +447,7 @@ export default function Home() {
               <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">
                 Pick up where you left off
               </p>
-              <Link href="/learn">
+              <Link href="/learn" data-tutorial="learn-link">
                 <Button className="w-full">Start Lesson</Button>
               </Link>
             </CardContent>
@@ -448,7 +462,7 @@ export default function Home() {
               <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">
                 Practice with live market data
               </p>
-              <Link href="/simulate">
+              <Link href="/simulate" data-tutorial="simulate-link">
                 <Button className="w-full" variant="outline">Open Simulator</Button>
               </Link>
             </CardContent>
@@ -478,13 +492,30 @@ export default function Home() {
               <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">
                 Connect with traders
               </p>
-              <Link href="/community">
+              <Link href="/community" data-tutorial="community-link">
                 <Button className="w-full" variant="outline">Join Discussion</Button>
               </Link>
             </CardContent>
           </Card>
         </div>
       </div>
+
+      {/* Tutorial Overlay */}
+      <TutorialOverlay
+        steps={homeTutorialSteps}
+        isActive={tutorial.isActive}
+        onComplete={() => tutorial.completeTutorial('home-tutorial')}
+        onSkip={() => tutorial.skipTutorial('home-tutorial')}
+      />
+
+      {/* Tutorial Help Button */}
+      <Button
+        onClick={tutorial.startTutorial}
+        className="fixed bottom-6 right-6 rounded-full h-12 w-12 shadow-lg hover:shadow-xl transition-shadow z-40"
+        size="sm"
+      >
+        <HelpCircle className="h-5 w-5" />
+      </Button>
     </div>
   );
 }
