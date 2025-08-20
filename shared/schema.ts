@@ -9,6 +9,10 @@ export const users = pgTable("users", {
   email: text("email").notNull().unique(),
   password: text("password").notNull(),
   portfolioValue: decimal("portfolio_value", { precision: 10, scale: 2 }).default("10000.00"),
+  totalXp: integer("total_xp").default(0),
+  currentLevel: integer("current_level").default(1),
+  streak: integer("streak").default(0),
+  lastActivityDate: timestamp("last_activity_date"),
   createdAt: timestamp("created_at").defaultNow(),
 });
 
@@ -17,10 +21,17 @@ export const lessons = pgTable("lessons", {
   title: text("title").notNull(),
   description: text("description").notNull(),
   content: text("content").notNull(),
-  level: text("level").notNull(), // "Beginner", "Intermediate", "Advanced"
+  level: text("level").notNull(), // "Beginner", "Intermediate", "Expert"
+  category: text("category").notNull(), // "Fundamentals", "Technical Analysis", "DeFi", "NFTs", "Trading Psychology"
   duration: integer("duration").notNull(), // in minutes
   order: integer("order").notNull(),
+  prerequisites: text("prerequisites").array().default([]),
+  learningObjectives: text("learning_objectives").array().default([]),
+  xpReward: integer("xp_reward").default(100),
+  badgeReward: text("badge_reward"), // Optional badge ID awarded on completion
   isLocked: boolean("is_locked").default(false),
+  hasQuiz: boolean("has_quiz").default(false),
+  hasSimulation: boolean("has_simulation").default(false),
 });
 
 export const userProgress = pgTable("user_progress", {
@@ -30,6 +41,9 @@ export const userProgress = pgTable("user_progress", {
   completed: boolean("completed").default(false),
   completedAt: timestamp("completed_at"),
   progress: integer("progress").default(0), // percentage
+  quizScore: integer("quiz_score"), // percentage if quiz completed
+  timeSpent: integer("time_spent").default(0), // in minutes
+  attempts: integer("attempts").default(0),
 });
 
 export const portfolios = pgTable("portfolios", {
@@ -153,6 +167,57 @@ export const insertNftTradeSchema = createInsertSchema(nftTrades).omit({
   executedAt: true,
 });
 
+// Badge and Achievement System
+export const badges = pgTable("badges", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  name: text("name").notNull(),
+  description: text("description").notNull(),
+  icon: text("icon").notNull(), // Icon name or URL
+  category: text("category").notNull(), // "Learning", "Trading", "Community", "Achievement"
+  rarity: text("rarity").notNull(), // "Common", "Rare", "Epic", "Legendary"
+  xpRequired: integer("xp_required").default(0),
+  condition: text("condition").notNull(), // Description of how to earn
+  isHidden: boolean("is_hidden").default(false),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const userBadges = pgTable("user_badges", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").references(() => users.id).notNull(),
+  badgeId: varchar("badge_id").references(() => badges.id).notNull(),
+  earnedAt: timestamp("earned_at").defaultNow(),
+  progress: integer("progress").default(0), // For progressive badges
+});
+
+export const achievements = pgTable("achievements", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").references(() => users.id).notNull(),
+  type: text("type").notNull(), // "lesson_complete", "streak", "trade_profit", etc.
+  title: text("title").notNull(),
+  description: text("description").notNull(),
+  xpEarned: integer("xp_earned").default(0),
+  metadata: jsonb("metadata"), // Additional data about the achievement
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const quizzes = pgTable("quizzes", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  lessonId: varchar("lesson_id").references(() => lessons.id).notNull(),
+  questions: jsonb("questions").notNull(), // Array of question objects
+  passingScore: integer("passing_score").default(70),
+  timeLimit: integer("time_limit").default(0), // in minutes, 0 = unlimited
+});
+
+export const userQuizAttempts = pgTable("user_quiz_attempts", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").references(() => users.id).notNull(),
+  quizId: varchar("quiz_id").references(() => quizzes.id).notNull(),
+  score: integer("score").notNull(),
+  answers: jsonb("answers").notNull(), // User's answers
+  timeSpent: integer("time_spent").default(0), // in seconds
+  completedAt: timestamp("completed_at").defaultNow(),
+});
+
 export type InsertUser = z.infer<typeof insertUserSchema>;
 export type User = typeof users.$inferSelect;
 export type InsertLesson = z.infer<typeof insertLessonSchema>;
@@ -172,3 +237,38 @@ export type InsertNftAsset = z.infer<typeof insertNftAssetSchema>;
 export type NftAsset = typeof nftAssets.$inferSelect;
 export type InsertNftTrade = z.infer<typeof insertNftTradeSchema>;
 export type NftTrade = typeof nftTrades.$inferSelect;
+
+export const insertBadgeSchema = createInsertSchema(badges).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertUserBadgeSchema = createInsertSchema(userBadges).omit({
+  id: true,
+  earnedAt: true,
+});
+
+export const insertAchievementSchema = createInsertSchema(achievements).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertQuizSchema = createInsertSchema(quizzes).omit({
+  id: true,
+});
+
+export const insertUserQuizAttemptSchema = createInsertSchema(userQuizAttempts).omit({
+  id: true,
+  completedAt: true,
+});
+
+export type InsertBadge = z.infer<typeof insertBadgeSchema>;
+export type Badge = typeof badges.$inferSelect;
+export type InsertUserBadge = z.infer<typeof insertUserBadgeSchema>;
+export type UserBadge = typeof userBadges.$inferSelect;
+export type InsertAchievement = z.infer<typeof insertAchievementSchema>;
+export type Achievement = typeof achievements.$inferSelect;
+export type InsertQuiz = z.infer<typeof insertQuizSchema>;
+export type Quiz = typeof quizzes.$inferSelect;
+export type InsertUserQuizAttempt = z.infer<typeof insertUserQuizAttemptSchema>;
+export type UserQuizAttempt = typeof userQuizAttempts.$inferSelect;
