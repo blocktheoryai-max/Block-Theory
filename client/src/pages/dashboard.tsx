@@ -1,47 +1,23 @@
-import { useState } from "react";
 import { Link } from "wouter";
 import { LiveBlockchain } from "@/components/LiveBlockchain";
+import { LiveMarketData } from "@/components/LiveMarketData";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Progress } from "@/components/ui/progress";
 import { 
   ArrowUpRight,
-  ArrowDownRight,
-  TrendingUp,
   Users,
-  DollarSign,
   BarChart3,
   Wallet,
   CreditCard,
   ExternalLink,
   BookOpen,
   Target,
-  Zap,
-  Shield,
   Globe,
   Coins,
   Activity
 } from "lucide-react";
 
-interface MarketData {
-  symbol: string;
-  name: string;
-  price: string;
-  change24h: number;
-  marketCap: string;
-  volume: string;
-}
-
 export default function Dashboard() {
-  const [selectedTimeframe, setSelectedTimeframe] = useState("24h");
-
-  const marketData: MarketData[] = [
-    { symbol: "BTC", name: "Bitcoin", price: "$96,875", change24h: 2.4, marketCap: "$1.9T", volume: "$28.5B" },
-    { symbol: "ETH", name: "Ethereum", price: "$3,680", change24h: -1.2, marketCap: "$442B", volume: "$12.8B" },
-    { symbol: "SOL", name: "Solana", price: "$240", change24h: 5.8, marketCap: "$112B", volume: "$3.2B" },
-    { symbol: "ADA", name: "Cardano", price: "$1.09", change24h: 1.5, marketCap: "$38.2B", volume: "$1.1B" }
-  ];
 
   const platforms = [
     {
@@ -135,33 +111,7 @@ export default function Dashboard() {
             </div>
 
             <div className="space-y-6">
-              <Card className="bg-slate-800/50 border-slate-700 backdrop-blur-sm">
-                <CardHeader>
-                  <CardTitle className="text-white">Live Market Data</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  {marketData.map((asset) => (
-                    <div key={asset.symbol} className="flex items-center justify-between p-3 bg-slate-700/30 rounded-lg">
-                      <div className="flex items-center space-x-3">
-                        <div className="w-8 h-8 bg-gradient-to-r from-orange-500 to-yellow-500 rounded-full flex items-center justify-center">
-                          <span className="text-xs font-bold text-white">{asset.symbol[0]}</span>
-                        </div>
-                        <div>
-                          <div className="text-white font-semibold">{asset.symbol}</div>
-                          <div className="text-xs text-gray-400">{asset.name}</div>
-                        </div>
-                      </div>
-                      <div className="text-right">
-                        <div className="text-white font-semibold">{asset.price}</div>
-                        <div className={`text-xs flex items-center ${asset.change24h >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                          {asset.change24h >= 0 ? <ArrowUpRight className="w-3 h-3" /> : <ArrowDownRight className="w-3 h-3" />}
-                          {Math.abs(asset.change24h)}%
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </CardContent>
-              </Card>
+              <LiveMarketData />
             </div>
           </div>
         </div>

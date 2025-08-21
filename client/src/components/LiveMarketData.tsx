@@ -1,98 +1,10 @@
-import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ArrowUpRight, ArrowDownRight, TrendingUp } from "lucide-react";
-
-interface CoinbaseProduct {
-  product_id: string;
-  price: string;
-  price_24h_change: string;
-  volume_24h: string;
-  volume_percentage_change_24h: string;
-}
-
-interface MarketData {
-  symbol: string;
-  name: string;
-  price: number;
-  change24h: number;
-  volume: string;
-  marketCap: string;
-  lastUpdate: string;
-}
+import { ArrowUpRight, ArrowDownRight, TrendingUp, RefreshCw, AlertCircle } from "lucide-react";
+import { useMarketData, formatPrice, formatMarketCap, formatVolume } from "@/hooks/useMarketData";
 
 export function LiveMarketData() {
-  const [marketData, setMarketData] = useState<MarketData[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  const coinMap = {
-    'BTC-USD': { name: 'Bitcoin', symbol: 'BTC', marketCap: '$1.9T' },
-    'ETH-USD': { name: 'Ethereum', symbol: 'ETH', marketCap: '$442B' },
-    'SOL-USD': { name: 'Solana', symbol: 'SOL', marketCap: '$112B' },
-    'ADA-USD': { name: 'Cardano', symbol: 'ADA', marketCap: '$38.2B' },
-    'AVAX-USD': { name: 'Avalanche', symbol: 'AVAX', marketCap: '$16.8B' }
-  };
-
-  const fetchMarketData = async () => {
-    try {
-      const products = Object.keys(coinMap);
-      const promises = products.map(async (productId) => {
-        const response = await fetch(`https://api.coinbase.com/v2/exchange-rates?currency=${productId.split('-')[0]}`);
-        if (!response.ok) throw new Error(`Failed to fetch ${productId}`);
-        return response.json();
-      });
-
-      const results = await Promise.all(promises);
-      
-      const formattedData: MarketData[] = results.map((result, index) => {
-        const productId = products[index] as keyof typeof coinMap;
-        const coinInfo = coinMap[productId];
-        const currency = productId.split('-')[0];
-        const usdRate = parseFloat(result.data.rates.USD);
-        
-        // Simulate 24h change (in production, use a proper API with historical data)
-        const change24h = (Math.random() - 0.5) * 10; // Random change between -5% and +5%
-        
-        return {
-          symbol: coinInfo.symbol,
-          name: coinInfo.name,
-          price: usdRate,
-          change24h,
-          volume: `$${(Math.random() * 50 + 5).toFixed(1)}B`,
-          marketCap: coinInfo.marketCap,
-          lastUpdate: "Just now"
-        };
-      });
-
-      setMarketData(formattedData);
-      setError(null);
-    } catch (err) {
-      console.error('Error fetching market data:', err);
-      setError('Failed to fetch real-time data');
-      
-      // Fallback to simulated data if API fails
-      const fallbackData: MarketData[] = [
-        { symbol: "BTC", name: "Bitcoin", price: 96875, change24h: 2.4, volume: "$28.5B", marketCap: "$1.9T", lastUpdate: "Simulated" },
-        { symbol: "ETH", name: "Ethereum", price: 3680, change24h: -1.2, volume: "$12.8B", marketCap: "$442B", lastUpdate: "Simulated" },
-        { symbol: "SOL", name: "Solana", price: 240, change24h: 5.8, volume: "$3.2B", marketCap: "$112B", lastUpdate: "Simulated" },
-        { symbol: "ADA", name: "Cardano", price: 1.09, change24h: 1.5, volume: "$1.1B", marketCap: "$38.2B", lastUpdate: "Simulated" },
-        { symbol: "AVAX", name: "Avalanche", price: 42.50, change24h: 3.1, volume: "$890M", marketCap: "$16.8B", lastUpdate: "Simulated" }
-      ];
-      setMarketData(fallbackData);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchMarketData();
-    
-    // Update every 30 seconds
-    const interval = setInterval(fetchMarketData, 30000);
-    
-    return () => clearInterval(interval);
-  }, []);
+  const { data: marketDataResponse, isLoading, error, isRefetching } = useMarketData();
 
   if (isLoading) {
     return (
@@ -126,6 +38,45 @@ export function LiveMarketData() {
     );
   }
 
+  if (error) {
+    return (
+      <Card className="bg-slate-800/50 border-slate-700 backdrop-blur-sm">
+        <CardHeader>
+          <CardTitle className="flex items-center text-white">
+            <AlertCircle className="h-5 w-5 mr-2 text-red-400" />
+            Market Data Error
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="text-center py-8">
+            <p className="text-red-400 mb-4">Failed to fetch real-time market data</p>
+            <p className="text-gray-400 text-sm">Please check your internet connection or try again later</p>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  if (!marketDataResponse) {
+    return (
+      <Card className="bg-slate-800/50 border-slate-700 backdrop-blur-sm">
+        <CardHeader>
+          <CardTitle className="flex items-center text-white">
+            <TrendingUp className="h-5 w-5 mr-2 text-blue-400" />
+            Live Market Data
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="text-center py-8">
+            <p className="text-gray-400">No market data available</p>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  const marketDataArray = Object.values(marketDataResponse);
+
   return (
     <Card className="bg-slate-800/50 border-slate-700 backdrop-blur-sm">
       <CardHeader>
@@ -134,16 +85,19 @@ export function LiveMarketData() {
             <TrendingUp className="h-5 w-5 mr-2 text-blue-400" />
             Live Market Data
           </div>
-          {error && (
-            <Badge variant="outline" className="text-yellow-400 border-yellow-400">
-              Using fallback data
+          <div className="flex items-center space-x-2">
+            {isRefetching && (
+              <RefreshCw className="h-4 w-4 text-blue-400 animate-spin" />
+            )}
+            <Badge variant="outline" className="text-green-400 border-green-400">
+              Live
             </Badge>
-          )}
+          </div>
         </CardTitle>
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
-          {marketData.map((coin) => (
+          {marketDataArray.map((coin) => (
             <div key={coin.symbol} className="flex items-center justify-between p-4 bg-slate-700/30 rounded-lg border border-slate-600 hover:bg-slate-700/50 transition-colors">
               <div className="flex items-center space-x-4">
                 <div className="w-10 h-10 bg-gradient-to-r from-orange-500 to-yellow-500 rounded-full flex items-center justify-center">
@@ -156,10 +110,7 @@ export function LiveMarketData() {
               </div>
               <div className="text-right">
                 <div className="text-white font-semibold">
-                  ${coin.price.toLocaleString(undefined, { 
-                    minimumFractionDigits: coin.price < 1 ? 4 : 2,
-                    maximumFractionDigits: coin.price < 1 ? 4 : 2
-                  })}
+                  {formatPrice(coin.price)}
                 </div>
                 <div className={`text-sm flex items-center justify-end ${coin.change24h >= 0 ? 'text-green-400' : 'text-red-400'}`}>
                   {coin.change24h >= 0 ? <ArrowUpRight className="w-3 h-3" /> : <ArrowDownRight className="w-3 h-3" />}
@@ -167,17 +118,16 @@ export function LiveMarketData() {
                 </div>
               </div>
               <div className="text-right">
-                <div className="text-sm text-gray-400">Vol: {coin.volume}</div>
-                <div className="text-sm text-gray-400">Cap: {coin.marketCap}</div>
+                <div className="text-sm text-gray-400">Vol: {formatVolume(coin.volume)}</div>
+                <div className="text-sm text-gray-400">Cap: {formatMarketCap(coin.marketCap)}</div>
               </div>
-              <div className="text-xs text-gray-500">{coin.lastUpdate}</div>
             </div>
           ))}
         </div>
         <div className="mt-4 text-center">
           <div className="flex items-center justify-center space-x-2 text-xs text-gray-400">
             <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-            <span>Live updates every 30 seconds</span>
+            <span>Live updates every 30 seconds via CoinGecko API</span>
           </div>
         </div>
       </CardContent>

@@ -9,7 +9,7 @@ if (!process.env.STRIPE_SECRET_KEY) {
   throw new Error('Missing required Stripe secret: STRIPE_SECRET_KEY');
 }
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
-  apiVersion: "2024-12-18.acacia",
+  apiVersion: "2025-07-30.basil",
 });
 
 export async function registerRoutes(app: Express): Promise<Server> {
@@ -36,6 +36,83 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error fetching subscription plans:", error);
       res.status(500).json({ message: "Failed to fetch subscription plans" });
+    }
+  });
+
+  // Real-time market data from CoinGecko API
+  app.get('/api/market-data', async (req, res) => {
+    try {
+      const coins = 'bitcoin,ethereum,solana,cardano,avalanche-2';
+      const response = await fetch(
+        `https://api.coingecko.com/api/v3/simple/price?ids=${coins}&vs_currencies=usd&include_24hr_change=true&include_market_cap=true&include_24hr_vol=true`,
+        {
+          headers: {
+            'Accept': 'application/json',
+          }
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`CoinGecko API error: ${response.status}`);
+      }
+
+      const data = await response.json();
+      
+      const formattedData = {
+        bitcoin: {
+          symbol: 'BTC',
+          name: 'Bitcoin',
+          price: data.bitcoin.usd,
+          change24h: data.bitcoin.usd_24h_change,
+          marketCap: data.bitcoin.usd_market_cap,
+          volume: data.bitcoin.usd_24h_vol,
+          lastUpdate: new Date().toISOString()
+        },
+        ethereum: {
+          symbol: 'ETH',
+          name: 'Ethereum',
+          price: data.ethereum.usd,
+          change24h: data.ethereum.usd_24h_change,
+          marketCap: data.ethereum.usd_market_cap,
+          volume: data.ethereum.usd_24h_vol,
+          lastUpdate: new Date().toISOString()
+        },
+        solana: {
+          symbol: 'SOL',
+          name: 'Solana',
+          price: data.solana.usd,
+          change24h: data.solana.usd_24h_change,
+          marketCap: data.solana.usd_market_cap,
+          volume: data.solana.usd_24h_vol,
+          lastUpdate: new Date().toISOString()
+        },
+        cardano: {
+          symbol: 'ADA',
+          name: 'Cardano',
+          price: data.cardano.usd,
+          change24h: data.cardano.usd_24h_change,
+          marketCap: data.cardano.usd_market_cap,
+          volume: data.cardano.usd_24h_vol,
+          lastUpdate: new Date().toISOString()
+        },
+        avalanche: {
+          symbol: 'AVAX',
+          name: 'Avalanche',
+          price: data['avalanche-2'].usd,
+          change24h: data['avalanche-2'].usd_24h_change,
+          marketCap: data['avalanche-2'].usd_market_cap,
+          volume: data['avalanche-2'].usd_24h_vol,
+          lastUpdate: new Date().toISOString()
+        }
+      };
+
+      res.json(formattedData);
+    } catch (error) {
+      console.error('Error fetching market data:', error);
+      res.status(500).json({ 
+        message: 'Failed to fetch market data',
+        error: error instanceof Error ? error.message : 'Unknown error'
+      });
     }
   });
 
