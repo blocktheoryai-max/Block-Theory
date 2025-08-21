@@ -133,6 +133,8 @@ export async function seedDatabase() {
         isLocked: false,
         isPremium: false,
         videoUrl: "https://www.youtube.com/embed/VYWc9dFqROI",
+        hasQuiz: true,
+        hasSimulation: false,
         tags: ["cryptocurrency", "basics", "introduction"]
       },
       {
@@ -176,6 +178,8 @@ export async function seedDatabase() {
         isLocked: false,
         isPremium: false,
         videoUrl: "https://www.youtube.com/embed/SSo_EIwHSd4",
+        hasQuiz: true,
+        hasSimulation: true,
         tags: ["blockchain", "technology", "fundamentals"]
       },
       {
@@ -386,6 +390,8 @@ export async function seedDatabase() {
         isLocked: false,
         isPremium: false,
         videoUrl: "https://www.youtube.com/embed/7a_tMi8IRzQ",
+        hasQuiz: true,
+        hasSimulation: true,
         tags: ["charts", "technical-analysis", "trading"]
       },
       {
@@ -1415,6 +1421,7 @@ export async function seedDatabase() {
         learningObjectives: ["Conduct stress tests", "Model extreme scenarios", "Build resilient portfolios"],
         isLocked: false,
         isPremium: true,
+        videoUrl: "https://www.youtube.com/embed/ClnnLI1SClA",
         tags: ["stress-testing", "risk", "simulation"]
       },
       {
@@ -1438,6 +1445,7 @@ export async function seedDatabase() {
         learningObjectives: ["Build trading teams", "Raise capital", "Scale operations professionally"],
         isLocked: false,
         isPremium: true,
+        videoUrl: "https://www.youtube.com/embed/f6hrlH7Qs4k",
         tags: ["business", "scaling", "entrepreneurship"]
       }
     ]);

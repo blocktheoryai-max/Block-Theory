@@ -57,6 +57,33 @@ export const lessons = pgTable("lessons", {
   // Premium content restrictions
   requiredTier: text("required_tier").default("free"), // "free", "basic", "pro", "elite"
   isPremium: boolean("is_premium").default(false),
+  tags: text("tags").array().default([]),
+});
+
+// Quiz questions for interactive lessons
+export const quizQuestions = pgTable("quiz_questions", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  lessonId: varchar("lesson_id").references(() => lessons.id).notNull(),
+  question: text("question").notNull(),
+  options: jsonb("options").notNull(), // Array of answer options
+  correctAnswer: integer("correct_answer").notNull(), // Index of correct option
+  explanation: text("explanation"), // Why this answer is correct
+  points: integer("points").default(10),
+  order: integer("order").notNull(),
+});
+
+// Knowledge check exercises
+export const knowledgeChecks = pgTable("knowledge_checks", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  lessonId: varchar("lesson_id").references(() => lessons.id).notNull(),
+  type: text("type").notNull(), // "multiple_choice", "drag_drop", "scenario", "calculation"
+  title: text("title").notNull(),
+  description: text("description"),
+  content: jsonb("content").notNull(), // Exercise-specific data
+  solution: jsonb("solution").notNull(), // Correct answer/approach
+  hints: text("hints").array().default([]),
+  points: integer("points").default(20),
+  order: integer("order").notNull(),
 });
 
 export const userProgress = pgTable("user_progress", {
@@ -69,6 +96,8 @@ export const userProgress = pgTable("user_progress", {
   quizScore: integer("quiz_score"), // percentage if quiz completed
   timeSpent: integer("time_spent").default(0), // in minutes
   attempts: integer("attempts").default(0),
+  quizAnswers: jsonb("quiz_answers"), // User's quiz responses
+  exerciseScores: jsonb("exercise_scores"), // Scores for knowledge checks
 });
 
 export const portfolios = pgTable("portfolios", {
@@ -122,6 +151,12 @@ export const nftCollections = pgTable("nft_collections", {
   imageUrl: text("image_url"),
   createdAt: timestamp("created_at").defaultNow(),
 });
+
+// Export types for the interactive features
+export type QuizQuestion = typeof quizQuestions.$inferSelect;
+export type InsertQuizQuestion = typeof quizQuestions.$inferInsert;
+export type KnowledgeCheck = typeof knowledgeChecks.$inferSelect;
+export type InsertKnowledgeCheck = typeof knowledgeChecks.$inferInsert;
 
 export const nftAssets = pgTable("nft_assets", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),

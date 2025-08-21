@@ -50,6 +50,9 @@ interface Lesson {
   tags: string[];
   isLocked: boolean;
   isPremium: boolean;
+  hasQuiz: boolean;
+  hasSimulation: boolean;
+  videoUrl?: string;
 }
 
 interface UserProgress {
@@ -251,6 +254,47 @@ export default function Learn() {
                     />
                   </div>
                 </div>
+
+                {/* Interactive Elements */}
+                {selectedLesson.hasQuiz && (
+                  <div className="mt-8">
+                    <h3 className="text-lg font-semibold text-white mb-4 flex items-center">
+                      <Brain className="w-5 h-5 mr-2 text-purple-400" />
+                      Interactive Quiz
+                    </h3>
+                    <div className="bg-slate-700/30 rounded-lg p-6 border border-slate-600">
+                      <div className="flex items-center justify-center py-8">
+                        <div className="text-center">
+                          <Brain className="w-12 h-12 text-purple-400 mx-auto mb-4" />
+                          <p className="text-gray-300 mb-4">Test your understanding with interactive questions</p>
+                          <Button className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700">
+                            Start Quiz
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {selectedLesson.hasSimulation && (
+                  <div className="mt-8">
+                    <h3 className="text-lg font-semibold text-white mb-4 flex items-center">
+                      <Zap className="w-5 h-5 mr-2 text-yellow-400" />
+                      Hands-On Simulation
+                    </h3>
+                    <div className="bg-slate-700/30 rounded-lg p-6 border border-slate-600">
+                      <div className="flex items-center justify-center py-8">
+                        <div className="text-center">
+                          <Zap className="w-12 h-12 text-yellow-400 mx-auto mb-4" />
+                          <p className="text-gray-300 mb-4">Practice concepts with real-world scenarios</p>
+                          <Button className="bg-gradient-to-r from-yellow-600 to-orange-600 hover:from-yellow-700 hover:to-orange-700">
+                            Launch Simulation
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
 
                 {/* Action Buttons */}
                 <div className="flex items-center justify-between pt-6 border-t border-slate-700">
