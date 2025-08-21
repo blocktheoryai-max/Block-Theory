@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -57,11 +57,13 @@ export function InteractiveCryptoChart() {
   const [selectedCrypto, setSelectedCrypto] = useState("BTC");
   const [selectedTimeframe, setSelectedTimeframe] = useState("24H");
   const [chartData, setChartData] = useState<ChartDataPoint[]>([]);
+  const lastGeneratedRef = useRef<string>("");
 
   // Fetch current market data
   const { data: marketDataResponse, isLoading: marketLoading } = useQuery({
     queryKey: ["/api/market-data"],
-    refetchInterval: 30000 // Refresh every 30 seconds
+    refetchInterval: 60000, // Refresh every minute to reduce instability
+    staleTime: 30000 // Keep data fresh for 30 seconds
   });
 
   // Convert market data response to proper format for chart
@@ -87,6 +89,11 @@ export function InteractiveCryptoChart() {
   // Generate historical data based on current price and timeframe
   useEffect(() => {
     if (!currentCrypto) return;
+    
+    // Prevent frequent regeneration of chart data
+    const cacheKey = `${selectedCrypto}-${selectedTimeframe}-${Math.floor(currentCrypto.currentPrice / 100)}`;
+    if (lastGeneratedRef.current === cacheKey) return;
+    lastGeneratedRef.current = cacheKey;
 
     const generateHistoricalData = () => {
       const dataPoints: ChartDataPoint[] = [];
@@ -143,14 +150,14 @@ export function InteractiveCryptoChart() {
             break;
         }
 
-        // Generate realistic price variation
-        const basePrice = currentCrypto?.currentPrice || 50000; // Default fallback price
-        const volatility = basePrice * 0.02; // 2% volatility
-        const trendFactor = (intervals - i) / intervals; // Gradual trend
-        const randomFactor = (Math.random() - 0.5) * volatility;
-        const price = basePrice * (0.95 + trendFactor * 0.1) + randomFactor;
+        // Generate stable price variation based on current real price
+        const basePrice = currentCrypto?.currentPrice || 50000; 
+        const volatility = basePrice * 0.005; // Reduce volatility to 0.5% for stability
+        const trendFactor = (intervals - i) / intervals * 0.05; // Smaller trend factor
+        const randomFactor = (Math.sin(i * 0.1) * 0.5 + Math.cos(i * 0.2) * 0.3) * volatility; // Smoother variation
+        const price = basePrice * (0.98 + trendFactor) + randomFactor;
 
-        const volume = (currentCrypto?.volume24h || 1000000000) * (0.8 + Math.random() * 0.4);
+        const volume = (currentCrypto?.volume24h || 1000000000) * (0.95 + Math.sin(i * 0.1) * 0.05);
 
         dataPoints.push({
           timestamp: timestamp.toISOString(),
