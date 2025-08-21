@@ -194,9 +194,12 @@ export default function Community() {
     };
   }, []);
 
-  const { data: posts = [], isLoading } = useQuery<ForumPost[]>({
+  const { data: posts, isLoading } = useQuery<ForumPost[]>({
     queryKey: ["/api/forum"],
   });
+
+  // Ensure posts is always an array with fallback
+  const safePosts = Array.isArray(posts) ? posts : [];
 
   const communityMetrics: CommunityMetrics = {
     activeUsers: 12847,
@@ -349,7 +352,7 @@ export default function Community() {
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4 max-h-96 overflow-y-auto">
-                    {cryptoNews.map((news) => (
+                    {(cryptoNews || []).map((news) => (
                       <div key={news.id} className="p-4 bg-slate-700/30 rounded-lg border border-slate-600">
                         <div className="flex items-start justify-between mb-2">
                           <div className="flex items-center space-x-2">
@@ -369,7 +372,7 @@ export default function Community() {
                             <span className="text-xs text-gray-400">Source: {news.source}</span>
                             <span className="text-xs text-gray-400">•</span>
                             <div className="flex items-center space-x-1">
-                              {news.relevantCoins.map((coin) => (
+                              {(news.relevantCoins || []).map((coin) => (
                                 <Badge key={coin} variant="outline" className="text-xs">
                                   {coin}
                                 </Badge>
@@ -400,7 +403,7 @@ export default function Community() {
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
-                    {marketUpdates.map((update) => (
+                    {(marketUpdates || []).map((update) => (
                       <div key={update.coin} className="flex items-center justify-between p-4 bg-slate-700/30 rounded-lg border border-slate-600">
                         <div className="flex items-center space-x-4">
                           <div className="w-10 h-10 bg-gradient-to-r from-orange-500 to-yellow-500 rounded-full flex items-center justify-center">
@@ -510,7 +513,7 @@ export default function Community() {
                     <p className="text-gray-400 mt-2">Loading discussions...</p>
                   </div>
                 ) : (
-                  posts.map((post) => (
+                  safePosts.map((post) => (
                     <Card key={post.id} className="bg-slate-800/50 border-slate-700 backdrop-blur-sm hover:bg-slate-800/70 transition-colors">
                       <CardContent className="p-6">
                         <div className="flex items-start justify-between mb-4">
@@ -556,7 +559,7 @@ export default function Community() {
                             </div>
                           </div>
                           <div className="flex items-center space-x-1">
-                            {post.tags.map((tag) => (
+                            {(post.tags || []).map((tag) => (
                               <Badge key={tag} variant="outline" className="text-xs">
                                 {tag}
                               </Badge>
