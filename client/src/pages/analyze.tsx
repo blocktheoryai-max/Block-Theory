@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import Navigation from "@/components/Navigation";
+import { InteractiveCryptoChart } from "@/components/InteractiveCryptoChart";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -178,6 +179,11 @@ export default function Analyze() {
                 </div>
               </CardContent>
             </Card>
+          </div>
+
+          {/* Interactive Price Chart Section */}
+          <div className="mb-8">
+            <InteractiveCryptoChart />
           </div>
 
           <Tabs defaultValue="whale-tracker" className="space-y-6">

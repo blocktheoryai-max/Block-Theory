@@ -144,7 +144,7 @@ export default function Simulate() {
   });
 
   const selectedPrice = prices.find(p => p.symbol === selectedSymbol);
-  const tradeTotal = parseFloat(tradeAmount) * parseFloat(tradePrice || selectedPrice?.currentPrice?.toString() || "0");
+  const tradeTotal = parseFloat(tradeAmount || "0") * parseFloat(tradePrice || selectedPrice?.currentPrice?.toString() || "0");
 
   // Portfolio calculations
   const portfolioValue = portfolio?.totalValue || 10000;
