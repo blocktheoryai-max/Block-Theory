@@ -308,13 +308,16 @@ export function InteractiveCryptoChart() {
               <AreaChart data={chartData}>
                 <defs>
                   <linearGradient id="priceGradient" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="rgb(139, 92, 246)" stopOpacity={0.3}/>
-                    <stop offset="95%" stopColor="rgb(139, 92, 246)" stopOpacity={0}/>
+                    <stop offset="5%" stopColor="rgb(139, 92, 246)" stopOpacity={0.4}/>
+                    <stop offset="95%" stopColor="rgb(139, 92, 246)" stopOpacity={0.05}/>
                   </linearGradient>
                 </defs>
-                <CartesianGrid strokeDasharray="3 3" className="opacity-30" />
+                <CartesianGrid stroke="rgba(255, 255, 255, 0.08)" strokeWidth={1} />
                 <XAxis 
                   dataKey="timestamp"
+                  stroke="rgba(255, 255, 255, 0.6)"
+                  tick={{ fontSize: 12, fill: 'rgba(255, 255, 255, 0.7)' }}
+                  axisLine={{ stroke: 'rgba(255, 255, 255, 0.2)' }}
                   tickFormatter={(value) => {
                     const date = new Date(value);
                     if (selectedTimeframe === "1H") {
@@ -325,12 +328,13 @@ export function InteractiveCryptoChart() {
                       return date.toLocaleDateString([], { month: 'short', year: '2-digit' });
                     }
                   }}
-                  tick={{ fontSize: 12 }}
                 />
                 <YAxis 
+                  stroke="rgba(255, 255, 255, 0.6)"
+                  tick={{ fontSize: 12, fill: 'rgba(255, 255, 255, 0.7)' }}
+                  axisLine={{ stroke: 'rgba(255, 255, 255, 0.2)' }}
                   domain={['dataMin * 0.995', 'dataMax * 1.005']}
                   tickFormatter={formatPrice}
-                  tick={{ fontSize: 12 }}
                 />
                 <Tooltip content={<CustomTooltip />} />
                 <Area
@@ -338,7 +342,7 @@ export function InteractiveCryptoChart() {
                   dataKey="price"
                   stroke="rgb(139, 92, 246)"
                   fill="url(#priceGradient)"
-                  strokeWidth={2}
+                  strokeWidth={3}
                 />
               </AreaChart>
             </ResponsiveContainer>
