@@ -122,7 +122,7 @@ export default function Dashboard() {
                 </CardHeader>
                 <CardContent>
                   <Progress value={100} className="mb-3" />
-                  <p className="text-sm text-muted-foreground mb-4">15/15 lessons completed</p>
+                  <p className="text-sm text-muted-foreground mb-4">50/50 lessons completed</p>
                   <Link href="/learn">
                     <Button variant="outline" size="sm" className="w-full">
                       Review Lessons
@@ -143,8 +143,8 @@ export default function Dashboard() {
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <Progress value={60} className="mb-3" />
-                  <p className="text-sm text-muted-foreground mb-4">9/15 lessons completed</p>
+                  <Progress value={70} className="mb-3" />
+                  <p className="text-sm text-muted-foreground mb-4">35/50 lessons completed</p>
                   <Link href="/learn">
                     <Button className="w-full">
                       Continue Learning
@@ -166,7 +166,7 @@ export default function Dashboard() {
                 </CardHeader>
                 <CardContent>
                   <Progress value={0} className="mb-3" />
-                  <p className="text-sm text-muted-foreground mb-4">Complete Intermediate first</p>
+                  <p className="text-sm text-muted-foreground mb-4">50 advanced lessons with video content</p>
                   <Link href="/pricing">
                     <Button variant="outline" size="sm" className="w-full">
                       <Crown className="w-4 h-4 mr-2" />

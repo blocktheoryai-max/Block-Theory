@@ -15,7 +15,7 @@ export function ChainHeader() {
               <div className="chain-pulse w-6 h-6 border-2 border-primary rounded border-r-transparent"></div>
               <div className="chain-link w-6 h-6 border-2 border-primary rounded border-l-transparent"></div>
             </div>
-            <span className="text-2xl font-bold text-primary">TradeTutor</span>
+            <span className="text-2xl font-bold text-primary">Block Theory</span>
           </Link>
 
           {/* Navigation - Learning First */}

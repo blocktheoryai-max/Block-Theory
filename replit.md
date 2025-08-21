@@ -1,12 +1,16 @@
 # Overview
 
-TradeTutor is a comprehensive cryptocurrency trading education platform that combines interactive learning, risk-free simulation, and community engagement. The application serves as a complete trading education ecosystem where users can learn crypto trading fundamentals through structured lessons, practice their skills in a simulated trading environment, track their progress with detailed analytics, and engage with a community of fellow traders.
+Block Theory is a comprehensive cryptocurrency trading education platform positioned as the "Netflix of crypto education" that combines interactive learning, risk-free simulation, and community engagement. The application serves as a complete trading education ecosystem where users can learn crypto trading fundamentals through structured video lessons, practice their skills in a simulated trading environment, track their progress with detailed analytics, and engage with a community of fellow traders.
 
-The platform is designed as a single-page application with a modern, responsive interface that guides users through four main sections: Learn (educational content), Simulate (trading practice), Analyze (performance tracking), and Community (social features).
+The platform is designed as a single-page application with a modern, responsive interface featuring a purple, gray, and white color scheme that guides users through four main sections: Learn (educational content), Simulate (trading practice), Analyze (performance tracking), and Community (social features). The platform emphasizes video-based learning with 50+ lessons per skill level to maintain the Netflix-style streaming education experience.
 
 # User Preferences
 
 Preferred communication style: Simple, everyday language.
+Platform branding: Block Theory (rebranded from TradeTutor)
+Color scheme: Purple, gray, and white throughout the application
+Educational approach: Netflix-style video streaming with comprehensive curriculum (50+ lessons per level)
+Layout priority: Learning content positioned prominently with subscription conversion focus
 
 # System Architecture
 

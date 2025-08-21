@@ -23,7 +23,7 @@ export default function Pricing() {
       period: "forever",
       description: "Perfect for getting started with crypto trading basics",
       features: [
-        "Access to 15 foundation lessons",
+        "Access to 50 foundation video lessons",
         "Basic trading simulator",
         "Community access",
         "Weekly market updates",
@@ -44,7 +44,7 @@ export default function Pricing() {
       period: "month",
       description: "Unlock the complete lesson library and advanced simulator",
       features: [
-        "Complete lesson library (100+ lessons)",
+        "Complete video library (200+ lessons)",
         "Advanced trading simulator",
         "Progress tracking & analytics",
         "Community access",
@@ -103,7 +103,7 @@ export default function Pricing() {
     {
       icon: BookOpen,
       title: "Comprehensive Curriculum",
-      description: "500+ lessons covering everything from basics to advanced trading strategies"
+      description: "500+ video lessons covering everything from basics to advanced trading strategies"
     },
     {
       icon: PlayCircle,
@@ -227,7 +227,7 @@ export default function Pricing() {
       <section className="py-16 bg-muted/50">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-foreground mb-4">Why Choose TradeTutor?</h2>
+            <h2 className="text-3xl font-bold text-foreground mb-4">Why Choose Block Theory?</h2>
             <p className="text-xl text-muted-foreground">Comprehensive crypto trading education designed for real results</p>
           </div>
           

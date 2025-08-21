@@ -22,8 +22,11 @@ import {
   Zap,
   Rocket,
   GraduationCap,
-  Activity
+  Activity,
+  Video,
+  Users
 } from "lucide-react";
+import { VideoLessonCard } from "@/components/VideoLessonCard";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
