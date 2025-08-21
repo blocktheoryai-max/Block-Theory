@@ -192,9 +192,59 @@ export default function Learn() {
                   </ul>
                 </div>
 
+                {/* Video Player */}
+                <div className="mb-8">
+                  <div className="bg-slate-800/50 rounded-lg p-6 border border-slate-600">
+                    {selectedLesson.videoUrl ? (
+                      <div className="aspect-video bg-slate-900 rounded-lg overflow-hidden">
+                        <iframe
+                          src={selectedLesson.videoUrl}
+                          title={selectedLesson.title}
+                          className="w-full h-full"
+                          frameBorder="0"
+                          allowFullScreen
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        />
+                      </div>
+                    ) : (
+                      <div className="aspect-video bg-slate-900 rounded-lg flex items-center justify-center relative overflow-hidden">
+                        {/* Video placeholder with play button */}
+                        <div className="absolute inset-0 bg-gradient-to-br from-blue-900/50 to-purple-900/50"></div>
+                        <div className="relative z-10 text-center">
+                          <div className="w-20 h-20 bg-white/90 rounded-full flex items-center justify-center mb-4 mx-auto hover:bg-white transition-colors cursor-pointer">
+                            <Play className="w-8 h-8 text-slate-900 ml-1" />
+                          </div>
+                          <h3 className="text-xl font-semibold text-white mb-2">{selectedLesson.title}</h3>
+                          <p className="text-gray-300 text-sm">
+                            {selectedLesson.duration} minute video lesson
+                          </p>
+                          <div className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg inline-block text-sm">
+                            Coming Soon - Video Content
+                          </div>
+                        </div>
+                        
+                        {/* Video controls overlay */}
+                        <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between text-white text-sm">
+                          <div className="flex items-center space-x-2">
+                            <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
+                            <span>HD Quality</span>
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <span>0:00 / {selectedLesson.duration}:00</span>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
                 {/* Lesson Content */}
                 <div className="prose prose-invert max-w-none">
                   <div className="bg-slate-700/30 rounded-lg p-6 border border-slate-600">
+                    <h3 className="text-lg font-semibold text-white mb-4 flex items-center">
+                      <BookOpen className="w-5 h-5 mr-2 text-blue-400" />
+                      Lesson Notes & Resources
+                    </h3>
                     <div 
                       className="text-gray-200 leading-relaxed lesson-content"
                       dangerouslySetInnerHTML={{ __html: selectedLesson.content }}

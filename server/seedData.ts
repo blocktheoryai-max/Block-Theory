@@ -132,6 +132,7 @@ export async function seedDatabase() {
         learningObjectives: ["Define cryptocurrency", "Understand digital currency benefits", "Identify use cases"],
         isLocked: false,
         isPremium: false,
+        videoUrl: "https://www.youtube.com/embed/VYWc9dFqROI",
         tags: ["cryptocurrency", "basics", "introduction"]
       },
       {
@@ -174,6 +175,7 @@ export async function seedDatabase() {
         learningObjectives: ["Understand blockchain architecture", "Learn consensus mechanisms", "Identify blockchain applications"],
         isLocked: false,
         isPremium: false,
+        videoUrl: "https://www.youtube.com/embed/SSo_EIwHSd4",
         tags: ["blockchain", "technology", "fundamentals"]
       },
       {
@@ -210,6 +212,7 @@ export async function seedDatabase() {
         learningObjectives: ["Understand Bitcoin's unique properties", "Learn about mining and halving", "Analyze Bitcoin's value proposition"],
         isLocked: false,
         isPremium: false,
+        videoUrl: "https://www.youtube.com/embed/bBC-nXj3Ng4",
         tags: ["bitcoin", "cryptocurrency", "mining"]
       },
       {
@@ -251,6 +254,7 @@ export async function seedDatabase() {
         learningObjectives: ["Understand smart contracts", "Compare Ethereum to Bitcoin", "Explore DeFi ecosystem"],
         isLocked: false,
         isPremium: false,
+        videoUrl: "https://www.youtube.com/embed/jxLkbJozKbY",
         tags: ["ethereum", "smart-contracts", "defi"]
       },
       {
@@ -292,6 +296,7 @@ export async function seedDatabase() {
         learningObjectives: ["Choose appropriate wallet types", "Implement security practices", "Recognize security threats"],
         isLocked: false,
         isPremium: false,
+        videoUrl: "https://www.youtube.com/embed/d8IBpfs9bf4",
         tags: ["security", "wallets", "safety"]
       },
       {
@@ -334,6 +339,7 @@ export async function seedDatabase() {
         learningObjectives: ["Compare exchange types", "Select appropriate exchanges", "Implement security practices"],
         isLocked: false,
         isPremium: false,
+        videoUrl: "https://www.youtube.com/embed/bCb_7x2-W7U",
         tags: ["exchanges", "trading", "security"]
       },
       
