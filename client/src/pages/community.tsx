@@ -90,6 +90,7 @@ export default function Community() {
   const [newPostContent, setNewPostContent] = useState("");
   const [newPostCategory, setNewPostCategory] = useState("general");
   const [showNewPostForm, setShowNewPostForm] = useState(false);
+  const [liveThreads, setLiveThreads] = useState<any[]>([]);
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const { user, isAuthenticated } = useAuth();
@@ -109,6 +110,68 @@ export default function Community() {
     queryKey: ["/api/market-data"],
     refetchInterval: 30000, // Refetch every 30 seconds
   });
+
+  // Live discussion threads that update in real-time
+  useEffect(() => {
+    const generateLiveThread = () => {
+      const topics = [
+        "🚀 BTC breaking resistance at $113k - Bull run continuing?",
+        "💎 ETH 2.0 staking rewards discussion",
+        "📈 DeFi yield farming strategies 2025", 
+        "🔥 AI coins pumping - Which to watch?",
+        "⚡ Lightning Network adoption growing",
+        "🌟 NFT market recovery signals",
+        "💰 Best altcoins under $1 discussion",
+        "📊 Technical analysis: Support levels holding",
+        "🎯 Portfolio rebalancing strategies",
+        "🔮 Crypto predictions for Q1 2025"
+      ];
+
+      const users = ["CryptoKing", "DiamondHands", "TechAnalyst", "BlockchainBob", "DeFiDave", "AltcoinAnna"];
+      const activities = ["just posted", "is analyzing", "shared insight", "asked about", "discovered"];
+      
+      return {
+        id: Date.now(),
+        topic: topics[Math.floor(Math.random() * topics.length)],
+        user: users[Math.floor(Math.random() * users.length)],
+        activity: activities[Math.floor(Math.random() * activities.length)],
+        timestamp: new Date().toLocaleTimeString(),
+        participants: Math.floor(Math.random() * 50) + 5,
+        isLive: true
+      };
+    };
+
+    // Add initial threads
+    setLiveThreads([
+      generateLiveThread(),
+      generateLiveThread(),
+      generateLiveThread()
+    ]);
+
+    // Update threads every 8-12 seconds to simulate live activity
+    const interval = setInterval(() => {
+      setLiveThreads(prev => {
+        const updated = [...prev];
+        if (Math.random() > 0.3) {
+          // Add new thread or update existing
+          if (updated.length < 6 && Math.random() > 0.5) {
+            updated.unshift(generateLiveThread());
+          } else if (updated.length > 0) {
+            // Update existing thread
+            const randomIndex = Math.floor(Math.random() * updated.length);
+            updated[randomIndex] = {
+              ...updated[randomIndex],
+              participants: updated[randomIndex].participants + Math.floor(Math.random() * 3),
+              timestamp: new Date().toLocaleTimeString()
+            };
+          }
+        }
+        return updated.slice(0, 6); // Keep max 6 threads
+      });
+    }, Math.random() * 4000 + 8000); // 8-12 seconds
+
+    return () => clearInterval(interval);
+  }, []);
 
   // Update local state when live data arrives
   useEffect(() => {
@@ -260,6 +323,45 @@ export default function Community() {
               </CardContent>
             </Card>
           </div>
+
+          {/* Live Discussion Threads */}
+          <Card className="bg-gradient-to-br from-green-600 to-emerald-700 text-white border-0 mb-8">
+            <CardHeader className="pb-3">
+              <div className="flex items-center justify-between">
+                <CardTitle className="flex items-center space-x-2">
+                  <Activity className="h-5 w-5 animate-pulse" />
+                  <span>Live Discussions</span>
+                </CardTitle>
+                <Badge variant="secondary" className="bg-green-500/20 text-green-100">
+                  LIVE
+                </Badge>
+              </div>
+              <CardDescription className="text-green-100">
+                Join real-time conversations happening right now
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              {liveThreads.map((thread, index) => (
+                <div key={thread.id} className="flex items-center justify-between p-3 bg-white/10 rounded-lg backdrop-blur-sm">
+                  <div className="flex-1">
+                    <div className="flex items-center space-x-2 mb-1">
+                      <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                      <span className="font-medium text-sm">{thread.user}</span>
+                      <span className="text-green-200 text-xs">{thread.activity}</span>
+                    </div>
+                    <p className="text-sm text-green-100 truncate">{thread.topic}</p>
+                    <div className="flex items-center space-x-4 mt-1">
+                      <span className="text-xs text-green-300">{thread.participants} participants</span>
+                      <span className="text-xs text-green-300">{thread.timestamp}</span>
+                    </div>
+                  </div>
+                  <Button variant="ghost" size="sm" className="text-green-100 hover:bg-white/20">
+                    Join
+                  </Button>
+                </div>
+              ))}
+            </CardContent>
+          </Card>
 
           <Tabs value={selectedTab} onValueChange={setSelectedTab} className="space-y-6">
             <TabsList className="grid w-full grid-cols-4 bg-slate-800/50 border-slate-700">

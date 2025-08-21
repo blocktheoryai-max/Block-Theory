@@ -85,85 +85,8 @@ export default function TechnicalAnalysis() {
   const [alertType, setAlertType] = useState("PRICE_ABOVE");
 
   const { data: marketData } = useMarketData();
-  const { data: liveAnalysis, isLoading: analysisLoading } = useLiveAnalysis(selectedSymbol);
-
-  // Real-time technical indicators from live analysis data
-  const realIndicators: TechnicalIndicator[] = liveAnalysis ? [
-    {
-      id: "1",
-      symbol: liveAnalysis.symbol,
-      timeframe: selectedTimeframe,
-      indicatorType: "RSI",
-      value: liveAnalysis.technicalIndicators.rsi,
-      signal: liveAnalysis.technicalIndicators.rsi > 70 ? "SELL" : liveAnalysis.technicalIndicators.rsi < 30 ? "BUY" : "HOLD",
-      confidence: Math.round(75 + (Math.random() * 20)),
-      parameters: { period: 14 },
-      calculatedAt: liveAnalysis.lastUpdate
-    },
-    {
-      id: "2", 
-      symbol: liveAnalysis.symbol,
-      timeframe: selectedTimeframe,
-      indicatorType: "MACD",
-      value: liveAnalysis.technicalIndicators.macd,
-      signal: liveAnalysis.technicalIndicators.macd > 0 ? "BUY" : "SELL",
-      confidence: Math.round(70 + (Math.random() * 25)),
-      parameters: { fast: 12, slow: 26, signal: 9 },
-      calculatedAt: liveAnalysis.lastUpdate
-    },
-    {
-      id: "3",
-      symbol: liveAnalysis.symbol,
-      timeframe: selectedTimeframe,
-      indicatorType: "BB",
-      value: (liveAnalysis.price - liveAnalysis.technicalIndicators.bollinger.lower) / 
-             (liveAnalysis.technicalIndicators.bollinger.upper - liveAnalysis.technicalIndicators.bollinger.lower),
-      signal: liveAnalysis.price > liveAnalysis.technicalIndicators.bollinger.upper ? "SELL" : 
-              liveAnalysis.price < liveAnalysis.technicalIndicators.bollinger.lower ? "BUY" : "HOLD",
-      confidence: Math.round(65 + (Math.random() * 20)),
-      parameters: { period: 20, stdDev: 2 },
-      calculatedAt: liveAnalysis.lastUpdate
-    },
-    {
-      id: "4",
-      symbol: liveAnalysis.symbol,
-      timeframe: selectedTimeframe,
-      indicatorType: "STOCH",
-      value: 50 + (liveAnalysis.change24h * 2), // Simulate based on price movement
-      signal: liveAnalysis.technicalIndicators.trend === "bullish" ? "BUY" : "SELL",
-      confidence: Math.round(60 + (Math.random() * 30)),
-      parameters: { k: 14, d: 3 },
-      calculatedAt: liveAnalysis.lastUpdate
-    }
-  ] : [];
-
-  const liveMarketAnalysis: MarketAnalysisResult | null = liveAnalysis ? {
-    id: "1",
-    symbol: liveAnalysis.symbol,
-    timeframe: selectedTimeframe,
-    trendDirection: liveAnalysis.technicalIndicators.trend === "bullish" ? "BULLISH" : "BEARISH",
-    supportLevels: [
-      liveAnalysis.technicalIndicators.bollinger.lower,
-      liveAnalysis.price * 0.95,
-      liveAnalysis.price * 0.90
-    ],
-    resistanceLevels: [
-      liveAnalysis.technicalIndicators.bollinger.upper,
-      liveAnalysis.price * 1.05,
-      liveAnalysis.price * 1.10
-    ],
-    keyLevels: { 
-      pivot: liveAnalysis.technicalIndicators.bollinger.middle,
-      r1: liveAnalysis.technicalIndicators.bollinger.upper,
-      s1: liveAnalysis.technicalIndicators.bollinger.lower
-    },
-    patternDetected: liveAnalysis.technicalIndicators.strength === "strong" ? "BREAKOUT" : "CONSOLIDATION",
-    volumeAnalysis: { trend: "INCREASING", volume: "ABOVE_AVERAGE" },
-    riskLevel: liveAnalysis.technicalIndicators.strength === "strong" ? "HIGH" : "MEDIUM",
-    analysisText: `Current analysis shows ${liveAnalysis.symbol} in a ${liveAnalysis.technicalIndicators.trend} trend with live data. Sentiment: ${liveAnalysis.sentiment.label}. Price: $${liveAnalysis.price.toLocaleString()}.`,
-    confidence: Math.round(70 + (Math.abs(liveAnalysis.change24h) * 2)),
-    updatedAt: liveAnalysis.lastUpdate
-  } : null;
+  const { realIndicators, liveMarketAnalysis, isLoading: analysisLoading } = useLiveAnalysis();
+// Technical indicators and market analysis now come from comprehensive live analysis hook
 
   const mockAlerts: PriceAlert[] = [
     {
@@ -286,7 +209,7 @@ export default function TechnicalAnalysis() {
 
         <TabsContent value="indicators" className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {mockIndicators.map((indicator) => {
+            {(analysisLoading ? [] : realIndicators).map((indicator) => {
               const indicatorInfo = INDICATORS.find(i => i.key === indicator.indicatorType);
               return (
                 <Card key={indicator.id} className="bg-card border-border">
@@ -341,19 +264,19 @@ export default function TechnicalAnalysis() {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div className="text-center">
                   <div className="text-2xl font-bold text-green-600">
-                    {mockIndicators.filter(i => i.signal === "BUY").length}
+                    {realIndicators.filter(i => i.signal === "BUY").length}
                   </div>
                   <div className="text-sm text-muted-foreground">Buy Signals</div>
                 </div>
                 <div className="text-center">
                   <div className="text-2xl font-bold text-red-600">
-                    {mockIndicators.filter(i => i.signal === "SELL").length}
+                    {realIndicators.filter(i => i.signal === "SELL").length}
                   </div>
                   <div className="text-sm text-muted-foreground">Sell Signals</div>
                 </div>
                 <div className="text-center">
                   <div className="text-2xl font-bold text-yellow-600">
-                    {mockIndicators.filter(i => i.signal === "HOLD").length}
+                    {realIndicators.filter(i => i.signal === "HOLD").length}
                   </div>
                   <div className="text-sm text-muted-foreground">Hold Signals</div>
                 </div>
@@ -374,24 +297,24 @@ export default function TechnicalAnalysis() {
               <CardContent className="space-y-4">
                 <div className="flex justify-between items-center">
                   <span className="text-muted-foreground">Overall Trend:</span>
-                  <Badge className={`${getTrendColor(mockAnalysis.trendDirection)} font-semibold`}>
-                    {mockAnalysis.trendDirection}
+                  <Badge className={`${getTrendColor(liveMarketAnalysis?.trendDirection || "SIDEWAYS")} font-semibold`}>
+                    {liveMarketAnalysis?.trendDirection || "LOADING..."}
                   </Badge>
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-muted-foreground">Risk Level:</span>
-                  <Badge className={`${getRiskColor(mockAnalysis.riskLevel)}`}>
-                    {mockAnalysis.riskLevel}
+                  <Badge className={`${getRiskColor(liveMarketAnalysis?.riskLevel || "MEDIUM")}`}>
+                    {liveMarketAnalysis?.riskLevel || "MEDIUM"}
                   </Badge>
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-muted-foreground">Confidence:</span>
-                  <span className="font-semibold">{mockAnalysis.confidence}%</span>
+                  <span className="font-semibold">{liveMarketAnalysis?.confidence || 0}%</span>
                 </div>
                 <div className="w-full bg-muted rounded-full h-2">
                   <div 
                     className="bg-primary h-2 rounded-full" 
-                    style={{ width: `${mockAnalysis.confidence}%` }}
+                    style={{ width: `${liveMarketAnalysis?.confidence || 0}%` }}
                   />
                 </div>
               </CardContent>
@@ -408,7 +331,7 @@ export default function TechnicalAnalysis() {
                 <div>
                   <div className="text-sm text-muted-foreground mb-2">Resistance Levels:</div>
                   <div className="space-y-1">
-                    {mockAnalysis.resistanceLevels.map((level, i) => (
+                    {(liveMarketAnalysis?.resistanceLevels || []).map((level, i) => (
                       <div key={i} className="flex justify-between">
                         <span className="text-sm">R{i + 1}:</span>
                         <span className="font-medium text-red-600">{formatPrice(level)}</span>
@@ -419,7 +342,7 @@ export default function TechnicalAnalysis() {
                 <div>
                   <div className="text-sm text-muted-foreground mb-2">Support Levels:</div>
                   <div className="space-y-1">
-                    {mockAnalysis.supportLevels.map((level, i) => (
+                    {(liveMarketAnalysis?.supportLevels || []).map((level, i) => (
                       <div key={i} className="flex justify-between">
                         <span className="text-sm">S{i + 1}:</span>
                         <span className="font-medium text-green-600">{formatPrice(level)}</span>
@@ -439,7 +362,7 @@ export default function TechnicalAnalysis() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-foreground leading-relaxed">{mockAnalysis.analysisText}</p>
+              <p className="text-foreground leading-relaxed">{liveMarketAnalysis?.analysisText || "Analyzing current market conditions..."}</p>
             </CardContent>
           </Card>
         </TabsContent>
