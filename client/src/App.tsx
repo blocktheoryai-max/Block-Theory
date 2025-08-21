@@ -12,6 +12,7 @@ import Community from "@/pages/community";
 import Pricing from "@/pages/pricing";
 import WhaleTracker from "@/pages/whale-tracker";
 import WhitepaperAnalyzer from "@/pages/whitepaper-analyzer";
+import TechnicalAnalysis from "@/pages/technical-analysis";
 import Checkout from "@/pages/checkout";
 import NotFound from "@/pages/not-found";
 import { useAuth } from "@/hooks/useAuth";
@@ -21,19 +22,23 @@ function Router() {
   const { isAuthenticated, isLoading } = useAuth();
 
   return (
-    <Switch>
-      <Route path="/" component={Dashboard} />
-      <Route path="/home" component={Home} />
-      <Route path="/learn" component={Learn} />
-      <Route path="/simulate" component={Simulate} />
-      <Route path="/analyze" component={Analyze} />
-      <Route path="/community" component={Community} />
-      <Route path="/pricing" component={Pricing} />
-      <Route path="/whale-tracker" component={WhaleTracker} />
-      <Route path="/whitepaper-analyzer" component={WhitepaperAnalyzer} />
-      <Route path="/checkout" component={Checkout} />
-      <Route component={NotFound} />
-    </Switch>
+    <>
+      <Navigation />
+      <Switch>
+        <Route path="/" component={Dashboard} />
+        <Route path="/home" component={Home} />
+        <Route path="/learn" component={Learn} />
+        <Route path="/simulate" component={Simulate} />
+        <Route path="/analyze" component={Analyze} />
+        <Route path="/community" component={Community} />
+        <Route path="/pricing" component={Pricing} />
+        <Route path="/whale-tracker" component={WhaleTracker} />
+        <Route path="/whitepaper-analyzer" component={WhitepaperAnalyzer} />
+        <Route path="/technical-analysis" component={TechnicalAnalysis} />
+        <Route path="/checkout" component={Checkout} />
+        <Route component={NotFound} />
+      </Switch>
+    </>
   );
 }
 

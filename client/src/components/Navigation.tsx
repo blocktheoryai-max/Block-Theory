@@ -1,6 +1,6 @@
 import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
-import { TrendingUp, BookOpen, BarChart3, FileText, Users, DollarSign, Fish } from "lucide-react";
+import { TrendingUp, BookOpen, BarChart3, FileText, Users, DollarSign, Fish, Activity } from "lucide-react";
 
 export default function Navigation() {
   const [location] = useLocation();
@@ -10,6 +10,7 @@ export default function Navigation() {
     { path: "/learn", label: "Learn", icon: BookOpen },
     { path: "/simulate", label: "Simulate", icon: BarChart3 },
     { path: "/analyze", label: "Analyze", icon: FileText },
+    { path: "/technical-analysis", label: "Technical Analysis", icon: Activity },
     { path: "/whale-tracker", label: "Whale Tracker", icon: Fish },
     { path: "/community", label: "Community", icon: Users },
     { path: "/pricing", label: "Pricing", icon: DollarSign },

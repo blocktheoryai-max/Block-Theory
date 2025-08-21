@@ -641,3 +641,69 @@ export type InsertQuiz = z.infer<typeof insertQuizSchema>;
 export type Quiz = typeof quizzes.$inferSelect;
 export type InsertUserQuizAttempt = z.infer<typeof insertUserQuizAttemptSchema>;
 export type UserQuizAttempt = typeof userQuizAttempts.$inferSelect;
+
+// Technical Analysis Tables
+export const technicalIndicators = pgTable("technical_indicators", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  symbol: text("symbol").notNull(),
+  timeframe: text("timeframe").notNull(), // "1h", "4h", "1d", "1w"
+  indicatorType: text("indicator_type").notNull(), // "RSI", "MACD", "SMA", "EMA", "BB", "STOCH", "WILLIAMS_R", "CCI"
+  value: decimal("value", { precision: 15, scale: 8 }),
+  signal: text("signal"), // "BUY", "SELL", "HOLD"
+  confidence: integer("confidence"), // 1-100
+  parameters: jsonb("parameters"), // Indicator-specific parameters
+  calculatedAt: timestamp("calculated_at").defaultNow(),
+});
+
+export const marketAnalysisResults = pgTable("market_analysis_results", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  symbol: text("symbol").notNull(),
+  timeframe: text("timeframe").notNull(),
+  trendDirection: text("trend_direction"), // "BULLISH", "BEARISH", "SIDEWAYS"
+  supportLevels: decimal("support_levels", { precision: 15, scale: 8 }).array(),
+  resistanceLevels: decimal("resistance_levels", { precision: 15, scale: 8 }).array(),
+  keyLevels: jsonb("key_levels"), // Important price levels with context
+  patternDetected: text("pattern_detected"), // "HEAD_SHOULDERS", "TRIANGLE", "WEDGE", etc.
+  volumeAnalysis: jsonb("volume_analysis"),
+  riskLevel: text("risk_level"), // "LOW", "MEDIUM", "HIGH"
+  analysisText: text("analysis_text"),
+  confidence: integer("confidence"), // 1-100
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+export const priceAlerts = pgTable("price_alerts", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").references(() => users.id).notNull(),
+  symbol: text("symbol").notNull(),
+  alertType: text("alert_type").notNull(), // "PRICE_ABOVE", "PRICE_BELOW", "CHANGE_PERCENT", "VOLUME_SPIKE"
+  targetValue: decimal("target_value", { precision: 15, scale: 8 }).notNull(),
+  currentValue: decimal("current_value", { precision: 15, scale: 8 }),
+  isTriggered: boolean("is_triggered").default(false),
+  triggeredAt: timestamp("triggered_at"),
+  notificationSent: boolean("notification_sent").default(false),
+  isActive: boolean("is_active").default(true),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const insertTechnicalIndicatorSchema = createInsertSchema(technicalIndicators).omit({
+  id: true,
+  calculatedAt: true,
+});
+
+export const insertMarketAnalysisResultSchema = createInsertSchema(marketAnalysisResults).omit({
+  id: true,
+  updatedAt: true,
+});
+
+export const insertPriceAlertSchema = createInsertSchema(priceAlerts).omit({
+  id: true,
+  createdAt: true,
+  triggeredAt: true,
+});
+
+export type TechnicalIndicator = typeof technicalIndicators.$inferSelect;
+export type InsertTechnicalIndicator = z.infer<typeof insertTechnicalIndicatorSchema>;
+export type MarketAnalysisResult = typeof marketAnalysisResults.$inferSelect;
+export type InsertMarketAnalysisResult = z.infer<typeof insertMarketAnalysisResultSchema>;
+export type PriceAlert = typeof priceAlerts.$inferSelect;
+export type InsertPriceAlert = z.infer<typeof insertPriceAlertSchema>;

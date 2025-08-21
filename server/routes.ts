@@ -280,7 +280,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           metadata: { userId }
         });
         stripeCustomerId = customer.id;
-        await storage.updateUserStripeInfo(userId, stripeCustomerId);
+        await storage.updateUserStripeInfo(userId, stripeCustomerId, undefined);
       }
       
       // Create payment intent
@@ -369,7 +369,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         const trialEndDate = new Date();
         trialEndDate.setDate(trialEndDate.getDate() + 14);
         
-        await storage.updateUserSubscription(userId, "pro", "trialing", trialEndDate);
+        await storage.updateUserSubscription(userId, "pro", "trialing", trialEndDate.toISOString());
         
         res.json({ 
           message: "14-day Pro trial started",
@@ -1067,6 +1067,153 @@ Focus on making complex blockchain concepts understandable for users learning ab
       res.json(signals);
     } catch (error) {
       res.status(500).json({ error: "Failed to fetch trading signals" });
+    }
+  });
+
+  // Technical Analysis endpoints
+  app.get('/api/technical-indicators', async (req, res) => {
+    try {
+      const { symbol = 'BTC', timeframe = '1d' } = req.query;
+      
+      // Mock data for now - in production, this would calculate real indicators
+      const mockIndicators = [
+        {
+          id: '1',
+          symbol,
+          timeframe,
+          indicatorType: 'RSI',
+          value: 65.3 + Math.random() * 10,
+          signal: Math.random() > 0.5 ? 'BUY' : Math.random() > 0.3 ? 'SELL' : 'HOLD',
+          confidence: 70 + Math.random() * 25,
+          parameters: { period: 14 },
+          calculatedAt: new Date().toISOString()
+        },
+        {
+          id: '2',
+          symbol,
+          timeframe,
+          indicatorType: 'MACD',
+          value: 1200 + Math.random() * 500,
+          signal: Math.random() > 0.6 ? 'BUY' : 'HOLD',
+          confidence: 75 + Math.random() * 20,
+          parameters: { fast: 12, slow: 26, signal: 9 },
+          calculatedAt: new Date().toISOString()
+        },
+        {
+          id: '3',
+          symbol,
+          timeframe,
+          indicatorType: 'BB',
+          value: 0.8 + Math.random() * 0.4,
+          signal: Math.random() > 0.7 ? 'SELL' : 'HOLD',
+          confidence: 65 + Math.random() * 25,
+          parameters: { period: 20, stdDev: 2 },
+          calculatedAt: new Date().toISOString()
+        }
+      ];
+
+      res.json(mockIndicators);
+    } catch (error) {
+      console.error('Technical indicators error:', error);
+      res.status(500).json({ message: 'Failed to fetch technical indicators' });
+    }
+  });
+
+  app.get('/api/market-analysis', async (req, res) => {
+    try {
+      const { symbol = 'BTC', timeframe = '1d' } = req.query;
+      const currentPrice = marketData?.[symbol.toString().toLowerCase()]?.usd || 112000;
+      
+      // Mock analysis data
+      const mockAnalysis = {
+        id: '1',
+        symbol,
+        timeframe,
+        trendDirection: Math.random() > 0.6 ? 'BULLISH' : Math.random() > 0.3 ? 'BEARISH' : 'SIDEWAYS',
+        supportLevels: [
+          currentPrice * 0.95,
+          currentPrice * 0.92,
+          currentPrice * 0.88
+        ],
+        resistanceLevels: [
+          currentPrice * 1.05,
+          currentPrice * 1.08,
+          currentPrice * 1.12
+        ],
+        keyLevels: { 
+          pivot: currentPrice,
+          r1: currentPrice * 1.02,
+          s1: currentPrice * 0.98
+        },
+        patternDetected: ['ASCENDING_TRIANGLE', 'HEAD_SHOULDERS', 'WEDGE', 'TRIANGLE'][Math.floor(Math.random() * 4)],
+        volumeAnalysis: {
+          trend: Math.random() > 0.5 ? 'INCREASING' : 'DECREASING',
+          volume: Math.random() > 0.5 ? 'ABOVE_AVERAGE' : 'BELOW_AVERAGE'
+        },
+        riskLevel: ['LOW', 'MEDIUM', 'HIGH'][Math.floor(Math.random() * 3)],
+        analysisText: `${symbol} is showing ${Math.random() > 0.5 ? 'strong' : 'moderate'} momentum with technical indicators suggesting ${Math.random() > 0.5 ? 'bullish' : 'bearish'} sentiment. Key levels to watch include support at $${Math.round(currentPrice * 0.95)} and resistance at $${Math.round(currentPrice * 1.05)}.`,
+        confidence: 70 + Math.random() * 25,
+        updatedAt: new Date().toISOString()
+      };
+
+      res.json(mockAnalysis);
+    } catch (error) {
+      console.error('Market analysis error:', error);
+      res.status(500).json({ message: 'Failed to fetch market analysis' });
+    }
+  });
+
+  app.get('/api/price-alerts', async (req, res) => {
+    try {
+      // Mock alerts data
+      const mockAlerts = [
+        {
+          id: '1',
+          symbol: 'BTC',
+          alertType: 'PRICE_ABOVE',
+          targetValue: 115000,
+          currentValue: marketData?.bitcoin?.usd || 112000,
+          isTriggered: false,
+          isActive: true
+        },
+        {
+          id: '2',
+          symbol: 'ETH',
+          alertType: 'PRICE_BELOW',
+          targetValue: 4000,
+          currentValue: marketData?.ethereum?.usd || 4200,
+          isTriggered: false,
+          isActive: true
+        }
+      ];
+
+      res.json(mockAlerts);
+    } catch (error) {
+      console.error('Price alerts error:', error);
+      res.status(500).json({ message: 'Failed to fetch price alerts' });
+    }
+  });
+
+  app.post('/api/price-alerts', async (req, res) => {
+    try {
+      const { symbol, alertType, targetValue } = req.body;
+      
+      // Mock creation - in production this would save to database
+      const newAlert = {
+        id: Date.now().toString(),
+        symbol,
+        alertType,
+        targetValue: parseFloat(targetValue),
+        currentValue: marketData?.[symbol.toLowerCase()]?.usd || 0,
+        isTriggered: false,
+        isActive: true,
+        createdAt: new Date().toISOString()
+      };
+
+      res.json(newAlert);
+    } catch (error) {
+      console.error('Create price alert error:', error);
+      res.status(500).json({ message: 'Failed to create price alert' });
     }
   });
 
