@@ -24,7 +24,8 @@ import {
   GraduationCap,
   Activity,
   Video,
-  Users
+  Users,
+  Crown
 } from "lucide-react";
 import { VideoLessonCard } from "@/components/VideoLessonCard";
 import { useAuth } from "@/hooks/useAuth";
@@ -74,12 +75,12 @@ export default function Learn() {
   };
 
   // Fetch lessons
-  const { data: lessons = [], isLoading: lessonsLoading } = useQuery({
+  const { data: lessons = [], isLoading: lessonsLoading } = useQuery<Lesson[]>({
     queryKey: ["/api/lessons"],
   });
 
   // Fetch user progress
-  const { data: progress = [], isLoading: progressLoading } = useQuery({
+  const { data: progress = [], isLoading: progressLoading } = useQuery<UserProgress[]>({
     queryKey: ["/api/progress", getCurrentUserId()],
   });
 
@@ -106,11 +107,11 @@ export default function Learn() {
     },
   });
 
-  const completedLessons = progress.filter((p: UserProgress) => p.completed);
+  const completedLessons = progress.filter(p => p.completed);
   const totalLessons = lessons.length;
   const completionPercentage = totalLessons > 0 ? (completedLessons.length / totalLessons) * 100 : 0;
 
-  const filteredLessons = lessons.filter((lesson: Lesson) => {
+  const filteredLessons = lessons.filter(lesson => {
     const categoryMatch = selectedCategory === "all" || lesson.category === selectedCategory;
     const levelMatch = selectedLevel === "all" || lesson.level === selectedLevel;
     return categoryMatch && levelMatch;
@@ -266,9 +267,9 @@ export default function Learn() {
           {/* Category Stats */}
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-8">
             {categories.slice(1).map((category) => {
-              const categoryLessons = lessons.filter((l: Lesson) => l.category === category);
-              const categoryProgress = progress.filter((p: UserProgress) => 
-                p.completed && lessons.find((l: Lesson) => l.id === p.lessonId)?.category === category
+              const categoryLessons = lessons.filter(l => l.category === category);
+              const categoryProgress = progress.filter(p => 
+                p.completed && lessons.find(l => l.id === p.lessonId)?.category === category
               );
               const percentage = categoryLessons.length > 0 ? (categoryProgress.length / categoryLessons.length) * 100 : 0;
               

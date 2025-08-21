@@ -64,11 +64,21 @@ export function InteractiveCryptoChart() {
     refetchInterval: 30000 // Refresh every 30 seconds
   });
 
-  // Convert market data response to array format
+  // Convert market data response to proper format for chart
   const marketData: CryptoPriceData[] = marketDataResponse && typeof marketDataResponse === 'object' 
-    ? Object.values(marketDataResponse).filter((item): item is CryptoPriceData => 
-        typeof item === 'object' && item !== null && 'symbol' in item
-      )
+    ? Object.values(marketDataResponse).map((item: any) => ({
+        id: item.symbol?.toLowerCase() || 'unknown',
+        symbol: item.symbol || 'UNKNOWN',
+        name: item.name || 'Unknown',
+        currentPrice: item.price || 0,
+        priceChange24h: item.change24h || 0,
+        priceChangePercentage24h: item.change24h || 0,
+        high24h: item.high24h || item.price || 0,
+        low24h: item.low24h || item.price || 0,
+        volume24h: item.volume || 0,
+        marketCap: item.marketCap || 0,
+        lastUpdated: item.lastUpdate || new Date().toISOString()
+      }))
     : [];
 
   // Get current crypto data
