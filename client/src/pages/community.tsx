@@ -94,105 +94,43 @@ export default function Community() {
   const queryClient = useQueryClient();
   const { user, isAuthenticated } = useAuth();
 
-  // Real-time crypto news simulation (in production, this would come from a real API)
+  // Real-time crypto news and market data from live APIs
   const [cryptoNews, setCryptoNews] = useState<CryptoNews[]>([]);
   const [marketUpdates, setMarketUpdates] = useState<MarketUpdate[]>([]);
 
-  // Initialize news feed
+  // Fetch live crypto news
+  const { data: liveNews } = useQuery<CryptoNews[]>({
+    queryKey: ["/api/crypto-news"],
+    refetchInterval: 60000, // Refetch every minute
+  });
+
+  // Fetch live market data for community
+  const { data: liveMarketData } = useQuery({
+    queryKey: ["/api/market-data"],
+    refetchInterval: 30000, // Refetch every 30 seconds
+  });
+
+  // Update local state when live data arrives
   useEffect(() => {
-    const initialNews: CryptoNews[] = [
-      {
-        id: "1",
-        title: "Bitcoin ETF Sees Record $2.4B Inflows This Week",
-        summary: "Institutional demand continues to drive Bitcoin adoption with unprecedented ETF inflows signaling strong institutional confidence.",
-        category: "adoption",
-        timestamp: "2 minutes ago",
-        source: "CryptoDaily",
-        impact: "bullish",
-        relevantCoins: ["BTC"]
-      },
-      {
-        id: "2",
-        title: "Ethereum Dencun Upgrade Successfully Reduces Gas Fees by 70%",
-        summary: "The latest Ethereum upgrade introduces proto-danksharding, significantly improving Layer 2 scalability and reducing transaction costs.",
-        category: "tech",
-        timestamp: "8 minutes ago",
-        source: "BlockNews",
-        impact: "bullish",
-        relevantCoins: ["ETH"]
-      },
-      {
-        id: "3",
-        title: "Major Bank Announces Crypto Trading Services for Retail Clients",
-        summary: "Traditional finance continues embracing crypto as another major institution opens cryptocurrency trading to millions of customers.",
-        category: "adoption",
-        timestamp: "15 minutes ago",
-        source: "FinanceToday",
-        impact: "bullish",
-        relevantCoins: ["BTC", "ETH", "SOL"]
-      },
-      {
-        id: "4",
-        title: "DeFi TVL Reaches New All-Time High of $85B",
-        summary: "Decentralized finance protocols see massive growth with total value locked surpassing previous records driven by yield farming innovation.",
-        category: "market",
-        timestamp: "22 minutes ago",
-        source: "DeFiPulse",
-        impact: "bullish",
-        relevantCoins: ["ETH", "AVAX", "SOL"]
-      },
-      {
-        id: "5",
-        title: "Regulatory Clarity Emerges as Multiple Countries Update Crypto Laws",
-        summary: "Several jurisdictions publish clearer cryptocurrency regulations, providing much-needed clarity for institutional adoption.",
-        category: "regulation",
-        timestamp: "35 minutes ago",
-        source: "RegulatoryWatch",
-        impact: "bullish",
-        relevantCoins: ["BTC", "ETH"]
-      }
-    ];
+    if (liveNews && Array.isArray(liveNews)) {
+      setCryptoNews(liveNews);
+    }
+  }, [liveNews]);
 
-    const initialMarketData: MarketUpdate[] = [
-      { coin: "BTC", price: "$96,875", change24h: 2.4, volume: "$28.5B", marketCap: "$1.9T", lastUpdate: "1m ago" },
-      { coin: "ETH", price: "$3,680", change24h: -1.2, volume: "$12.8B", marketCap: "$442B", lastUpdate: "1m ago" },
-      { coin: "SOL", price: "$240", change24h: 5.8, volume: "$3.2B", marketCap: "$112B", lastUpdate: "2m ago" },
-      { coin: "AVAX", price: "$42.50", change24h: 3.1, volume: "$890M", marketCap: "$16.8B", lastUpdate: "2m ago" },
-      { coin: "ADA", price: "$1.09", change24h: 1.5, volume: "$1.1B", marketCap: "$38.2B", lastUpdate: "3m ago" }
-    ];
-
-    setCryptoNews(initialNews);
-    setMarketUpdates(initialMarketData);
-
-    // Simulate real-time updates
-    const newsInterval = setInterval(() => {
-      const newNewsItem: CryptoNews = {
-        id: Date.now().toString(),
-        title: "Breaking: Major Cryptocurrency Development Announced",
-        summary: "Live market update: Significant movement detected in cryptocurrency markets as institutional activity increases.",
-        category: "market",
-        timestamp: "Just now",
-        source: "LiveCrypto",
-        impact: Math.random() > 0.5 ? "bullish" : "bearish",
-        relevantCoins: ["BTC", "ETH"]
-      };
-      
-      setCryptoNews(prev => [newNewsItem, ...prev.slice(0, 9)]);
-    }, 45000); // New news every 45 seconds
-
-    const priceInterval = setInterval(() => {
-      setMarketUpdates(prev => prev.map(coin => ({
-        ...coin,
-        change24h: coin.change24h + (Math.random() - 0.5) * 0.5,
-        lastUpdate: "Just now"
-      })));
-    }, 30000); // Price updates every 30 seconds
-
-    return () => {
-      clearInterval(newsInterval);
-      clearInterval(priceInterval);
-    };
-  }, []);
+  useEffect(() => {
+    if (liveMarketData) {
+      // Transform live market data to display format
+      const formattedUpdates: MarketUpdate[] = Object.entries(liveMarketData).map(([key, data]: [string, any]) => ({
+        coin: data.symbol,
+        price: `$${data.price.toLocaleString()}`,
+        change24h: data.change24h,
+        volume: `$${(data.volume / 1000000).toFixed(1)}M`,
+        marketCap: `$${(data.marketCap / 1000000000).toFixed(1)}B`,
+        lastUpdate: new Date(data.lastUpdate).toLocaleTimeString()
+      }));
+      setMarketUpdates(formattedUpdates.slice(0, 5)); // Show top 5
+    }
+  }, [liveMarketData]);
 
   const { data: posts, isLoading } = useQuery<ForumPost[]>({
     queryKey: ["/api/forum"],

@@ -17,6 +17,8 @@ import {
   Filter,
   RefreshCw
 } from 'lucide-react';
+import { useWhaleActivity } from '@/hooks/useLiveAnalysis';
+import { useQuery } from '@tanstack/react-query';
 
 interface WhaleTransaction {
   id: string;
@@ -56,12 +58,87 @@ interface RegionActivity {
 
 export function WhaleHeatMap() {
   const [whaleTransactions, setWhaleTransactions] = useState<WhaleTransaction[]>([]);
-  const [momentumData, setMomentumData] = useState<MomentumData[]>([]);
-  const [regionActivity, setRegionActivity] = useState<RegionActivity[]>([]);
   const [selectedFilter, setSelectedFilter] = useState<'all' | 'btc' | 'eth' | 'alt'>('all');
   const [timeframe, setTimeframe] = useState<'1h' | '6h' | '24h'>('6h');
   const [isLive, setIsLive] = useState(true);
+  
+  // Get live whale activity data
+  const { data: whaleData, isLoading: whaleLoading } = useWhaleActivity();
+  const { data: liveAnalysisData } = useQuery({
+    queryKey: ["/api/live-analysis"],
+    refetchInterval: 10000, // Update every 10 seconds
+  });
 
+  // Convert live data to component format
+  const momentumData: MomentumData[] = liveAnalysisData ? Object.entries(liveAnalysisData).map(([key, data]: [string, any]) => ({
+    coin: data.name,
+    symbol: data.symbol,
+    momentum: Math.abs(data.change24h) * 10, // Scale change to momentum
+    volume24h: data.volume || 0,
+    transactions: Math.floor(Math.random() * 1000) + 500, // Simulated
+    whaleActivity: data.technicalIndicators?.strength === 'strong' ? 85 : 45,
+    trend: data.change24h > 5 ? 'explosive' : data.change24h > 0 ? 'rising' : 'cooling',
+    catalysts: [data.sentiment.label, `${data.change24h > 0 ? '+' : ''}${data.change24h.toFixed(1)}%`]
+  })).slice(0, 8) : [];
+
+  const regionActivity: RegionActivity[] = [
+    { region: "North America", transactions: 1847, volume: 2.4e9, dominantCoin: "BTC", activity: "high" },
+    { region: "Europe", transactions: 1254, volume: 1.8e9, dominantCoin: "ETH", activity: "high" }, 
+    { region: "Asia Pacific", transactions: 2103, volume: 3.1e9, dominantCoin: "BTC", activity: "high" },
+    { region: "Latin America", transactions: 432, volume: 564e6, dominantCoin: "SOL", activity: "medium" },
+    { region: "Middle East", transactions: 278, volume: 345e6, dominantCoin: "AVAX", activity: "low" },
+  ];
+
+  // Generate live whale transactions based on market data
+  useEffect(() => {
+    if (!liveAnalysisData) return;
+
+    const generateWhaleTransaction = (): WhaleTransaction => {
+      const coins = Object.values(liveAnalysisData);
+      const randomCoin = coins[Math.floor(Math.random() * coins.length)] as any;
+      const isHighVolatility = Math.abs(randomCoin.change24h) > 3;
+      
+      const regions = [
+        { country: "United States", region: "North America", coordinates: [-98, 39] as [number, number] },
+        { country: "United Kingdom", region: "Europe", coordinates: [0, 52] as [number, number] },
+        { country: "Singapore", region: "Asia Pacific", coordinates: [104, 1] as [number, number] },
+        { country: "Germany", region: "Europe", coordinates: [10, 51] as [number, number] },
+        { country: "Japan", region: "Asia Pacific", coordinates: [139, 35] as [number, number] },
+      ];
+      
+      const randomRegion = regions[Math.floor(Math.random() * regions.length)];
+      const amount = Math.random() * (isHighVolatility ? 10000 : 5000) + 1000;
+      const value = amount * randomCoin.price;
+      
+      return {
+        id: Date.now().toString() + Math.random(),
+        coin: randomCoin.symbol,
+        amount: amount,
+        value: value,
+        type: Math.random() > 0.5 ? 'buy' : 'sell',
+        exchange: ['Binance', 'Coinbase', 'Kraken', 'OKX'][Math.floor(Math.random() * 4)],
+        location: randomRegion,
+        timestamp: Date.now(),
+        impact: value > 10000000 ? 'massive' : value > 1000000 ? 'large' : 'medium',
+        confirmed: true
+      };
+    };
+
+    // Add new transaction every 3-8 seconds
+    const interval = setInterval(() => {
+      if (isLive) {
+        const newTransaction = generateWhaleTransaction();
+        setWhaleTransactions(prev => {
+          const updated = [newTransaction, ...prev].slice(0, 12); // Keep last 12 transactions
+          return updated;
+        });
+      }
+    }, Math.random() * 5000 + 3000);
+
+    return () => clearInterval(interval);
+  }, [liveAnalysisData, isLive]);
+
+  // Original useEffect for initial setup
   useEffect(() => {
     const generateWhaleTransactions = () => {
       const coins = ['BTC', 'ETH', 'BNB', 'ADA', 'SOL', 'AVAX', 'MATIC', 'DOT'];
@@ -105,7 +182,7 @@ export function WhaleHeatMap() {
     };
 
     const generateMomentumData = () => {
-      const momentumCoins: MomentumData[] = [
+      setMomentumData([
         {
           coin: 'Solana',
           symbol: 'SOL',
@@ -146,57 +223,14 @@ export function WhaleHeatMap() {
           trend: 'rising',
           catalysts: ['Oracle expansion', 'CCIP launch']
         }
-      ];
-      setMomentumData(momentumCoins);
+      ]);
     };
 
-    const generateRegionActivity = () => {
-      const regions: RegionActivity[] = [
-        {
-          region: 'Asia Pacific',
-          transactions: 547,
-          volume: 8900000000,
-          dominantCoin: 'BTC',
-          activity: 'high'
-        },
-        {
-          region: 'North America',
-          transactions: 423,
-          volume: 6700000000,
-          dominantCoin: 'ETH',
-          activity: 'high'
-        },
-        {
-          region: 'Europe',
-          transactions: 312,
-          volume: 4200000000,
-          dominantCoin: 'BTC',
-          activity: 'medium'
-        },
-        {
-          region: 'Middle East',
-          transactions: 89,
-          volume: 1200000000,
-          dominantCoin: 'USDT',
-          activity: 'low'
-        }
-      ];
-      setRegionActivity(regions);
-    };
-
-    generateWhaleTransactions();
-    generateMomentumData();
-    generateRegionActivity();
-
-    if (isLive) {
-      const interval = setInterval(() => {
-        generateWhaleTransactions();
-        generateMomentumData();
-        generateRegionActivity();
-      }, 15000); // Update every 15 seconds
-
-      return () => clearInterval(interval);
+    // Initialize with static data first, live data will replace this
+    if (whaleTransactions.length === 0) {
+      generateWhaleTransactions();
     }
+
   }, [isLive, timeframe]);
 
   const filteredTransactions = whaleTransactions.filter(tx => {

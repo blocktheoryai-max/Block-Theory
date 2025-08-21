@@ -10,6 +10,8 @@ import {
   DollarSign,
   Zap
 } from "lucide-react";
+import { useWhaleActivity } from '@/hooks/useLiveAnalysis';
+import { useEffect, useState } from 'react';
 
 export default function WhaleTracker() {
   return (
