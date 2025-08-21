@@ -240,23 +240,54 @@ export default function Community() {
               </CardContent>
             </Card>
 
-            {/* Community Stats */}
+            {/* Current Market Data */}
             <Card className="mt-6">
               <CardHeader>
-                <CardTitle>Community Stats</CardTitle>
+                <CardTitle>Market Overview</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-gray-600 dark:text-gray-400">Total Posts</span>
+                  <span className="text-sm text-gray-600 dark:text-gray-400">Bitcoin (BTC)</span>
+                  <div className="text-right">
+                    <div className="font-semibold">$96,875</div>
+                    <div className="text-xs text-green-600">+2.4%</div>
+                  </div>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-gray-600 dark:text-gray-400">Ethereum (ETH)</span>
+                  <div className="text-right">
+                    <div className="font-semibold">$3,680</div>
+                    <div className="text-xs text-green-600">+1.8%</div>
+                  </div>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-gray-600 dark:text-gray-400">Market Cap</span>
+                  <span className="font-semibold">$2.3T</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-gray-600 dark:text-gray-400">Fear & Greed</span>
+                  <span className="font-semibold text-orange-600">78 (Greed)</span>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Platform Stats */}
+            <Card className="mt-6">
+              <CardHeader>
+                <CardTitle>Platform Stats</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-gray-600 dark:text-gray-400">Total Lessons</span>
+                  <span className="font-semibold">33</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-gray-600 dark:text-gray-400">Active Posts</span>
                   <span className="font-semibold">{posts.length}</span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-gray-600 dark:text-gray-400">Active Members</span>
-                  <span className="font-semibold">1,247</span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-gray-600 dark:text-gray-400">Online Now</span>
-                  <span className="font-semibold">89</span>
+                  <span className="text-sm text-gray-600 dark:text-gray-400">Online Traders</span>
+                  <span className="font-semibold">324</span>
                 </div>
               </CardContent>
             </Card>
@@ -264,6 +295,60 @@ export default function Community() {
 
           {/* Main Content */}
           <div className="lg:col-span-3">
+            {/* Current News & Market Updates */}
+            <Card className="mb-6">
+              <CardHeader>
+                <CardTitle className="flex items-center">
+                  <TrendingUp className="h-5 w-5 mr-2" />
+                  Market News & Updates
+                </CardTitle>
+                <CardDescription>Latest crypto market news and platform updates</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="border-l-4 border-green-500 pl-4">
+                    <div className="flex items-center justify-between mb-2">
+                      <h4 className="font-semibold text-green-700 dark:text-green-400">Bitcoin Hits New All-Time High</h4>
+                      <span className="text-xs text-gray-500">2 hours ago</span>
+                    </div>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">
+                      Bitcoin reaches $96,875, driven by institutional adoption and ETF inflows. Market sentiment remains bullish.
+                    </p>
+                  </div>
+                  
+                  <div className="border-l-4 border-blue-500 pl-4">
+                    <div className="flex items-center justify-between mb-2">
+                      <h4 className="font-semibold text-blue-700 dark:text-blue-400">New Lesson Added: Advanced DeFi Strategies</h4>
+                      <span className="text-xs text-gray-500">5 hours ago</span>
+                    </div>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">
+                      We've added a comprehensive lesson on yield farming and liquidity provision strategies.
+                    </p>
+                  </div>
+                  
+                  <div className="border-l-4 border-purple-500 pl-4">
+                    <div className="flex items-center justify-between mb-2">
+                      <h4 className="font-semibold text-purple-700 dark:text-purple-400">Ethereum 2.0 Staking Update</h4>
+                      <span className="text-xs text-gray-500">1 day ago</span>
+                    </div>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">
+                      Ethereum staking rewards continue to attract institutional investors with 12M+ ETH staked.
+                    </p>
+                  </div>
+                  
+                  <div className="border-l-4 border-orange-500 pl-4">
+                    <div className="flex items-center justify-between mb-2">
+                      <h4 className="font-semibold text-orange-700 dark:text-orange-400">Platform Milestone: 33 Comprehensive Lessons</h4>
+                      <span className="text-xs text-gray-500">2 days ago</span>
+                    </div>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">
+                      TradeTutor now offers 33 expert-crafted lessons covering all aspects of crypto trading and blockchain technology.
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
             {/* New Post Form */}
             {showNewPostForm && (
               <Card className="mb-6">
