@@ -59,11 +59,11 @@ export default function Learn() {
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const { user, isAuthenticated } = useAuth();
-  const { subscriptionStatus } = useSubscriptionStatus();
+  const { subscription, tier, status } = useSubscriptionStatus();
 
   // Get user ID or use demo user
   const getCurrentUserId = () => {
-    return user?.id || "demo-user-id";
+    return (user as any)?.id || "demo-user-id";
   };
 
   // Fetch lessons
@@ -125,20 +125,21 @@ export default function Learn() {
   // Helper functions
   const getCategoryIcon = (category: string) => {
     switch (category) {
-      case "basics": return BookOpen;
-      case "trading": return TrendingUp;
-      case "security": return Shield;
-      case "defi": return Coins;
-      case "advanced": return Target;
+      case "Fundamentals": return BookOpen;
+      case "Technical Analysis": return TrendingUp;
+      case "Trading": return Target;
+      case "Security": return Shield;
+      case "DeFi": return Coins;
+      case "Research": return Target;
       default: return BookOpen;
     }
   };
 
   const getLevelColor = (level: string) => {
     switch (level) {
-      case "beginner": return "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200";
-      case "intermediate": return "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200";
-      case "advanced": return "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200";
+      case "Beginner": return "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200";
+      case "Intermediate": return "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200";
+      case "Advanced": return "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200";
       default: return "bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200";
     }
   };
@@ -146,10 +147,9 @@ export default function Learn() {
   const canAccessLesson = (lesson: Lesson) => {
     if (!lesson.isPremium) return true;
     if (!isAuthenticated) return false;
-    if (!subscriptionStatus) return false;
     
     const tierOrder = { free: 0, basic: 1, pro: 2, elite: 3 };
-    const userTier = subscriptionStatus.tier || "free";
+    const userTier = tier || "free";
     const requiredTier = lesson.requiredTier || "free";
     
     return tierOrder[userTier as keyof typeof tierOrder] >= tierOrder[requiredTier as keyof typeof tierOrder];
@@ -157,18 +157,19 @@ export default function Learn() {
 
   const categories = [
     { value: "all", label: "All", icon: BookOpen },
-    { value: "basics", label: "Basics", icon: BookOpen },
-    { value: "trading", label: "Trading", icon: TrendingUp },
-    { value: "security", label: "Security", icon: Shield },
-    { value: "defi", label: "DeFi", icon: Coins },
-    { value: "advanced", label: "Advanced", icon: Target }
+    { value: "Fundamentals", label: "Fundamentals", icon: BookOpen },
+    { value: "Technical Analysis", label: "Technical Analysis", icon: TrendingUp },
+    { value: "Security", label: "Security", icon: Shield },
+    { value: "DeFi", label: "DeFi", icon: Coins },
+    { value: "Trading", label: "Trading", icon: Target },
+    { value: "Research", label: "Research", icon: Target }
   ];
 
   const levels = [
     { value: "all", label: "All Levels" },
-    { value: "beginner", label: "Beginner" },
-    { value: "intermediate", label: "Intermediate" },
-    { value: "advanced", label: "Advanced" }
+    { value: "Beginner", label: "Beginner" },
+    { value: "Intermediate", label: "Intermediate" },
+    { value: "Advanced", label: "Advanced" }
   ];
 
   // Loading state
