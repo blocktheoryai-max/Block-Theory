@@ -134,13 +134,13 @@ export function InteractiveCryptoChart() {
         }
 
         // Generate realistic price variation
-        const basePrice = currentCrypto.currentPrice;
+        const basePrice = currentCrypto?.currentPrice || 50000; // Default fallback price
         const volatility = basePrice * 0.02; // 2% volatility
         const trendFactor = (intervals - i) / intervals; // Gradual trend
         const randomFactor = (Math.random() - 0.5) * volatility;
         const price = basePrice * (0.95 + trendFactor * 0.1) + randomFactor;
 
-        const volume = currentCrypto.volume24h * (0.8 + Math.random() * 0.4);
+        const volume = (currentCrypto?.volume24h || 1000000000) * (0.8 + Math.random() * 0.4);
 
         dataPoints.push({
           timestamp: timestamp.toISOString(),
@@ -157,6 +157,7 @@ export function InteractiveCryptoChart() {
   }, [currentCrypto, selectedTimeframe]);
 
   const formatPrice = (price: number) => {
+    if (!price || isNaN(price)) return "$0.00";
     if (price >= 1) {
       return `$${price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
     } else {
@@ -165,6 +166,7 @@ export function InteractiveCryptoChart() {
   };
 
   const formatVolume = (volume: number) => {
+    if (!volume || isNaN(volume)) return "$0";
     if (volume >= 1e9) {
       return `$${(volume / 1e9).toFixed(2)}B`;
     } else if (volume >= 1e6) {
@@ -242,18 +244,18 @@ export function InteractiveCryptoChart() {
             <div className="flex flex-col lg:items-end">
               <div className="text-3xl font-bold">{formatPrice(currentCrypto.currentPrice)}</div>
               <div className="flex items-center gap-2">
-                {currentCrypto.priceChangePercentage24h >= 0 ? (
+                {(currentCrypto.priceChangePercentage24h || 0) >= 0 ? (
                   <TrendingUp className="w-4 h-4 text-green-500" />
                 ) : (
                   <TrendingDown className="w-4 h-4 text-red-500" />
                 )}
-                <Badge variant={currentCrypto.priceChangePercentage24h >= 0 ? "default" : "destructive"}>
-                  {currentCrypto.priceChangePercentage24h >= 0 ? "+" : ""}
-                  {currentCrypto.priceChangePercentage24h.toFixed(2)}%
+                <Badge variant={(currentCrypto.priceChangePercentage24h || 0) >= 0 ? "default" : "destructive"}>
+                  {(currentCrypto.priceChangePercentage24h || 0) >= 0 ? "+" : ""}
+                  {(currentCrypto.priceChangePercentage24h || 0).toFixed(2)}%
                 </Badge>
                 <span className="text-sm text-muted-foreground">
-                  {currentCrypto.priceChange24h >= 0 ? "+" : ""}
-                  {formatPrice(Math.abs(currentCrypto.priceChange24h))}
+                  {(currentCrypto.priceChange24h || 0) >= 0 ? "+" : ""}
+                  {formatPrice(Math.abs(currentCrypto.priceChange24h || 0))}
                 </span>
               </div>
             </div>
@@ -264,19 +266,19 @@ export function InteractiveCryptoChart() {
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 text-sm">
             <div>
               <div className="text-muted-foreground">24h High</div>
-              <div className="font-medium">{formatPrice(currentCrypto.high24h)}</div>
+              <div className="font-medium">{formatPrice(currentCrypto.high24h || 0)}</div>
             </div>
             <div>
               <div className="text-muted-foreground">24h Low</div>
-              <div className="font-medium">{formatPrice(currentCrypto.low24h)}</div>
+              <div className="font-medium">{formatPrice(currentCrypto.low24h || 0)}</div>
             </div>
             <div>
               <div className="text-muted-foreground">24h Volume</div>
-              <div className="font-medium">{formatVolume(currentCrypto.volume24h)}</div>
+              <div className="font-medium">{formatVolume(currentCrypto.volume24h || 0)}</div>
             </div>
             <div>
               <div className="text-muted-foreground">Market Cap</div>
-              <div className="font-medium">{formatVolume(currentCrypto.marketCap)}</div>
+              <div className="font-medium">{formatVolume(currentCrypto.marketCap || 0)}</div>
             </div>
           </div>
         )}
