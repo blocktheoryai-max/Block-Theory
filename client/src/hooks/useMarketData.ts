@@ -22,7 +22,10 @@ export function useMarketData() {
   });
 }
 
-export function formatPrice(price: number): string {
+export function formatPrice(price: number | undefined): string {
+  if (!price || typeof price !== 'number' || isNaN(price)) {
+    return '$0.00';
+  }
   if (price < 1) {
     return `$${price.toFixed(6)}`;
   }
@@ -32,7 +35,10 @@ export function formatPrice(price: number): string {
   })}`;
 }
 
-export function formatMarketCap(marketCap: number): string {
+export function formatMarketCap(marketCap: number | undefined): string {
+  if (!marketCap || typeof marketCap !== 'number' || isNaN(marketCap)) {
+    return '$0';
+  }
   if (marketCap >= 1e12) {
     return `$${(marketCap / 1e12).toFixed(2)}T`;
   }
@@ -45,7 +51,10 @@ export function formatMarketCap(marketCap: number): string {
   return `$${marketCap.toLocaleString()}`;
 }
 
-export function formatVolume(volume: number): string {
+export function formatVolume(volume: number | undefined): string {
+  if (!volume || typeof volume !== 'number' || isNaN(volume)) {
+    return '$0';
+  }
   if (volume >= 1e9) {
     return `$${(volume / 1e9).toFixed(1)}B`;
   }

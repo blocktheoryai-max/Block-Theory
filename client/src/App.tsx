@@ -11,6 +11,7 @@ import Analyze from "@/pages/analyze";
 import Community from "@/pages/community";
 import Pricing from "@/pages/pricing";
 import WhaleTracker from "@/pages/whale-tracker";
+import WhitepaperAnalyzer from "@/pages/whitepaper-analyzer";
 import Checkout from "@/pages/checkout";
 import NotFound from "@/pages/not-found";
 import { useAuth } from "@/hooks/useAuth";
@@ -29,6 +30,7 @@ function Router() {
       <Route path="/community" component={Community} />
       <Route path="/pricing" component={Pricing} />
       <Route path="/whale-tracker" component={WhaleTracker} />
+      <Route path="/whitepaper-analyzer" component={WhitepaperAnalyzer} />
       <Route path="/checkout" component={Checkout} />
       <Route component={NotFound} />
     </Switch>
