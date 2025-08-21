@@ -131,7 +131,6 @@ export async function seedInitialData() {
           requiredTier: "free",
           prerequisites: [],
           learningObjectives: ["Define cryptocurrency", "Understand digital currency benefits", "Identify use cases"],
-          tags: ["cryptocurrency", "basics", "digital-money"],
           isLocked: false,
           isPremium: false
         },
@@ -173,7 +172,6 @@ export async function seedInitialData() {
           requiredTier: "free",
           prerequisites: ["What is Cryptocurrency?"],
           learningObjectives: ["Understand blockchain architecture", "Learn consensus mechanisms", "Identify blockchain applications"],
-          tags: ["blockchain", "distributed-ledger", "technology"],
           isLocked: false,
           isPremium: false
         },
@@ -222,7 +220,6 @@ export async function seedInitialData() {
           requiredTier: "free",
           prerequisites: ["Blockchain Technology Explained"],
           learningObjectives: ["Choose appropriate wallet types", "Implement security practices", "Recognize security threats"],
-          tags: ["wallet", "security", "private-keys"],
           isLocked: false,
           isPremium: false
         },
@@ -281,7 +278,7 @@ export async function seedInitialData() {
           requiredTier: "free",
           prerequisites: ["Crypto Wallet Security Fundamentals"],
           learningObjectives: ["Master order types", "Understand execution mechanics", "Apply order strategies"],
-          tags: ["orders", "execution", "trading-basics"],
+          
           isLocked: false,
           isPremium: false
         },
@@ -331,7 +328,7 @@ export async function seedInitialData() {
           requiredTier: "free",
           prerequisites: ["Understanding Market Orders and Order Types"],
           learningObjectives: ["Read candlestick charts", "Identify key patterns", "Use multiple timeframes"],
-          tags: ["charts", "candlesticks", "technical-analysis"],
+          
           isLocked: false,
           isPremium: false
         },
@@ -385,7 +382,7 @@ export async function seedInitialData() {
           requiredTier: "free",
           prerequisites: ["Reading Crypto Charts and Candlesticks"],
           learningObjectives: ["Apply the 1% rule", "Calculate position sizes", "Manage emotions"],
-          tags: ["risk-management", "position-sizing", "discipline"],
+          
           isLocked: false,
           isPremium: false
         },
@@ -444,7 +441,7 @@ export async function seedInitialData() {
           requiredTier: "basic",
           prerequisites: ["Risk Management Fundamentals"],
           learningObjectives: ["Understand trading types", "Learn analysis methods", "Apply risk management"],
-          tags: ["trading", "risk-management", "analysis"],
+          
           isLocked: false,
           isPremium: true
         },
@@ -500,7 +497,7 @@ export async function seedInitialData() {
           requiredTier: "basic",
           prerequisites: ["Introduction to Crypto Trading"],
           learningObjectives: ["Master chart patterns", "Use technical indicators", "Develop trading strategies"],
-          tags: ["technical-analysis", "charts", "indicators"],
+          
           isLocked: false,
           isPremium: true
         },
@@ -557,7 +554,7 @@ export async function seedInitialData() {
           requiredTier: "pro",
           prerequisites: ["Technical Analysis Deep Dive"],
           learningObjectives: ["Understand DeFi protocols", "Learn yield farming", "Assess DeFi risks"],
-          tags: ["defi", "protocols", "yield-farming"],
+          
           isLocked: false,
           isPremium: true
         },
@@ -624,7 +621,7 @@ export async function seedInitialData() {
           requiredTier: "pro",
           prerequisites: ["Decentralized Finance (DeFi) Fundamentals"],
           learningObjectives: ["Implement multi-sig security", "Understand privacy techniques", "Apply institutional practices"],
-          tags: ["security", "privacy", "multi-sig"],
+          
           isLocked: false,
           isPremium: true
         },
@@ -692,7 +689,7 @@ export async function seedInitialData() {
           requiredTier: "elite",
           prerequisites: ["Advanced Crypto Security & OpSec"],
           learningObjectives: ["Develop trading algorithms", "Implement automated strategies", "Build professional trading systems"],
-          tags: ["algorithmic-trading", "bots", "automation"],
+          
           isLocked: false,
           isPremium: true
         },
@@ -768,7 +765,7 @@ export async function seedInitialData() {
           requiredTier: "basic",
           prerequisites: ["Risk Management Fundamentals"],
           learningObjectives: ["Understand Bitcoin's technical foundation", "Analyze economic implications", "Evaluate historical significance"],
-          tags: ["bitcoin", "whitepaper", "satoshi", "proof-of-work"],
+          
           isLocked: false,
           isPremium: true
         },
@@ -853,7 +850,7 @@ export async function seedInitialData() {
           requiredTier: "pro",
           prerequisites: ["Bitcoin Whitepaper Deep Dive"],
           learningObjectives: ["Understand PoS transition", "Analyze economic impacts", "Evaluate investment implications"],
-          tags: ["ethereum", "proof-of-stake", "merge", "staking"],
+          
           isLocked: false,
           isPremium: true
         },
@@ -955,7 +952,7 @@ export async function seedInitialData() {
           requiredTier: "pro",
           prerequisites: ["Ethereum 2.0 and Proof of Stake Transition"],
           learningObjectives: ["Understand CBDC implications", "Analyze government strategies", "Evaluate market impacts"],
-          tags: ["cbdc", "monetary-policy", "government", "digital-currency"],
+          
           isLocked: false,
           isPremium: true
         },
@@ -1066,7 +1063,7 @@ export async function seedInitialData() {
           requiredTier: "pro",
           prerequisites: ["Central Bank Digital Currencies (CBDCs) Analysis"],
           learningObjectives: ["Track institutional trends", "Analyze adoption drivers", "Evaluate market implications"],
-          tags: ["institutional-adoption", "corporate-treasury", "wall-street"],
+          
           isLocked: false,
           isPremium: true
         },
@@ -1186,7 +1183,7 @@ export async function seedInitialData() {
           requiredTier: "basic",
           prerequisites: ["Institutional Cryptocurrency Adoption Trends"],
           learningObjectives: ["Understand environmental impacts", "Evaluate sustainable solutions", "Assess ESG implications"],
-          tags: ["sustainability", "environment", "esg", "green-crypto"],
+          
           isLocked: false,
           isPremium: true
         }
@@ -1202,84 +1199,48 @@ export async function seedInitialData() {
       await db.insert(cryptoPrices).values([
         {
           symbol: "BTC",
-          name: "Bitcoin",
           price: "96875.00",
-          change24h: "1.45",
-          marketCap: "1918000000000",
-          volume24h: "34500000000",
-          lastUpdated: new Date()
+          change24h: "1.45"
         },
         {
           symbol: "ETH", 
-          name: "Ethereum",
           price: "3680.00",
-          change24h: "2.85",
-          marketCap: "442000000000",
-          volume24h: "19800000000",
-          lastUpdated: new Date()
+          change24h: "2.85"
         },
         {
           symbol: "BNB",
-          name: "BNB",
           price: "695.40",
-          change24h: "2.15",
-          marketCap: "102000000000",
-          volume24h: "2100000000",
-          lastUpdated: new Date()
+          change24h: "2.15"
         },
         {
           symbol: "SOL",
-          name: "Solana", 
           price: "245.80",
-          change24h: "3.45",
-          marketCap: "118000000000",
-          volume24h: "5800000000",
-          lastUpdated: new Date()
+          change24h: "3.45"
         },
         {
           symbol: "XRP",
-          name: "XRP",
           price: "2.15",
-          change24h: "5.25",
-          marketCap: "122000000000",
-          volume24h: "4200000000",
-          lastUpdated: new Date()
+          change24h: "5.25"
         },
         {
           symbol: "ADA",
-          name: "Cardano",
           price: "0.95",
-          change24h: "-1.25",
-          marketCap: "34000000000",
-          volume24h: "620000000",
-          lastUpdated: new Date()
+          change24h: "-1.25"
         },
         {
           symbol: "DOGE",
-          name: "Dogecoin",
           price: "0.42",
-          change24h: "4.85",
-          marketCap: "62000000000",
-          volume24h: "2800000000",
-          lastUpdated: new Date()
+          change24h: "4.85"
         },
         {
           symbol: "AVAX",
-          name: "Avalanche",
           price: "42.80",
-          change24h: "5.35",
-          marketCap: "17000000000",
-          volume24h: "1200000000",
-          lastUpdated: new Date()
+          change24h: "5.35"
         },
         {
           symbol: "SHIB",
-          name: "Shiba Inu",
           price: "0.000025",
-          change24h: "6.85",
-          marketCap: "14700000000",
-          volume24h: "1850000000",
-          lastUpdated: new Date()
+          change24h: "6.85"
         },
         {
           symbol: "UNI",
