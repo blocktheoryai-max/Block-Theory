@@ -10,10 +10,11 @@ import Simulate from "@/pages/simulate";
 import Analyze from "@/pages/analyze";
 import Community from "@/pages/community";
 import Pricing from "@/pages/pricing";
+import WhaleTracker from "@/pages/whale-tracker";
 import Checkout from "@/pages/checkout";
 import NotFound from "@/pages/not-found";
 import { useAuth } from "@/hooks/useAuth";
-import { Navigation } from "@/components/ui/navigation";
+import Navigation from "@/components/Navigation";
 
 function Router() {
   const { isAuthenticated, isLoading } = useAuth();
@@ -27,6 +28,7 @@ function Router() {
       <Route path="/analyze" component={Analyze} />
       <Route path="/community" component={Community} />
       <Route path="/pricing" component={Pricing} />
+      <Route path="/whale-tracker" component={WhaleTracker} />
       <Route path="/checkout" component={Checkout} />
       <Route component={NotFound} />
     </Switch>

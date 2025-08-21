@@ -1,4 +1,5 @@
 import { Link } from "wouter";
+import Navigation from "@/components/Navigation";
 import { ChainHeader } from "@/components/ChainHeader";
 import { LiveMarketData } from "@/components/LiveMarketData";
 import { WhaleActivity } from "@/components/WhaleActivity";
@@ -21,7 +22,8 @@ import {
   Crown,
   Lock,
   CheckCircle,
-  PlayCircle
+  PlayCircle,
+  Fish
 } from "lucide-react";
 
 export default function Dashboard() {
@@ -68,6 +70,7 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-background">
+      <Navigation />
       <ChainHeader />
       
       {/* Learning Priority Hero Section */}
@@ -236,6 +239,14 @@ export default function Dashboard() {
             <div className="text-center mb-8">
               <h2 className="text-3xl font-bold text-foreground mb-4">Market Intelligence</h2>
               <p className="text-muted-foreground">Track whale movements and crypto momentum in real-time</p>
+              <div className="mt-4">
+                <Link href="/whale-tracker">
+                  <Button className="bg-primary hover:bg-primary/90 text-white">
+                    <Fish className="w-4 h-4 mr-2" />
+                    View Full Whale Heat Map
+                  </Button>
+                </Link>
+              </div>
             </div>
             <WhaleActivity />
           </div>
