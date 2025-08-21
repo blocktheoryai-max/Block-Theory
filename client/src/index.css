@@ -250,3 +250,52 @@
     @apply bg-muted;
   }
 }
+
+/* Lesson Content Styling */
+.lesson-content h1 {
+  @apply text-2xl font-bold text-white mb-4 mt-6;
+}
+
+.lesson-content h2 {
+  @apply text-xl font-semibold text-blue-400 mb-3 mt-5;
+}
+
+.lesson-content h3 {
+  @apply text-lg font-medium text-purple-400 mb-2 mt-4;
+}
+
+.lesson-content p {
+  @apply text-gray-200 mb-4 leading-relaxed;
+}
+
+.lesson-content ul {
+  @apply list-disc pl-6 mb-4 space-y-2;
+}
+
+.lesson-content ol {
+  @apply list-decimal pl-6 mb-4 space-y-2;
+}
+
+.lesson-content li {
+  @apply text-gray-300;
+}
+
+.lesson-content strong {
+  @apply text-white font-semibold;
+}
+
+.lesson-content table {
+  @apply w-full border-collapse border border-slate-600 mb-4;
+}
+
+.lesson-content th {
+  @apply bg-slate-800 text-white font-semibold p-3 border border-slate-600;
+}
+
+.lesson-content td {
+  @apply text-gray-300 p-3 border border-slate-600;
+}
+
+.lesson-content tr:nth-child(even) {
+  @apply bg-slate-800/30;
+}

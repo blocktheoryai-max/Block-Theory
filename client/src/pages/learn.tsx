@@ -195,9 +195,10 @@ export default function Learn() {
                 {/* Lesson Content */}
                 <div className="prose prose-invert max-w-none">
                   <div className="bg-slate-700/30 rounded-lg p-6 border border-slate-600">
-                    <div className="whitespace-pre-wrap text-gray-200 leading-relaxed">
-                      {selectedLesson.content}
-                    </div>
+                    <div 
+                      className="text-gray-200 leading-relaxed lesson-content"
+                      dangerouslySetInnerHTML={{ __html: selectedLesson.content }}
+                    />
                   </div>
                 </div>
 
