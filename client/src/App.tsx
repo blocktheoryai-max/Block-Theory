@@ -4,6 +4,7 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import Home from "@/pages/home";
+import Dashboard from "@/pages/dashboard";
 import Learn from "@/pages/learn";
 import Simulate from "@/pages/simulate";
 import Analyze from "@/pages/analyze";
@@ -19,7 +20,8 @@ function Router() {
 
   return (
     <Switch>
-      <Route path="/" component={Home} />
+      <Route path="/" component={Dashboard} />
+      <Route path="/home" component={Home} />
       <Route path="/learn" component={Learn} />
       <Route path="/simulate" component={Simulate} />
       <Route path="/analyze" component={Analyze} />
@@ -35,7 +37,7 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
-        <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+        <div className="min-h-screen bg-gradient-to-br from-slate-900 via-indigo-900 to-slate-800">
           <Navigation />
           <div className="flex-1">
             <Router />
