@@ -1,7 +1,7 @@
 import { Link } from "wouter";
 import { ChainHeader } from "@/components/ChainHeader";
-import { LiveBlockchain } from "@/components/LiveBlockchain";
 import { LiveMarketData } from "@/components/LiveMarketData";
+import { WhaleActivity } from "@/components/WhaleActivity";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -229,15 +229,15 @@ export default function Dashboard() {
         </div>
       </section>
 
-      {/* Blockchain Visualization */}
-      <section className="py-12 bg-muted/50">
+      {/* Whale Activity & Momentum Tracker */}
+      <section className="py-12 bg-gradient-to-r from-primary/5 to-primary/10">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-8">
-              <h2 className="text-3xl font-bold text-foreground mb-4">Live Blockchain Activity</h2>
-              <p className="text-muted-foreground">See real-time blockchain transactions and network activity</p>
+              <h2 className="text-3xl font-bold text-foreground mb-4">Market Intelligence</h2>
+              <p className="text-muted-foreground">Track whale movements and crypto momentum in real-time</p>
             </div>
-            <LiveBlockchain />
+            <WhaleActivity />
           </div>
         </div>
       </section>

@@ -144,7 +144,7 @@ export default function Simulate() {
   });
 
   const selectedPrice = prices.find(p => p.symbol === selectedSymbol);
-  const tradeTotal = parseFloat(tradeAmount) * parseFloat(tradePrice || selectedPrice?.currentPrice.toString() || "0");
+  const tradeTotal = parseFloat(tradeAmount) * parseFloat(tradePrice || selectedPrice?.currentPrice?.toString() || "0");
 
   // Portfolio calculations
   const portfolioValue = portfolio?.totalValue || 10000;
@@ -156,7 +156,7 @@ export default function Simulate() {
     if (!tradeAmount || !selectedPrice) return;
     
     const amount = parseFloat(tradeAmount);
-    const price = parseFloat(tradePrice) || selectedPrice.currentPrice;
+    const price = parseFloat(tradePrice) || selectedPrice?.currentPrice || 0;
     
     if (amount <= 0) {
       toast({ title: "Invalid amount", variant: "destructive" });
