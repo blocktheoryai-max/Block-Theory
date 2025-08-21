@@ -33,9 +33,6 @@ function Router() {
         <Route path="/analyze" component={Analyze} />
         <Route path="/community" component={Community} />
         <Route path="/pricing" component={Pricing} />
-        <Route path="/whale-tracker" component={WhaleTracker} />
-        <Route path="/whitepaper-analyzer" component={WhitepaperAnalyzer} />
-        <Route path="/technical-analysis" component={TechnicalAnalysis} />
         <Route path="/checkout" component={Checkout} />
         <Route component={NotFound} />
       </Switch>

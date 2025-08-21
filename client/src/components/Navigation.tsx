@@ -12,9 +12,7 @@ export default function Navigation() {
     { path: "/", label: translate("nav.home", "Home"), icon: TrendingUp },
     { path: "/learn", label: translate("nav.learn", "Learn"), icon: BookOpen },
     { path: "/simulate", label: translate("nav.simulate", "Simulate"), icon: BarChart3 },
-    { path: "/analyze", label: translate("nav.analyze", "Analyze"), icon: FileText },
-    { path: "/technical-analysis", label: translate("nav.technical_analysis", "Technical Analysis"), icon: Activity },
-    { path: "/whale-tracker", label: translate("nav.whale_tracker", "Whale Tracker"), icon: Fish },
+    { path: "/analyze", label: translate("nav.analyze", "Analyze"), icon: Activity },
     { path: "/community", label: translate("nav.community", "Community"), icon: Users },
     { path: "/pricing", label: translate("nav.pricing", "Pricing"), icon: DollarSign },
   ];

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import Navigation from "@/components/Navigation";
+
 import { InteractiveCryptoChart } from "@/components/InteractiveCryptoChart";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -110,9 +110,7 @@ export default function Analyze() {
   };
 
   return (
-    <>
-      <Navigation />
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800 text-white">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800 text-white">
         <div className="container mx-auto px-4 py-8">
           {/* Header */}
           <div className="mb-8">
@@ -187,9 +185,12 @@ export default function Analyze() {
           </div>
 
           <Tabs defaultValue="whale-tracker" className="space-y-6">
-            <TabsList className="grid w-full grid-cols-5 bg-slate-800/50 border-slate-700">
+            <TabsList className="grid w-full grid-cols-6 bg-slate-800/50 border-slate-700">
               <TabsTrigger value="whale-tracker" className="data-[state=active]:bg-blue-600">
                 Whale Tracker
+              </TabsTrigger>
+              <TabsTrigger value="technical" className="data-[state=active]:bg-blue-600">
+                Technical Analysis
               </TabsTrigger>
               <TabsTrigger value="market-metrics" className="data-[state=active]:bg-blue-600">
                 Market Metrics
@@ -249,6 +250,77 @@ export default function Analyze() {
                         </div>
                       </div>
                     ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            <TabsContent value="technical" className="space-y-6">
+              <Card className="bg-slate-800/50 border-slate-700 backdrop-blur-sm">
+                <CardHeader>
+                  <CardTitle className="flex items-center text-white">
+                    <Activity className="h-5 w-5 mr-2 text-blue-400" />
+                    Technical Indicators
+                  </CardTitle>
+                  <CardDescription className="text-gray-400">
+                    Live technical analysis indicators and trading signals
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div className="bg-slate-700/30 rounded-lg p-4 border border-slate-600">
+                      <div className="flex justify-between items-center mb-2">
+                        <span className="text-sm text-gray-400">RSI (14)</span>
+                        <Badge className="bg-yellow-900/50 text-yellow-300 border-yellow-700">NEUTRAL</Badge>
+                      </div>
+                      <div className="text-2xl font-bold text-white mb-1">52.3</div>
+                      <div className="text-xs text-gray-400">Neither overbought nor oversold</div>
+                    </div>
+                    
+                    <div className="bg-slate-700/30 rounded-lg p-4 border border-slate-600">
+                      <div className="flex justify-between items-center mb-2">
+                        <span className="text-sm text-gray-400">MACD</span>
+                        <Badge className="bg-green-900/50 text-green-300 border-green-700">BUY</Badge>
+                      </div>
+                      <div className="text-2xl font-bold text-white mb-1">+1,247</div>
+                      <div className="text-xs text-gray-400">Bullish crossover signal</div>
+                    </div>
+                    
+                    <div className="bg-slate-700/30 rounded-lg p-4 border border-slate-600">
+                      <div className="flex justify-between items-center mb-2">
+                        <span className="text-sm text-gray-400">Moving Average (50)</span>
+                        <Badge className="bg-green-900/50 text-green-300 border-green-700">BULLISH</Badge>
+                      </div>
+                      <div className="text-2xl font-bold text-white mb-1">$108,420</div>
+                      <div className="text-xs text-gray-400">Price above MA50</div>
+                    </div>
+                    
+                    <div className="bg-slate-700/30 rounded-lg p-4 border border-slate-600">
+                      <div className="flex justify-between items-center mb-2">
+                        <span className="text-sm text-gray-400">Stochastic</span>
+                        <Badge className="bg-red-900/50 text-red-300 border-red-700">OVERBOUGHT</Badge>
+                      </div>
+                      <div className="text-2xl font-bold text-white mb-1">84.2</div>
+                      <div className="text-xs text-gray-400">Potential reversal zone</div>
+                    </div>
+                    
+                    <div className="bg-slate-700/30 rounded-lg p-4 border border-slate-600">
+                      <div className="flex justify-between items-center mb-2">
+                        <span className="text-sm text-gray-400">Bollinger Bands</span>
+                        <Badge className="bg-yellow-900/50 text-yellow-300 border-yellow-700">SQUEEZE</Badge>
+                      </div>
+                      <div className="text-2xl font-bold text-white mb-1">2.1%</div>
+                      <div className="text-xs text-gray-400">Low volatility period</div>
+                    </div>
+                    
+                    <div className="bg-slate-700/30 rounded-lg p-4 border border-slate-600">
+                      <div className="flex justify-between items-center mb-2">
+                        <span className="text-sm text-gray-400">Volume Profile</span>
+                        <Badge className="bg-blue-900/50 text-blue-300 border-blue-700">STRONG</Badge>
+                      </div>
+                      <div className="text-2xl font-bold text-white mb-1">+32%</div>
+                      <div className="text-xs text-gray-400">Above average volume</div>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
@@ -447,7 +519,6 @@ export default function Analyze() {
             </TabsContent>
           </Tabs>
         </div>
-      </div>
-    </>
+    </div>
   );
 }
