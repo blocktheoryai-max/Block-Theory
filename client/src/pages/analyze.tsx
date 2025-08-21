@@ -1,803 +1,446 @@
 import { useState } from "react";
-import { Link } from "wouter";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { 
-  Search, 
-  FileText, 
-  TrendingUp, 
-  Shield, 
-  Users, 
-  DollarSign, 
-  AlertTriangle,
-  CheckCircle,
-  Star,
-  Calendar,
-  BarChart3,
-  Zap,
-  Award,
-  BookOpen,
-  Target
-} from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import Navigation from "@/components/Navigation";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Progress } from "@/components/ui/progress";
+import { 
+  TrendingUp, 
+  TrendingDown,
+  Activity,
+  Zap,
+  Eye,
+  DollarSign,
+  BarChart3,
+  PieChart,
+  Waves,
+  Target,
+  AlertTriangle,
+  Clock,
+  ArrowUpRight,
+  ArrowDownRight,
+  FileText,
+  BookOpen
+} from "lucide-react";
 
-// Mock whitepaper data for demonstration
-const mockWhitepapers = [
-  {
-    id: "1",
-    projectName: "Bitcoin",
-    symbol: "BTC",
-    category: "Layer 1",
-    difficulty: "Beginner",
-    overallRating: 9.5,
-    technicalScore: 95,
-    teamScore: 90,
-    useCaseScore: 100,
-    tokenomicsScore: 85,
-    marketCap: "1200000000000",
-    launchDate: "2009-01-03",
-    summary: "The original cryptocurrency and digital gold standard. Learn how Bitcoin's revolutionary proof-of-work consensus mechanism changed finance forever.",
-    keyPoints: ["Decentralized peer-to-peer network", "Fixed supply of 21 million", "Proof-of-work consensus"],
-    strengths: ["First mover advantage", "Network security", "Store of value"],
-    risks: ["Energy consumption", "Scalability limits", "Regulatory uncertainty"],
-    requiredTier: "free"
-  },
-  {
-    id: "2", 
-    projectName: "Ethereum",
-    symbol: "ETH",
-    category: "Layer 1",
-    difficulty: "Intermediate",
-    overallRating: 9.2,
-    technicalScore: 98,
-    teamScore: 95,
-    useCaseScore: 95,
-    tokenomicsScore: 80,
-    marketCap: "400000000000",
-    launchDate: "2015-07-30",
-    summary: "The world computer that enabled smart contracts and DeFi. Analyze Ethereum's transition to proof-of-stake and its ecosystem dominance.",
-    keyPoints: ["Smart contract platform", "EVM compatibility", "Proof-of-stake transition"],
-    strengths: ["Developer ecosystem", "DeFi infrastructure", "Network effects"],
-    risks: ["High gas fees", "Competition from L2s", "Complexity"],
-    requiredTier: "basic"
-  },
-  {
-    id: "3",
-    projectName: "Polygon",
-    symbol: "MATIC", 
-    category: "Layer 2",
-    difficulty: "Expert",
-    overallRating: 8.1,
-    technicalScore: 85,
-    teamScore: 80,
-    useCaseScore: 90,
-    tokenomicsScore: 75,
-    marketCap: "8500000000",
-    launchDate: "2020-05-31",
-    summary: "Ethereum's scaling solution with sidechains and rollups. Deep dive into Layer 2 architecture and multi-chain interoperability strategies.",
-    keyPoints: ["Ethereum Layer 2", "Multi-chain approach", "zkEVM development"],
-    strengths: ["Low transaction costs", "Fast finality", "Ethereum compatibility"],
-    risks: ["Centralization concerns", "Bridge security", "Token utility"],
-    requiredTier: "pro"
-  }
-];
+interface WhaleTransaction {
+  id: string;
+  amount: number;
+  currency: string;
+  type: 'buy' | 'sell';
+  exchange: string;
+  timestamp: string;
+  walletAddress: string;
+  impact: 'high' | 'medium' | 'low';
+}
 
-// Helper functions
-const getDifficultyColor = (difficulty: string) => {
-  switch(difficulty) {
-    case "Beginner": return "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200";
-    case "Intermediate": return "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200";
-    case "Expert": return "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200";
-    default: return "bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200";
-  }
-};
-
-const getCategoryIcon = (category: string) => {
-  switch(category) {
-    case "Layer 1": return <Zap className="h-4 w-4" />;
-    case "Layer 2": return <BarChart3 className="h-4 w-4" />;
-    case "DeFi": return <DollarSign className="h-4 w-4" />;
-    case "NFT": return <Award className="h-4 w-4" />;
-    default: return <FileText className="h-4 w-4" />;
-  }
-};
-
-const formatMarketCap = (marketCap: string) => {
-  const value = parseInt(marketCap);
-  if (value >= 1e12) return `$${(value / 1e12).toFixed(1)}T`;
-  if (value >= 1e9) return `$${(value / 1e9).toFixed(1)}B`;
-  if (value >= 1e6) return `$${(value / 1e6).toFixed(1)}M`;
-  return `$${value.toLocaleString()}`;
-};
-
-// Detailed whitepaper analysis view component
-function WhitepaperDetailView({ whitepaper, onBack }: { whitepaper: any; onBack: () => void }) {
-  const [activeTab, setActiveTab] = useState("overview");
-
-  return (
-    <div className="min-h-screen bg-background">
-      {/* Header */}
-      <div className="gradient-hero dark:gradient-hero-dark border-b border-border">
-        <div className="container mx-auto px-4 py-8">
-          <Button onClick={onBack} variant="outline" className="mb-4">
-            ← Back to Analysis Hub
-          </Button>
-          
-          <div className="flex items-start justify-between">
-            <div className="flex items-center gap-4">
-              <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center">
-                <span className="text-2xl font-bold">{whitepaper.symbol.charAt(0)}</span>
-              </div>
-              <div>
-                <h1 className="text-3xl font-bold">{whitepaper.projectName}</h1>
-                <p className="text-xl text-muted-foreground">{whitepaper.symbol} • {whitepaper.category}</p>
-              </div>
-            </div>
-            
-            <div className="text-right">
-              <div className="flex items-center gap-1 mb-2">
-                <Star className="h-5 w-5 fill-yellow-400 text-yellow-400" />
-                <span className="text-2xl font-bold">{whitepaper.overallRating}</span>
-              </div>
-              <Badge variant="outline" className={getDifficultyColor(whitepaper.difficulty)}>
-                {whitepaper.difficulty}
-              </Badge>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Analysis Content */}
-      <div className="container mx-auto px-4 py-8">
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-5">
-            <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="technology">Technology</TabsTrigger>
-            <TabsTrigger value="tokenomics">Tokenomics</TabsTrigger>
-            <TabsTrigger value="team">Team</TabsTrigger>
-            <TabsTrigger value="risks">Risk Analysis</TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="overview" className="space-y-6">
-            <div className="grid gap-6 md:grid-cols-2">
-              <Card className="kraken-card">
-                <CardHeader>
-                  <CardTitle>Analysis Scores</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between">
-                      <span>Technology</span>
-                      <span className="font-medium">{whitepaper.technicalScore}%</span>
-                    </div>
-                    <div className="h-2 bg-muted rounded-full">
-                      <div className="h-full bg-primary rounded-full" style={{ width: `${whitepaper.technicalScore}%` }} />
-                    </div>
-                  </div>
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between">
-                      <span>Team</span>
-                      <span className="font-medium">{whitepaper.teamScore}%</span>
-                    </div>
-                    <div className="h-2 bg-muted rounded-full">
-                      <div className="h-full bg-success rounded-full" style={{ width: `${whitepaper.teamScore}%` }} />
-                    </div>
-                  </div>
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between">
-                      <span>Use Case</span>
-                      <span className="font-medium">{whitepaper.useCaseScore}%</span>
-                    </div>
-                    <div className="h-2 bg-muted rounded-full">
-                      <div className="h-full bg-warning rounded-full" style={{ width: `${whitepaper.useCaseScore}%` }} />
-                    </div>
-                  </div>
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between">
-                      <span>Tokenomics</span>
-                      <span className="font-medium">{whitepaper.tokenomicsScore}%</span>
-                    </div>
-                    <div className="h-2 bg-muted rounded-full">
-                      <div className="h-full bg-destructive rounded-full" style={{ width: `${whitepaper.tokenomicsScore}%` }} />
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="kraken-card">
-                <CardHeader>
-                  <CardTitle>Key Information</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <span className="text-muted-foreground">Market Cap</span>
-                    <span className="font-medium">${parseFloat(whitepaper.marketCap).toLocaleString()}</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-muted-foreground">Launch Date</span>
-                    <span className="font-medium">{new Date(whitepaper.launchDate).toLocaleDateString()}</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-muted-foreground">Category</span>
-                    <Badge variant="outline">{whitepaper.category}</Badge>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-muted-foreground">Access Level</span>
-                    <Badge variant="default">{whitepaper.requiredTier.toUpperCase()}</Badge>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-
-            <Card className="kraken-card">
-              <CardHeader>
-                <CardTitle>Project Summary</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground leading-relaxed">{whitepaper.summary}</p>
-              </CardContent>
-            </Card>
-
-            <div className="grid gap-6 md:grid-cols-2">
-              <Card className="kraken-card">
-                <CardHeader>
-                  <CardTitle>Key Strengths</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <ul className="space-y-2">
-                    {whitepaper.strengths.map((strength: string, index: number) => (
-                      <li key={index} className="flex items-center gap-2">
-                        <CheckCircle className="h-4 w-4 text-green-500" />
-                        <span className="text-sm">{strength}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </CardContent>
-              </Card>
-
-              <Card className="kraken-card">
-                <CardHeader>
-                  <CardTitle>Risk Factors</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <ul className="space-y-2">
-                    {whitepaper.risks.map((risk: string, index: number) => (
-                      <li key={index} className="flex items-center gap-2">
-                        <AlertTriangle className="h-4 w-4 text-yellow-500" />
-                        <span className="text-sm">{risk}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </CardContent>
-              </Card>
-            </div>
-          </TabsContent>
-
-          <TabsContent value="technology" className="space-y-6">
-            <Card className="kraken-card">
-              <CardHeader>
-                <CardTitle>Technical Analysis</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground">
-                  Detailed technical analysis content would go here based on the whitepaper review...
-                </p>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="tokenomics" className="space-y-6">
-            <Card className="kraken-card">
-              <CardHeader>
-                <CardTitle>Token Economics</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground">
-                  Detailed tokenomics analysis would go here...
-                </p>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="team" className="space-y-6">
-            <Card className="kraken-card">
-              <CardHeader>
-                <CardTitle>Team Analysis</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground">
-                  Team background and credibility analysis would go here...
-                </p>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="risks" className="space-y-6">
-            <Card className="kraken-card">
-              <CardHeader>
-                <CardTitle>Risk Assessment</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground">
-                  Comprehensive risk analysis would go here...
-                </p>
-              </CardContent>
-            </Card>
-          </TabsContent>
-        </Tabs>
-      </div>
-    </div>
-  );
+interface MarketMetrics {
+  fearGreedIndex: number;
+  dominance: { btc: number; eth: number };
+  totalMarketCap: string;
+  volume24h: string;
+  activeAddresses: number;
+  hashRate: string;
 }
 
 export default function Analyze() {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("all");
-  const [selectedDifficulty, setSelectedDifficulty] = useState("all");
-  const [selectedWhitepaper, setSelectedWhitepaper] = useState<any>(null);
+  const [selectedTimeframe, setSelectedTimeframe] = useState("24h");
+  const [selectedAsset, setSelectedAsset] = useState("BTC");
 
-  // Show detailed analysis view if a whitepaper is selected
-  if (selectedWhitepaper) {
-    return <WhitepaperDetailView whitepaper={selectedWhitepaper} onBack={() => setSelectedWhitepaper(null)} />;
-  }
+  // Mock data for whale transactions
+  const whaleTransactions: WhaleTransaction[] = [
+    {
+      id: "1",
+      amount: 1250,
+      currency: "BTC",
+      type: "buy",
+      exchange: "Binance",
+      timestamp: "2 hours ago",
+      walletAddress: "1A1zP1...eP2gNc",
+      impact: "high"
+    },
+    {
+      id: "2", 
+      amount: 15000,
+      currency: "ETH",
+      type: "sell",
+      exchange: "Coinbase",
+      timestamp: "4 hours ago",
+      walletAddress: "0x742d3...4bc89",
+      impact: "medium"
+    },
+    {
+      id: "3",
+      amount: 850,
+      currency: "BTC",
+      type: "buy",
+      exchange: "Kraken",
+      timestamp: "6 hours ago", 
+      walletAddress: "3FJzP2...mK8nQ",
+      impact: "high"
+    }
+  ];
 
-  // Filter whitepapers based on search and filters
-  const filteredWhitepapers = mockWhitepapers.filter(wp => {
-    const matchesSearch = wp.projectName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         wp.symbol.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = selectedCategory === "all" || wp.category === selectedCategory;
-    const matchesDifficulty = selectedDifficulty === "all" || wp.difficulty === selectedDifficulty;
-    
-    return matchesSearch && matchesCategory && matchesDifficulty;
-  });
+  const marketMetrics: MarketMetrics = {
+    fearGreedIndex: 78,
+    dominance: { btc: 54.2, eth: 17.8 },
+    totalMarketCap: "$2.31T",
+    volume24h: "$89.4B", 
+    activeAddresses: 1234567,
+    hashRate: "485.6 EH/s"
+  };
 
+  const getImpactColor = (impact: string) => {
+    switch (impact) {
+      case "high": return "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200";
+      case "medium": return "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200";
+      case "low": return "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200";
+      default: return "bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200";
+    }
+  };
 
+  const getFearGreedColor = (index: number) => {
+    if (index <= 25) return "text-red-600";
+    if (index <= 50) return "text-orange-600";
+    if (index <= 75) return "text-yellow-600";
+    return "text-green-600";
+  };
 
   return (
     <>
       <Navigation />
-      <div className="min-h-screen bg-background">
-        {/* Hero Section */}
-        <div className="gradient-hero dark:gradient-hero-dark border-b border-border">
-        <div className="container mx-auto px-4 py-12">
-          <div className="text-center max-w-4xl mx-auto">
-            <h1 className="text-4xl font-bold text-gradient mb-4">
-              Whitepaper Analysis Hub
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800 text-white">
+        <div className="container mx-auto px-4 py-8">
+          {/* Header */}
+          <div className="mb-8">
+            <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+              Crypto Market Analysis
             </h1>
-            <p className="text-xl text-muted-foreground mb-8">
-              Professional-grade analysis tools for evaluating cryptocurrency projects. 
-              Learn to identify opportunities and avoid risks with institutional-level frameworks.
+            <p className="text-xl text-gray-300">
+              Advanced blockchain analytics and whale tracking for educational insights
             </p>
-            
-            {/* Search and Filters */}
-            <div className="flex flex-col md:flex-row gap-4 max-w-2xl mx-auto">
-              <div className="relative flex-1">
-                <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                <Input
-                  placeholder="Search projects or symbols..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10"
-                />
-              </div>
-              <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-                <SelectTrigger className="w-full md:w-40">
-                  <SelectValue placeholder="Category" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Categories</SelectItem>
-                  <SelectItem value="Layer 1">Layer 1</SelectItem>
-                  <SelectItem value="Layer 2">Layer 2</SelectItem>
-                  <SelectItem value="DeFi">DeFi</SelectItem>
-                  <SelectItem value="NFT">NFT</SelectItem>
-                </SelectContent>
-              </Select>
-              <Select value={selectedDifficulty} onValueChange={setSelectedDifficulty}>
-                <SelectTrigger className="w-full md:w-40">
-                  <SelectValue placeholder="Difficulty" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Levels</SelectItem>
-                  <SelectItem value="Beginner">Beginner</SelectItem>
-                  <SelectItem value="Intermediate">Intermediate</SelectItem>
-                  <SelectItem value="Expert">Expert</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
           </div>
-        </div>
-      </div>
 
-      {/* Analysis Dashboard */}
-      <div className="container mx-auto px-4 py-8">
-        <Tabs defaultValue="projects" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="projects" className="flex items-center gap-2">
-              <FileText className="h-4 w-4" />
-              Projects
-            </TabsTrigger>
-            <TabsTrigger value="frameworks" className="flex items-center gap-2">
-              <Target className="h-4 w-4" />
-              Frameworks
-            </TabsTrigger>
-            <TabsTrigger value="templates" className="flex items-center gap-2">
-              <BookOpen className="h-4 w-4" />
-              Templates
-            </TabsTrigger>
-            <TabsTrigger value="leaderboard" className="flex items-center gap-2">
-              <Award className="h-4 w-4" />
-              Leaderboard
-            </TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="projects" className="space-y-6">
-            {/* Project Grid */}
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {filteredWhitepapers.map((whitepaper) => (
-                <Card key={whitepaper.id} className="kraken-card hover:shadow-lg transition-all duration-200">
-                  <CardHeader className="pb-4">
-                    <div className="flex items-start justify-between">
-                      <div className="flex items-center gap-3">
-                        {getCategoryIcon(whitepaper.category)}
-                        <div>
-                          <CardTitle className="text-lg">{whitepaper.projectName}</CardTitle>
-                          <CardDescription className="flex items-center gap-2">
-                            {whitepaper.symbol} • {formatMarketCap(whitepaper.marketCap)}
-                          </CardDescription>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                        <span className="text-sm font-medium">{whitepaper.overallRating}</span>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Badge variant="outline" className={getDifficultyColor(whitepaper.difficulty)}>
-                        {whitepaper.difficulty}
-                      </Badge>
-                      <Badge variant="outline">
-                        {whitepaper.category}
-                      </Badge>
-                      {whitepaper.requiredTier !== "free" && (
-                        <Badge variant="default">
-                          {whitepaper.requiredTier.toUpperCase()}
-                        </Badge>
-                      )}
-                    </div>
-                  </CardHeader>
-                  
-                  <CardContent className="space-y-4">
-                    <p className="text-sm text-muted-foreground leading-relaxed">
-                      {whitepaper.summary}
+          {/* Market Overview Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <Card className="bg-slate-800/50 border-slate-700 backdrop-blur-sm">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-gray-400">Fear & Greed Index</p>
+                    <p className={`text-2xl font-bold ${getFearGreedColor(marketMetrics.fearGreedIndex)}`}>
+                      {marketMetrics.fearGreedIndex}
                     </p>
-                    
-                    {/* Analysis Scores */}
-                    <div className="grid grid-cols-2 gap-3">
-                      <div className="space-y-1">
-                        <div className="flex items-center justify-between">
-                          <span className="text-xs text-muted-foreground">Technology</span>
-                          <span className="text-xs font-medium">{whitepaper.technicalScore}%</span>
-                        </div>
-                        <div className="h-2 bg-muted rounded-full overflow-hidden">
-                          <div 
-                            className="h-full bg-primary rounded-full transition-all duration-300"
-                            style={{ width: `${whitepaper.technicalScore}%` }}
-                          />
-                        </div>
-                      </div>
-                      <div className="space-y-1">
-                        <div className="flex items-center justify-between">
-                          <span className="text-xs text-muted-foreground">Use Case</span>
-                          <span className="text-xs font-medium">{whitepaper.useCaseScore}%</span>
-                        </div>
-                        <div className="h-2 bg-muted rounded-full overflow-hidden">
-                          <div 
-                            className="h-full bg-success rounded-full transition-all duration-300"
-                            style={{ width: `${whitepaper.useCaseScore}%` }}
-                          />
-                        </div>
-                      </div>
-                    </div>
+                    <p className="text-xs text-gray-500">Extreme Greed</p>
+                  </div>
+                  <Target className="h-8 w-8 text-blue-400" />
+                </div>
+              </CardContent>
+            </Card>
 
-                    {/* Key Highlights */}
-                    <div className="space-y-2">
-                      <h4 className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
-                        Key Strengths
-                      </h4>
-                      <div className="flex flex-wrap gap-1">
-                        {whitepaper.strengths.slice(0, 2).map((strength, index) => (
-                          <Badge key={index} variant="secondary" className="text-xs">
-                            {strength}
-                          </Badge>
-                        ))}
-                      </div>
-                    </div>
+            <Card className="bg-slate-800/50 border-slate-700 backdrop-blur-sm">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-gray-400">Market Cap</p>
+                    <p className="text-2xl font-bold text-white">{marketMetrics.totalMarketCap}</p>
+                    <p className="text-xs text-green-400">+2.8% (24h)</p>
+                  </div>
+                  <PieChart className="h-8 w-8 text-green-400" />
+                </div>
+              </CardContent>
+            </Card>
 
-                    <Button 
-                      className="w-full" 
-                      variant="outline"
-                      onClick={() => setSelectedWhitepaper(whitepaper)}
-                    >
-                      <FileText className="h-4 w-4 mr-2" />
-                      Start Analysis
-                    </Button>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </TabsContent>
+            <Card className="bg-slate-800/50 border-slate-700 backdrop-blur-sm">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-gray-400">24h Volume</p>
+                    <p className="text-2xl font-bold text-white">{marketMetrics.volume24h}</p>
+                    <p className="text-xs text-blue-400">+12.4% (24h)</p>
+                  </div>
+                  <BarChart3 className="h-8 w-8 text-blue-400" />
+                </div>
+              </CardContent>
+            </Card>
 
-          <TabsContent value="frameworks" className="space-y-6">
-            {/* Analysis Frameworks */}
-            <div className="grid gap-6 md:grid-cols-2">
-              <Card className="kraken-card">
+            <Card className="bg-slate-800/50 border-slate-700 backdrop-blur-sm">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-gray-400">BTC Dominance</p>
+                    <p className="text-2xl font-bold text-white">{marketMetrics.dominance.btc}%</p>
+                    <p className="text-xs text-orange-400">-0.3% (24h)</p>
+                  </div>
+                  <Activity className="h-8 w-8 text-orange-400" />
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          <Tabs defaultValue="whale-tracker" className="space-y-6">
+            <TabsList className="grid w-full grid-cols-5 bg-slate-800/50 border-slate-700">
+              <TabsTrigger value="whale-tracker" className="data-[state=active]:bg-blue-600">
+                Whale Tracker
+              </TabsTrigger>
+              <TabsTrigger value="market-metrics" className="data-[state=active]:bg-blue-600">
+                Market Metrics
+              </TabsTrigger>
+              <TabsTrigger value="on-chain" className="data-[state=active]:bg-blue-600">
+                On-Chain Data
+              </TabsTrigger>
+              <TabsTrigger value="whitepaper" className="data-[state=active]:bg-blue-600">
+                Project Analysis
+              </TabsTrigger>
+              <TabsTrigger value="educational" className="data-[state=active]:bg-blue-600">
+                Learning Insights
+              </TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="whale-tracker" className="space-y-6">
+              <Card className="bg-slate-800/50 border-slate-700 backdrop-blur-sm">
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Target className="h-5 w-5" />
-                    SWOT Analysis Framework
+                  <CardTitle className="flex items-center text-white">
+                    <Waves className="h-5 w-5 mr-2 text-blue-400" />
+                    Whale Transaction Monitor
                   </CardTitle>
-                  <CardDescription>
-                    Systematic evaluation of Strengths, Weaknesses, Opportunities, and Threats
+                  <CardDescription className="text-gray-400">
+                    Track large cryptocurrency movements for market insights
                   </CardDescription>
                 </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <div className="flex items-center gap-2">
-                        <CheckCircle className="h-4 w-4 text-green-500" />
-                        <span className="text-sm font-medium">Strengths</span>
-                      </div>
-                      <ul className="text-xs text-muted-foreground space-y-1">
-                        <li>• Technical innovation</li>
-                        <li>• Team expertise</li>
-                        <li>• Market position</li>
-                      </ul>
-                    </div>
-                    <div className="space-y-2">
-                      <div className="flex items-center gap-2">
-                        <AlertTriangle className="h-4 w-4 text-yellow-500" />
-                        <span className="text-sm font-medium">Weaknesses</span>
-                      </div>
-                      <ul className="text-xs text-muted-foreground space-y-1">
-                        <li>• Scalability issues</li>
-                        <li>• High costs</li>
-                        <li>• Competition</li>
-                      </ul>
-                    </div>
-                  </div>
-                  <Button variant="outline" size="sm">
-                    <Badge className="mr-2">PRO</Badge>
-                    Use Framework
-                  </Button>
-                </CardContent>
-              </Card>
-
-              <Card className="kraken-card">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <DollarSign className="h-5 w-5" />
-                    Tokenomics Evaluation
-                  </CardTitle>
-                  <CardDescription>
-                    Comprehensive analysis of token supply, distribution, and utility
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm">Supply Mechanism</span>
-                      <Badge variant="outline">Fixed/Inflationary</Badge>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm">Distribution Model</span>
-                      <Badge variant="outline">Fair/Pre-sale</Badge>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm">Utility Score</span>
-                      <Badge variant="outline">High/Medium/Low</Badge>
-                    </div>
-                  </div>
-                  <Button variant="outline" size="sm">
-                    <Badge className="mr-2">ELITE</Badge>
-                    Use Framework
-                  </Button>
-                </CardContent>
-              </Card>
-            </div>
-          </TabsContent>
-
-          <TabsContent value="templates" className="space-y-6">
-            {/* Analysis Templates by Difficulty */}
-            <div className="space-y-8">
-              <div>
-                <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                  <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                  Beginner Templates
-                </h3>
-                <div className="grid gap-4 md:grid-cols-2">
-                  <Card className="kraken-card">
-                    <CardHeader className="pb-3">
-                      <CardTitle className="text-base">Basic Project Checklist</CardTitle>
-                      <CardDescription>Essential questions for project evaluation</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      <ul className="text-sm space-y-1 text-muted-foreground">
-                        <li>✓ What problem does it solve?</li>
-                        <li>✓ Who are the team members?</li>
-                        <li>✓ Is the token necessary?</li>
-                        <li>✓ Are there competitors?</li>
-                      </ul>
-                      <Button variant="outline" size="sm" className="mt-3">
-                        Download Template
-                      </Button>
-                    </CardContent>
-                  </Card>
-
-                  <Card className="kraken-card">
-                    <CardHeader className="pb-3">
-                      <CardTitle className="text-base">Red Flag Detector</CardTitle>
-                      <CardDescription>Common warning signs to avoid</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      <ul className="text-sm space-y-1 text-muted-foreground">
-                        <li>⚠️ Anonymous team</li>
-                        <li>⚠️ Unrealistic promises</li>
-                        <li>⚠️ Poor documentation</li>
-                        <li>⚠️ No working product</li>
-                      </ul>
-                      <Button variant="outline" size="sm" className="mt-3">
-                        Download Template
-                      </Button>
-                    </CardContent>
-                  </Card>
-                </div>
-              </div>
-
-              <div>
-                <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                  <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
-                  Intermediate Templates
-                </h3>
-                <div className="grid gap-4 md:grid-cols-2">
-                  <Card className="kraken-card">
-                    <CardHeader className="pb-3">
-                      <CardTitle className="text-base">Technical Deep Dive</CardTitle>
-                      <CardDescription>Architecture and innovation analysis</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      <Badge className="mb-3">BASIC+</Badge>
-                      <ul className="text-sm space-y-1 text-muted-foreground">
-                        <li>• Consensus mechanism analysis</li>
-                        <li>• Scalability solutions</li>
-                        <li>• Security model review</li>
-                        <li>• Code quality assessment</li>
-                      </ul>
-                      <Button variant="outline" size="sm" className="mt-3">
-                        <Badge className="mr-2">BASIC</Badge>
-                        Access Template
-                      </Button>
-                    </CardContent>
-                  </Card>
-
-                  <Card className="kraken-card">
-                    <CardHeader className="pb-3">
-                      <CardTitle className="text-base">Market Analysis</CardTitle>
-                      <CardDescription>Competitive landscape evaluation</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      <Badge className="mb-3">BASIC+</Badge>
-                      <ul className="text-sm space-y-1 text-muted-foreground">
-                        <li>• Total addressable market</li>
-                        <li>• Competitive positioning</li>
-                        <li>• Adoption metrics</li>
-                        <li>• Growth potential</li>
-                      </ul>
-                      <Button variant="outline" size="sm" className="mt-3">
-                        <Badge className="mr-2">BASIC</Badge>
-                        Access Template
-                      </Button>
-                    </CardContent>
-                  </Card>
-                </div>
-              </div>
-
-              <div>
-                <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                  <div className="w-2 h-2 bg-red-500 rounded-full"></div>
-                  Expert Templates
-                </h3>
-                <div className="grid gap-4 md:grid-cols-2">
-                  <Card className="kraken-card">
-                    <CardHeader className="pb-3">
-                      <CardTitle className="text-base">Institutional Analysis</CardTitle>
-                      <CardDescription>Professional-grade evaluation framework</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      <Badge className="mb-3">PRO+</Badge>
-                      <ul className="text-sm space-y-1 text-muted-foreground">
-                        <li>• DCF valuation models</li>
-                        <li>• Risk-adjusted returns</li>
-                        <li>• Regulatory compliance</li>
-                        <li>• Portfolio allocation</li>
-                      </ul>
-                      <Button variant="outline" size="sm" className="mt-3">
-                        <Badge className="mr-2">PRO</Badge>
-                        Access Template
-                      </Button>
-                    </CardContent>
-                  </Card>
-
-                  <Card className="kraken-card">
-                    <CardHeader className="pb-3">
-                      <CardTitle className="text-base">Custom Research</CardTitle>
-                      <CardDescription>AI-assisted analysis generation</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      <Badge className="mb-3">ELITE</Badge>
-                      <ul className="text-sm space-y-1 text-muted-foreground">
-                        <li>• Automated report generation</li>
-                        <li>• Real-time data integration</li>
-                        <li>• Custom scoring models</li>
-                        <li>• Expert review network</li>
-                      </ul>
-                      <Button variant="outline" size="sm" className="mt-3">
-                        <Badge className="mr-2">ELITE</Badge>
-                        Access Template
-                      </Button>
-                    </CardContent>
-                  </Card>
-                </div>
-              </div>
-            </div>
-          </TabsContent>
-
-          <TabsContent value="leaderboard" className="space-y-6">
-            {/* Analysis Leaderboard */}
-            <div className="kraken-data-grid">
-              <div className="p-6 border-b border-border">
-                <h3 className="text-lg font-semibold">Top Analyzed Projects</h3>
-                <p className="text-sm text-muted-foreground">
-                  Community rankings based on analysis completion and ratings
-                </p>
-              </div>
-              <div className="divide-y divide-border">
-                {mockWhitepapers.map((project, index) => (
-                  <div key={project.id} className="p-4 data-row flex items-center justify-between">
-                    <div className="flex items-center gap-4">
-                      <div className="flex items-center justify-center w-8 h-8 bg-muted rounded-full text-sm font-medium">
-                        {index + 1}
-                      </div>
-                      <div className="flex items-center gap-3">
-                        {getCategoryIcon(project.category)}
-                        <div>
-                          <div className="font-medium">{project.projectName}</div>
-                          <div className="text-sm text-muted-foreground">
-                            {project.symbol} • {project.category}
+                <CardContent>
+                  <div className="space-y-4">
+                    {whaleTransactions.map((tx) => (
+                      <div key={tx.id} className="flex items-center justify-between p-4 bg-slate-700/30 rounded-lg border border-slate-600">
+                        <div className="flex items-center space-x-4">
+                          <div className={`p-2 rounded-full ${tx.type === 'buy' ? 'bg-green-900/50' : 'bg-red-900/50'}`}>
+                            {tx.type === 'buy' ? 
+                              <ArrowUpRight className="h-4 w-4 text-green-400" /> : 
+                              <ArrowDownRight className="h-4 w-4 text-red-400" />
+                            }
+                          </div>
+                          <div>
+                            <div className="flex items-center space-x-2">
+                              <span className="font-semibold text-white">
+                                {tx.amount.toLocaleString()} {tx.currency}
+                              </span>
+                              <Badge className={getImpactColor(tx.impact)}>
+                                {tx.impact.toUpperCase()}
+                              </Badge>
+                            </div>
+                            <div className="text-sm text-gray-400">
+                              {tx.exchange} • {tx.walletAddress} • {tx.timestamp}
+                            </div>
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <div className="text-sm text-gray-400">Market Impact</div>
+                          <div className={`font-semibold ${tx.type === 'buy' ? 'text-green-400' : 'text-red-400'}`}>
+                            {tx.type === 'buy' ? '+' : '-'}${(tx.amount * (tx.currency === 'BTC' ? 96875 : 3680)).toLocaleString()}
                           </div>
                         </div>
                       </div>
-                    </div>
-                    <div className="flex items-center gap-6">
-                      <div className="text-right">
-                        <div className="font-medium">{project.overallRating}/10</div>
-                        <div className="text-sm text-muted-foreground">Rating</div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            <TabsContent value="market-metrics" className="space-y-6">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <Card className="bg-slate-800/50 border-slate-700 backdrop-blur-sm">
+                  <CardHeader>
+                    <CardTitle className="text-white">Market Dominance</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div>
+                      <div className="flex justify-between mb-2">
+                        <span className="text-gray-300">Bitcoin (BTC)</span>
+                        <span className="text-white font-semibold">{marketMetrics.dominance.btc}%</span>
                       </div>
-                      <Badge className={getDifficultyColor(project.difficulty)}>
-                        {project.difficulty}
-                      </Badge>
+                      <Progress value={marketMetrics.dominance.btc} className="h-2" />
+                    </div>
+                    <div>
+                      <div className="flex justify-between mb-2">
+                        <span className="text-gray-300">Ethereum (ETH)</span>
+                        <span className="text-white font-semibold">{marketMetrics.dominance.eth}%</span>
+                      </div>
+                      <Progress value={marketMetrics.dominance.eth} className="h-2" />
+                    </div>
+                    <div>
+                      <div className="flex justify-between mb-2">
+                        <span className="text-gray-300">Others</span>
+                        <span className="text-white font-semibold">{100 - marketMetrics.dominance.btc - marketMetrics.dominance.eth}%</span>
+                      </div>
+                      <Progress value={100 - marketMetrics.dominance.btc - marketMetrics.dominance.eth} className="h-2" />
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card className="bg-slate-800/50 border-slate-700 backdrop-blur-sm">
+                  <CardHeader>
+                    <CardTitle className="text-white">Network Health</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <span className="text-gray-300">Active Addresses</span>
+                      <span className="text-white font-semibold">{marketMetrics.activeAddresses.toLocaleString()}</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-gray-300">Hash Rate</span>
+                      <span className="text-white font-semibold">{marketMetrics.hashRate}</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-gray-300">Network Security</span>
+                      <Badge className="bg-green-900/50 text-green-400">Excellent</Badge>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            </TabsContent>
+
+            <TabsContent value="on-chain" className="space-y-6">
+              <Card className="bg-slate-800/50 border-slate-700 backdrop-blur-sm">
+                <CardHeader>
+                  <CardTitle className="text-white">On-Chain Analytics</CardTitle>
+                  <CardDescription className="text-gray-400">
+                    Real-time blockchain data for advanced analysis
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div className="text-center p-4 bg-slate-700/30 rounded-lg">
+                      <Zap className="h-8 w-8 text-yellow-400 mx-auto mb-2" />
+                      <div className="text-2xl font-bold text-white">2.4 TPS</div>
+                      <div className="text-sm text-gray-400">Bitcoin TX/sec</div>
+                    </div>
+                    <div className="text-center p-4 bg-slate-700/30 rounded-lg">
+                      <Clock className="h-8 w-8 text-blue-400 mx-auto mb-2" />
+                      <div className="text-2xl font-bold text-white">12 sec</div>
+                      <div className="text-sm text-gray-400">Avg Block Time</div>
+                    </div>
+                    <div className="text-center p-4 bg-slate-700/30 rounded-lg">
+                      <DollarSign className="h-8 w-8 text-green-400 mx-auto mb-2" />
+                      <div className="text-2xl font-bold text-white">$8.50</div>
+                      <div className="text-sm text-gray-400">Avg TX Fee</div>
                     </div>
                   </div>
-                ))}
-              </div>
-            </div>
-          </TabsContent>
-        </Tabs>
-      </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            <TabsContent value="whitepaper" className="space-y-6">
+              <Card className="bg-slate-800/50 border-slate-700 backdrop-blur-sm">
+                <CardHeader>
+                  <CardTitle className="flex items-center text-white">
+                    <FileText className="h-5 w-5 mr-2 text-purple-400" />
+                    Project Analysis & Research
+                  </CardTitle>
+                  <CardDescription className="text-gray-400">
+                    Educational analysis of major cryptocurrency projects
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="p-4 bg-slate-700/30 rounded-lg border border-slate-600">
+                      <div className="flex items-center justify-between mb-3">
+                        <h3 className="font-semibold text-white">Bitcoin (BTC)</h3>
+                        <Badge className="bg-orange-900/50 text-orange-400">Layer 1</Badge>
+                      </div>
+                      <div className="space-y-2 text-sm">
+                        <div className="flex justify-between">
+                          <span className="text-gray-400">Technical Score:</span>
+                          <span className="text-green-400 font-semibold">95/100</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-gray-400">Use Case Score:</span>
+                          <span className="text-green-400 font-semibold">100/100</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-gray-400">Market Cap:</span>
+                          <span className="text-white">$1.2T</span>
+                        </div>
+                      </div>
+                      <p className="text-gray-300 text-xs mt-3">
+                        The original cryptocurrency and digital gold standard. Revolutionary proof-of-work consensus.
+                      </p>
+                    </div>
+
+                    <div className="p-4 bg-slate-700/30 rounded-lg border border-slate-600">
+                      <div className="flex items-center justify-between mb-3">
+                        <h3 className="font-semibold text-white">Ethereum (ETH)</h3>
+                        <Badge className="bg-blue-900/50 text-blue-400">Smart Contracts</Badge>
+                      </div>
+                      <div className="space-y-2 text-sm">
+                        <div className="flex justify-between">
+                          <span className="text-gray-400">Technical Score:</span>
+                          <span className="text-green-400 font-semibold">92/100</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-gray-400">Use Case Score:</span>
+                          <span className="text-green-400 font-semibold">98/100</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-gray-400">Market Cap:</span>
+                          <span className="text-white">$450B</span>
+                        </div>
+                      </div>
+                      <p className="text-gray-300 text-xs mt-3">
+                        Leading smart contract platform enabling DeFi, NFTs, and decentralized applications.
+                      </p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            <TabsContent value="educational" className="space-y-6">
+              <Card className="bg-slate-800/50 border-slate-700 backdrop-blur-sm">
+                <CardHeader>
+                  <CardTitle className="flex items-center text-white">
+                    <BookOpen className="h-5 w-5 mr-2 text-blue-400" />
+                    Educational Insights
+                  </CardTitle>
+                  <CardDescription className="text-gray-400">
+                    Learn from current market conditions and whale behavior
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="border-l-4 border-blue-500 pl-4">
+                    <h4 className="font-semibold text-blue-400 mb-2">Understanding Whale Transactions</h4>
+                    <p className="text-gray-300 text-sm">
+                      Large transactions (1000+ BTC or 10,000+ ETH) can indicate institutional activity. 
+                      When whales buy, it often signals confidence; when they sell, it may indicate profit-taking or market uncertainty.
+                    </p>
+                  </div>
+                  <div className="border-l-4 border-green-500 pl-4">
+                    <h4 className="font-semibold text-green-400 mb-2">Fear & Greed Index Analysis</h4>
+                    <p className="text-gray-300 text-sm">
+                      Current index of 78 suggests "Extreme Greed" - historically, this can indicate a market top. 
+                      Contrarian investors often consider this a time to be cautious.
+                    </p>
+                  </div>
+                  <div className="border-l-4 border-purple-500 pl-4">
+                    <h4 className="font-semibold text-purple-400 mb-2">Market Dominance Insights</h4>
+                    <p className="text-gray-300 text-sm">
+                      Bitcoin's 54.2% dominance indicates a strong market leader position. 
+                      When BTC dominance rises, altcoins typically underperform, and vice versa.
+                    </p>
+                  </div>
+                  <div className="border-l-4 border-orange-500 pl-4">
+                    <h4 className="font-semibold text-orange-400 mb-2">On-Chain Metrics Explained</h4>
+                    <p className="text-gray-300 text-sm">
+                      Network hash rate indicates security level. Higher active addresses suggest growing adoption. 
+                      Transaction fees reflect network demand and congestion.
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+          </Tabs>
+        </div>
       </div>
     </>
   );
