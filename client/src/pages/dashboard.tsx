@@ -1,5 +1,4 @@
 import { Link } from "wouter";
-import Navigation from "@/components/Navigation";
 import { ChainHeader } from "@/components/ChainHeader";
 import { LiveMarketData } from "@/components/LiveMarketData";
 import { WhaleActivity } from "@/components/WhaleActivity";
@@ -70,7 +69,6 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-background">
-      <Navigation />
       <ChainHeader />
       
       {/* Learning Priority Hero Section */}

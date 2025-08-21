@@ -1,19 +1,22 @@
 import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { TrendingUp, BookOpen, BarChart3, FileText, Users, DollarSign, Fish, Activity } from "lucide-react";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function Navigation() {
   const [location] = useLocation();
+  const { translate } = useLanguage();
 
   const navItems = [
-    { path: "/", label: "Home", icon: TrendingUp },
-    { path: "/learn", label: "Learn", icon: BookOpen },
-    { path: "/simulate", label: "Simulate", icon: BarChart3 },
-    { path: "/analyze", label: "Analyze", icon: FileText },
-    { path: "/technical-analysis", label: "Technical Analysis", icon: Activity },
-    { path: "/whale-tracker", label: "Whale Tracker", icon: Fish },
-    { path: "/community", label: "Community", icon: Users },
-    { path: "/pricing", label: "Pricing", icon: DollarSign },
+    { path: "/", label: translate("nav.home", "Home"), icon: TrendingUp },
+    { path: "/learn", label: translate("nav.learn", "Learn"), icon: BookOpen },
+    { path: "/simulate", label: translate("nav.simulate", "Simulate"), icon: BarChart3 },
+    { path: "/analyze", label: translate("nav.analyze", "Analyze"), icon: FileText },
+    { path: "/technical-analysis", label: translate("nav.technical_analysis", "Technical Analysis"), icon: Activity },
+    { path: "/whale-tracker", label: translate("nav.whale_tracker", "Whale Tracker"), icon: Fish },
+    { path: "/community", label: translate("nav.community", "Community"), icon: Users },
+    { path: "/pricing", label: translate("nav.pricing", "Pricing"), icon: DollarSign },
   ];
 
   return (
@@ -47,10 +50,13 @@ export default function Navigation() {
             })}
           </div>
 
-          <div className="md:hidden">
-            <Button variant="outline" size="sm">
-              Menu
-            </Button>
+          <div className="flex items-center space-x-2">
+            <LanguageSwitcher />
+            <div className="md:hidden">
+              <Button variant="outline" size="sm">
+                {translate("nav.menu", "Menu")}
+              </Button>
+            </div>
           </div>
         </div>
       </div>
