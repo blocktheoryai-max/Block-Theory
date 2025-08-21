@@ -59,10 +59,17 @@ export function InteractiveCryptoChart() {
   const [chartData, setChartData] = useState<ChartDataPoint[]>([]);
 
   // Fetch current market data
-  const { data: marketData = [], isLoading: marketLoading } = useQuery<CryptoPriceData[]>({
+  const { data: marketDataResponse, isLoading: marketLoading } = useQuery({
     queryKey: ["/api/market-data"],
     refetchInterval: 30000 // Refresh every 30 seconds
   });
+
+  // Convert market data response to array format
+  const marketData: CryptoPriceData[] = marketDataResponse && typeof marketDataResponse === 'object' 
+    ? Object.values(marketDataResponse).filter((item): item is CryptoPriceData => 
+        typeof item === 'object' && item !== null && 'symbol' in item
+      )
+    : [];
 
   // Get current crypto data
   const currentCrypto = marketData.find(crypto => crypto.symbol === selectedCrypto);
