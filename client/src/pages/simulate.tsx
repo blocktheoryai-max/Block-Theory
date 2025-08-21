@@ -92,10 +92,27 @@ export default function Simulate() {
   };
 
   // Fetch market data
-  const { data: prices = [], isLoading: pricesLoading } = useQuery<CryptoPriceData[]>({
-    queryKey: ["/api/prices"],
-    refetchInterval: 10000, // Refresh every 10 seconds
+  const { data: marketData, isLoading: pricesLoading } = useQuery({
+    queryKey: ["/api/market-data"],
+    refetchInterval: 10000,
   });
+
+  // Transform market data to prices array
+  const prices: CryptoPriceData[] = marketData 
+    ? Object.values(marketData).map((data: any) => ({
+        id: data.symbol.toLowerCase(),
+        symbol: data.symbol,
+        name: data.name,
+        currentPrice: data.price,
+        priceChange24h: data.change24h * data.price / 100,
+        priceChangePercentage24h: data.change24h,
+        high24h: data.price * 1.05,
+        low24h: data.price * 0.95,
+        volume24h: data.volume,
+        marketCap: data.marketCap,
+        lastUpdated: new Date().toISOString()
+      }))
+    : [];
 
   // Fetch portfolio
   const { data: portfolio, isLoading: portfolioLoading } = useQuery<Portfolio>({
@@ -146,11 +163,11 @@ export default function Simulate() {
   const selectedPrice = prices.find(p => p.symbol === selectedSymbol);
   const tradeTotal = parseFloat(tradeAmount || "0") * parseFloat(tradePrice || selectedPrice?.currentPrice?.toString() || "0");
 
-  // Portfolio calculations
-  const portfolioValue = portfolio?.totalValue || 10000;
-  const cashBalance = portfolio?.cash || 10000;
+  // Portfolio calculations with null safety
+  const portfolioValue = portfolio?.totalValue ?? 10000;
+  const cashBalance = portfolio?.cash ?? 10000;
   const portfolioChange = portfolioValue - 10000; // Starting amount
-  const portfolioChangePercent = ((portfolioChange / 10000) * 100);
+  const portfolioChangePercent = portfolioChange ? ((portfolioChange / 10000) * 100) : 0;
 
   const handleTrade = () => {
     if (!tradeAmount || !selectedPrice) return;
@@ -192,9 +209,9 @@ export default function Simulate() {
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-sm text-gray-400">Portfolio Value</p>
-                      <p className="text-2xl font-bold text-white">${portfolioValue.toLocaleString()}</p>
+                      <p className="text-2xl font-bold text-white">${portfolioValue?.toLocaleString() || '10,000'}</p>
                       <p className={`text-xs ${portfolioChange >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                        {portfolioChange >= 0 ? '+' : ''}${portfolioChange.toFixed(2)} ({portfolioChangePercent.toFixed(2)}%)
+                        {portfolioChange >= 0 ? '+' : ''}${(portfolioChange || 0).toFixed(2)} ({(portfolioChangePercent || 0).toFixed(2)}%)
                       </p>
                     </div>
                     <PieChart className="h-8 w-8 text-blue-400" />
@@ -207,7 +224,7 @@ export default function Simulate() {
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-sm text-gray-400">Cash Balance</p>
-                      <p className="text-2xl font-bold text-white">${cashBalance.toLocaleString()}</p>
+                      <p className="text-2xl font-bold text-white">${cashBalance?.toLocaleString() || '10,000'}</p>
                       <p className="text-xs text-gray-400">Available to trade</p>
                     </div>
                     <Wallet className="h-8 w-8 text-green-400" />

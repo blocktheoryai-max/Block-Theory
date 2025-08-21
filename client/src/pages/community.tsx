@@ -517,14 +517,14 @@ export default function Community() {
                           <div className="flex items-center space-x-3">
                             <Avatar className="w-10 h-10">
                               <AvatarFallback className="bg-gradient-to-r from-blue-500 to-purple-500 text-white">
-                                {post.author.name[0]}
+                                {(post.author?.name || 'A')[0]}
                               </AvatarFallback>
                             </Avatar>
                             <div>
                               <div className="flex items-center space-x-2">
-                                <span className="font-semibold text-white">{post.author.name}</span>
+                                <span className="font-semibold text-white">{post.author?.name || 'Anonymous'}</span>
                                 <Badge variant="outline" className="text-xs">
-                                  {post.author.tier}
+                                  {post.author?.tier || 'Member'}
                                 </Badge>
                               </div>
                               <div className="text-xs text-gray-400">{post.timestamp}</div>
