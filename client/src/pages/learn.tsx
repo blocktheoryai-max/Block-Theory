@@ -107,11 +107,11 @@ export default function Learn() {
     },
   });
 
-  const completedLessons = progress.filter(p => p.completed);
-  const totalLessons = lessons.length;
+  const completedLessons = (progress || []).filter(p => p.completed);
+  const totalLessons = (lessons || []).length;
   const completionPercentage = totalLessons > 0 ? (completedLessons.length / totalLessons) * 100 : 0;
 
-  const filteredLessons = lessons.filter(lesson => {
+  const filteredLessons = (lessons || []).filter(lesson => {
     const categoryMatch = selectedCategory === "all" || lesson.category === selectedCategory;
     const levelMatch = selectedLevel === "all" || lesson.level === selectedLevel;
     return categoryMatch && levelMatch;
@@ -183,7 +183,7 @@ export default function Learn() {
                     Learning Objectives
                   </h3>
                   <ul className="space-y-2">
-                    {selectedLesson.learningObjectives.map((objective, index) => (
+                    {(selectedLesson.learningObjectives || []).map((objective, index) => (
                       <li key={index} className="flex items-start text-gray-300">
                         <CheckCircle className="w-4 h-4 mr-2 mt-1 text-green-400 flex-shrink-0" />
                         {objective}
@@ -204,7 +204,7 @@ export default function Learn() {
                 {/* Action Buttons */}
                 <div className="flex items-center justify-between pt-6 border-t border-slate-700">
                   <div className="flex items-center space-x-2">
-                    {selectedLesson.tags.map((tag) => (
+                    {(selectedLesson.tags || []).map((tag) => (
                       <Badge key={tag} variant="outline" className="text-xs">
                         {tag}
                       </Badge>
@@ -266,7 +266,7 @@ export default function Learn() {
 
           {/* Category Stats */}
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-8">
-            {categories.slice(1).map((category) => {
+            {(categories || []).slice(1).map((category) => {
               const categoryLessons = lessons.filter(l => l.category === category);
               const categoryProgress = progress.filter(p => 
                 p.completed && lessons.find(l => l.id === p.lessonId)?.category === category
@@ -318,7 +318,7 @@ export default function Learn() {
                 onClick={() => setSelectedLevel(level)}
                 className={selectedLevel === level ? "bg-blue-600" : "border-slate-600 text-gray-300"}
               >
-                {level === "all" ? "All Levels" : level.charAt(0).toUpperCase() + level.slice(1)}
+                {level === "all" ? "All Levels" : (level || "").charAt(0).toUpperCase() + (level || "").slice(1)}
               </Button>
             ))}
           </div>
@@ -391,7 +391,7 @@ export default function Learn() {
                         </Badge>
                         
                         <div className="flex items-center space-x-1">
-                          {lesson.tags.slice(0, 2).map((tag) => (
+                          {(lesson.tags || []).slice(0, 2).map((tag) => (
                             <Badge key={tag} variant="outline" className="text-xs">
                               {tag}
                             </Badge>

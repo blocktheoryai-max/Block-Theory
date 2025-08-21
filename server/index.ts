@@ -1,7 +1,7 @@
 import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
-import { seedInitialData } from "./seedData";
+import { seedDatabase } from "./seedData";
 
 const app = express();
 app.use(express.json());
@@ -39,7 +39,7 @@ app.use((req, res, next) => {
 
 (async () => {
   // Seed initial data on startup
-  await seedInitialData();
+  await seedDatabase();
   
   const server = await registerRoutes(app);
 
