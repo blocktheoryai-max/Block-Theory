@@ -18,6 +18,8 @@ import Checkout from "@/pages/checkout";
 import NftMarketplace from "@/pages/nft-marketplace";
 import ChatRooms from "@/pages/chat-rooms";
 import AiAssistant from "@/pages/ai-assistant";
+import AdminLogin from "@/pages/admin-login";
+import AdminDashboard from "@/pages/admin-dashboard";
 import PrivacyPolicy from "@/pages/privacy-policy";
 import TermsOfService from "@/pages/terms-of-service";
 import CookiePolicy from "@/pages/cookie-policy";
@@ -46,6 +48,8 @@ function Router() {
         <Route path="/nft-marketplace" component={NftMarketplace} />
         <Route path="/chat-rooms" component={ChatRooms} />
         <Route path="/ai-assistant" component={AiAssistant} />
+        <Route path="/admin/login" component={AdminLogin} />
+        <Route path="/admin/dashboard" component={AdminDashboard} />
         <Route path="/privacy-policy" component={PrivacyPolicy} />
         <Route path="/terms-of-service" component={TermsOfService} />
         <Route path="/cookie-policy" component={CookiePolicy} />

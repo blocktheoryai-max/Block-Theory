@@ -3,6 +3,7 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { setupAuth, isAuthenticated, requiresSubscription } from "./replitAuth";
 import { emailService } from "./emailService";
+import { adminAuth } from "./adminAuth";
 import { insertTradeSchema, insertForumPostSchema } from "@shared/schema";
 import { liveDataService } from "./liveDataService";
 import Stripe from "stripe";
@@ -25,6 +26,87 @@ const openai = new OpenAI({
 export async function registerRoutes(app: Express): Promise<Server> {
   // Setup authentication
   await setupAuth(app);
+
+  // Admin routes
+  app.post('/api/admin/login', async (req, res) => {
+    try {
+      const { username, password } = req.body;
+
+      if (!username || !password) {
+        return res.status(400).json({ message: 'Username and password required' });
+      }
+
+      const user = await adminAuth.authenticateAdmin(username, password);
+      if (!user) {
+        return res.status(401).json({ message: 'Invalid credentials' });
+      }
+
+      // Create session (you might want to use JWT or proper session management)
+      req.session.adminUser = user;
+
+      res.json({
+        message: 'Login successful',
+        user: {
+          id: user.id,
+          username: user.username,
+          email: user.email,
+          firstName: user.firstName,
+          lastName: user.lastName
+        }
+      });
+    } catch (error) {
+      console.error('Admin login error:', error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  });
+
+  app.post('/api/admin/change-password', async (req, res) => {
+    try {
+      const { username, currentPassword, newPassword } = req.body;
+
+      if (!username || !currentPassword || !newPassword) {
+        return res.status(400).json({ message: 'All fields required' });
+      }
+
+      if (newPassword.length < 8) {
+        return res.status(400).json({ message: 'New password must be at least 8 characters' });
+      }
+
+      const success = await adminAuth.changeAdminPassword(username, currentPassword, newPassword);
+      if (!success) {
+        return res.status(401).json({ message: 'Invalid current password' });
+      }
+
+      res.json({ message: 'Password changed successfully' });
+    } catch (error) {
+      console.error('Password change error:', error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  });
+
+  app.get('/api/admin/stats', async (req, res) => {
+    try {
+      // Basic admin stats
+      const allUsers = await storage.getAllUsers();
+      const allLessons = await storage.getAllLessons();
+      const allPlans = await storage.getAllSubscriptionPlans();
+
+      const stats = {
+        totalUsers: allUsers.length,
+        totalLessons: allLessons.length,
+        totalPlans: allPlans.length,
+        usersByTier: allUsers.reduce((acc, user) => {
+          acc[user.subscriptionTier] = (acc[user.subscriptionTier] || 0) + 1;
+          return acc;
+        }, {} as Record<string, number>)
+      };
+
+      res.json(stats);
+    } catch (error) {
+      console.error('Admin stats error:', error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  });
 
   // Auth routes
   app.get('/api/auth/user', isAuthenticated, async (req: any, res) => {

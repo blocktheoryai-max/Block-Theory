@@ -5,7 +5,7 @@ if (process.env.SENDGRID_API_KEY) {
   sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 }
 
-const FROM_EMAIL = process.env.FROM_EMAIL || 'blocktheory@gmail.com';
+const FROM_EMAIL = process.env.FROM_EMAIL || 'blocktheoryai@gmail.com';
 const PLATFORM_NAME = 'Block Theory';
 const PLATFORM_URL = process.env.REPLIT_DOMAINS?.split(',')[0] ? `https://${process.env.REPLIT_DOMAINS.split(',')[0]}` : 'https://blocktheory.com';
 

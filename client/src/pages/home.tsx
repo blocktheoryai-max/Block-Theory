@@ -8,6 +8,7 @@ import { useAuth, useSubscriptionStatus } from "@/hooks/useAuth";
 import { Link } from "wouter";
 import { TutorialOverlay, useTutorial } from "@/components/ui/tutorial-overlay";
 import { homeTutorialSteps } from "@/components/tutorial-steps";
+import { SEOHead, SEO_PRESETS } from "@/components/SEOHead";
 import { useEffect } from "react";
 
 export default function Home() {
@@ -54,6 +55,12 @@ export default function Home() {
   if (!isAuthenticated && !isLoading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
+        <SEOHead 
+          title={SEO_PRESETS.home.title}
+          description={SEO_PRESETS.home.description}
+          keywords={SEO_PRESETS.home.keywords}
+          canonical="/"
+        />
         {/* Header */}
         <header className="bg-white dark:bg-gray-900 shadow-sm">
           <div className="container mx-auto px-4 py-4 flex items-center justify-between">

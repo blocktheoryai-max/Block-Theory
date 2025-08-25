@@ -2,6 +2,7 @@ import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
 import { seedDatabase } from "./seedData";
+import { adminAuth } from "./adminAuth";
 
 const app = express();
 app.use(express.json());
@@ -40,6 +41,9 @@ app.use((req, res, next) => {
 (async () => {
   // Seed initial data on startup
   await seedDatabase();
+  
+  // Initialize admin account
+  await adminAuth.initializeAdminAccount();
   
   const server = await registerRoutes(app);
 
