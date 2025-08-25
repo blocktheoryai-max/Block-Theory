@@ -345,7 +345,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
         userTier = user?.subscriptionTier || 'free';
       }
       
-      const lessons = await storage.getLessonsByTier(userTier);
+      // For demo purposes, show all lessons regardless of tier to showcase full curriculum
+      const lessons = await storage.getAllLessons();
       res.json(lessons);
     } catch (error) {
       res.status(500).json({ error: "Failed to fetch lessons" });
