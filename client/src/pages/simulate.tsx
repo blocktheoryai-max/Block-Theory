@@ -38,6 +38,7 @@ import {
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
+import { SEOHead, SEO_PRESETS } from "@/components/SEOHead";
 
 interface CryptoPriceData {
   id: string;
@@ -190,6 +191,7 @@ export default function Simulate() {
 
   return (
     <>
+      <SEOHead {...SEO_PRESETS.simulate} canonical="/simulate" />
       <Navigation />
       <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800 text-white">
         <div className="container mx-auto px-4 py-8">

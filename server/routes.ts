@@ -6,6 +6,16 @@ import { emailService } from "./emailService";
 import { adminAuth } from "./adminAuth";
 import { insertTradeSchema, insertForumPostSchema } from "@shared/schema";
 import { liveDataService } from "./liveDataService";
+import { 
+  apiLimiter, 
+  authLimiter, 
+  paymentLimiter, 
+  emailLimiter,
+  securityHeaders,
+  sanitizeInput,
+  validateOrigin,
+  trackSuspiciousActivity
+} from "./securityMiddleware";
 import Stripe from "stripe";
 import OpenAI from "openai";
 
@@ -24,11 +34,19 @@ const openai = new OpenAI({
 });
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Apply security middleware
+  app.use(securityHeaders);
+  app.use(sanitizeInput);
+  app.use(trackSuspiciousActivity);
+
+  // Apply general rate limiting to all routes
+  app.use('/api', apiLimiter);
+
   // Setup authentication
   await setupAuth(app);
 
-  // Admin routes
-  app.post('/api/admin/login', async (req, res) => {
+  // Admin routes (with specific rate limiting)
+  app.post('/api/admin/login', authLimiter, validateOrigin, async (req, res) => {
     try {
       const { username, password } = req.body;
 
@@ -60,7 +78,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post('/api/admin/change-password', async (req, res) => {
+  app.post('/api/admin/change-password', authLimiter, validateOrigin, async (req, res) => {
     try {
       const { username, currentPassword, newPassword } = req.body;
 
@@ -280,7 +298,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Create Stripe payment intent for subscription
-  app.post('/api/subscription/create-payment-intent', isAuthenticated, async (req: any, res) => {
+  app.post('/api/subscription/create-payment-intent', isAuthenticated, paymentLimiter, async (req: any, res) => {
     try {
       const { planId, isYearly = false } = req.body;
       const userId = req.user.claims.sub;
@@ -354,7 +372,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Confirm payment and activate subscription
-  app.post('/api/subscription/confirm-payment', isAuthenticated, async (req: any, res) => {
+  app.post('/api/subscription/confirm-payment', isAuthenticated, paymentLimiter, async (req: any, res) => {
     try {
       const { paymentIntentId } = req.body;
       const userId = req.user.claims.sub;

@@ -3,10 +3,26 @@ import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
 import { seedDatabase } from "./seedData";
 import { adminAuth } from "./adminAuth";
+import { 
+  validateEnvironment,
+  requestLogger,
+  performanceMonitor,
+  productionErrorHandler,
+  setupGracefulShutdown,
+  healthCheck
+} from "./productionConfig";
 
 const app = express();
+
+// Validate environment on startup
+validateEnvironment();
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+// Apply production middleware
+app.use(requestLogger);
+app.use(performanceMonitor);
 
 app.use((req, res, next) => {
   const start = Date.now();
@@ -45,15 +61,13 @@ app.use((req, res, next) => {
   // Initialize admin account
   await adminAuth.initializeAdminAccount();
   
+  // Add health check endpoint
+  app.get('/health', healthCheck);
+  
   const server = await registerRoutes(app);
 
-  app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
-    const status = err.status || err.statusCode || 500;
-    const message = err.message || "Internal Server Error";
-
-    res.status(status).json({ message });
-    throw err;
-  });
+  // Use production error handler
+  app.use(productionErrorHandler);
 
   // importantly only setup vite in development and after
   // setting up all the other routes so the catch-all route
@@ -69,11 +83,19 @@ app.use((req, res, next) => {
   // this serves both the API and the client.
   // It is the only port that is not firewalled.
   const port = parseInt(process.env.PORT || '5000', 10);
-  server.listen({
+  const httpServer = server.listen({
     port,
     host: "0.0.0.0",
     reusePort: true,
   }, () => {
     log(`serving on port ${port}`);
+    console.log(`✅ Block Theory platform ready for launch!`);
+    console.log(`🌐 Environment: ${process.env.NODE_ENV || 'development'}`);
+    console.log(`🔒 Security: Enhanced with rate limiting and protection`);
+    console.log(`📧 Email: SendGrid configured`);
+    console.log(`👑 Admin: Accessible at /admin/login`);
   });
+  
+  // Setup graceful shutdown
+  setupGracefulShutdown(httpServer);
 })();

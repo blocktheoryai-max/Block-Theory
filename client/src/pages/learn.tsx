@@ -33,6 +33,7 @@ import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
 import { Link } from "wouter";
 import Navigation from "@/components/Navigation";
+import { SEOHead, SEO_PRESETS } from "@/components/SEOHead";
 
 interface Lesson {
   id: string;
@@ -334,6 +335,7 @@ export default function Learn() {
 
   return (
     <>
+      <SEOHead {...SEO_PRESETS.learn} canonical="/learn" />
       <Navigation />
       <EducationalDisclaimer />
       <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800 text-white">

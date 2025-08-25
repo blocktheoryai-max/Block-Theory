@@ -14,6 +14,7 @@ import {
   Shield,
   Star
 } from "lucide-react";
+import { SEOHead, SEO_PRESETS } from "@/components/SEOHead";
 
 export default function Pricing() {
   const plans = [
@@ -133,8 +134,10 @@ export default function Pricing() {
   ];
 
   return (
-    <div className="min-h-screen bg-background">
-      <ChainHeader />
+    <>
+      <SEOHead {...SEO_PRESETS.pricing} canonical="/pricing" />
+      <div className="min-h-screen bg-background">
+        <ChainHeader />
       
       {/* Hero Section */}
       <section className="blockchain-gradient-subtle py-16">
@@ -319,6 +322,7 @@ export default function Pricing() {
           </div>
         </div>
       </section>
-    </div>
+      </div>
+    </>
   );
 }

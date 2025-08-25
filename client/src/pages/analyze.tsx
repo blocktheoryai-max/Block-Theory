@@ -25,6 +25,7 @@ import {
   FileText,
   BookOpen
 } from "lucide-react";
+import { SEOHead, SEO_PRESETS } from "@/components/SEOHead";
 
 interface WhaleTransaction {
   id: string;
@@ -110,7 +111,9 @@ export default function Analyze() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800 text-white">
+    <>
+      <SEOHead {...SEO_PRESETS.analyze} canonical="/analyze" />
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800 text-white">
         <div className="container mx-auto px-4 py-8">
           {/* Header */}
           <div className="mb-8">
@@ -519,6 +522,7 @@ export default function Analyze() {
             </TabsContent>
           </Tabs>
         </div>
-    </div>
+      </div>
+    </>
   );
 }
