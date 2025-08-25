@@ -198,9 +198,15 @@ export default function Simulate() {
             <h1 className="text-5xl font-bold mb-4 bg-gradient-to-r from-green-400 via-blue-400 to-purple-400 bg-clip-text text-transparent">
               Trading Simulator
             </h1>
-            <p className="text-xl text-gray-300 mb-6">
+            <p className="text-xl text-gray-300 mb-4">
               Practice crypto trading with real market data in a risk-free environment
             </p>
+            <div className="bg-red-900/20 border border-red-500/30 rounded-lg p-4 max-w-4xl mx-auto mb-6">
+              <p className="text-red-300 text-sm font-medium">
+                ⚠️ <strong>Educational Simulation Only:</strong> This is a virtual trading environment using simulated funds. 
+                All trades are educational and do not involve real money or cryptocurrency. Results do not guarantee real trading performance.
+              </p>
+            </div>
             
             {/* Portfolio Overview Cards */}
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6 max-w-4xl mx-auto">

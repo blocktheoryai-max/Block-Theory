@@ -72,6 +72,16 @@ export default function Learn() {
   const queryClient = useQueryClient();
   const { user, isAuthenticated } = useAuth();
 
+  // Educational disclaimer component
+  const EducationalDisclaimer = () => (
+    <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
+      <p className="text-red-700 text-sm font-medium">
+        ⚠️ <strong>Educational Content Only:</strong> All lessons are for educational purposes and should not be considered as financial, investment, or trading advice. 
+        Cryptocurrency trading involves substantial risk of loss. Always do your own research and consult with qualified financial professionals.
+      </p>
+    </div>
+  );
+
   // Get user ID or use demo user
   const getCurrentUserId = () => {
     return (user as any)?.id || "demo-user-id";
@@ -325,6 +335,7 @@ export default function Learn() {
   return (
     <>
       <Navigation />
+      <EducationalDisclaimer />
       <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800 text-white">
         <div className="container mx-auto px-4 py-8">
           {/* Header with animated elements */}

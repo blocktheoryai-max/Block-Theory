@@ -66,9 +66,9 @@ export default function Footer() {
             &copy; 2025 TradeTutor. Built for crypto learners, by crypto believers.
           </p>
           <div className="flex space-x-6 mt-4 md:mt-0">
-            <a href="#" className="text-slate-400 hover:text-primary transition-colors text-sm">Privacy Policy</a>
-            <a href="#" className="text-slate-400 hover:text-primary transition-colors text-sm">Terms of Service</a>
-            <a href="#" className="text-slate-400 hover:text-primary transition-colors text-sm">Cookie Policy</a>
+            <a href="/privacy-policy" className="text-slate-400 hover:text-primary transition-colors text-sm">Privacy Policy</a>
+            <a href="/terms-of-service" className="text-slate-400 hover:text-primary transition-colors text-sm">Terms of Service</a>
+            <a href="/cookie-policy" className="text-slate-400 hover:text-primary transition-colors text-sm">Cookie Policy</a>
           </div>
         </div>
       </div>
