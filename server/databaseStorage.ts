@@ -293,7 +293,7 @@ export class DatabaseStorage implements IStorage {
   async updateCryptoPrice(symbol: string, price: string, change24h: string): Promise<void> {
     await db
       .update(cryptoPrices)
-      .set({ price, change24h, lastUpdated: new Date() })
+      .set({ price, change24h, updatedAt: new Date() })
       .where(eq(cryptoPrices.symbol, symbol));
   }
 
@@ -480,24 +480,33 @@ export class DatabaseStorage implements IStorage {
 
   // Trading signals operations
   async getTradingSignals(requiredTier?: string): Promise<TradingSignal[]> {
-    let query = db.select().from(tradingSignals).where(eq(tradingSignals.status, "active"));
-    
     if (requiredTier) {
       const tierLevels = { free: 0, basic: 1, pro: 2, elite: 3 };
       const tierLevel = tierLevels[requiredTier as keyof typeof tierLevels] || 0;
       
-      query = query.where(
-        sql`CASE 
-          WHEN ${tradingSignals.requiredTier} = 'free' THEN 0
-          WHEN ${tradingSignals.requiredTier} = 'basic' THEN 1
-          WHEN ${tradingSignals.requiredTier} = 'pro' THEN 2
-          WHEN ${tradingSignals.requiredTier} = 'elite' THEN 3
-          ELSE 0
-        END <= ${tierLevel}`
-      );
+      return await db
+        .select()
+        .from(tradingSignals)
+        .where(
+          and(
+            eq(tradingSignals.status, "active"),
+            sql`CASE 
+              WHEN ${tradingSignals.requiredTier} = 'free' THEN 0
+              WHEN ${tradingSignals.requiredTier} = 'basic' THEN 1
+              WHEN ${tradingSignals.requiredTier} = 'pro' THEN 2
+              WHEN ${tradingSignals.requiredTier} = 'elite' THEN 3
+              ELSE 0
+            END <= ${tierLevel}`
+          )
+        )
+        .orderBy(desc(tradingSignals.createdAt));
     }
     
-    return await query.orderBy(desc(tradingSignals.createdAt));
+    return await db
+      .select()
+      .from(tradingSignals)
+      .where(eq(tradingSignals.status, "active"))
+      .orderBy(desc(tradingSignals.createdAt));
   }
 
   async createTradingSignal(signalData: InsertTradingSignal): Promise<TradingSignal> {
