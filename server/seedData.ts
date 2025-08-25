@@ -98,8 +98,10 @@ export async function seedDatabase() {
     // Always refresh lessons for comprehensive library
     await db.delete(lessons); // Clear existing lessons
     
-    // Create comprehensive lesson library with 50+ lessons
-    await db.insert(lessons).values([
+    console.log("📚 Creating foundation lessons (1-50)...");
+    // Create foundation lessons in smaller batches
+    try {
+      const foundationLessons = await db.insert(lessons).values([
       // Foundation Track (Free Tier) - Lessons 1-6
       {
         title: "What is Cryptocurrency?",
@@ -1450,8 +1452,17 @@ export async function seedDatabase() {
         isPremium: true,
         videoUrl: "https://www.youtube.com/embed/f6hrlH7Qs4k",
         tags: ["business", "scaling", "entrepreneurship"]
-      },
-      
+      }
+      ]).returning();
+      console.log(`✅ Created ${foundationLessons.length} foundation lessons`);
+    } catch (error) {
+      console.error("❌ Error creating foundation lessons:", error);
+    }
+
+    console.log("📚 Creating advanced lessons (51-75)...");
+    // Create advanced lessons batch  
+    try {
+      const advancedLessons = await db.insert(lessons).values([
       // Additional Advanced Topics (51-75)
       {
         title: "Decentralized Autonomous Organizations (DAOs)",
@@ -2077,8 +2088,17 @@ export async function seedDatabase() {
         isPremium: true,
         videoUrl: "https://www.youtube.com/embed/3EUAcxhuoU4",
         tags: ["mining", "staking", "consensus"]
-      },
+      }
+      ]).returning();
+      console.log(`✅ Created ${advancedLessons.length} advanced lessons`);
+    } catch (error) {
+      console.error("❌ Error creating advanced lessons:", error);
+    }
 
+    console.log("📚 Creating expert mastery lessons (76-100)...");
+    // Create expert lessons batch
+    try {
+      const expertLessons = await db.insert(lessons).values([
       // Expert Mastery & Future Trends (76-100)
       {
         title: "Blockchain Governance Systems",
@@ -2705,9 +2725,14 @@ export async function seedDatabase() {
         videoUrl: "https://www.youtube.com/embed/YIzKo5GfWME",
         tags: ["capstone", "mastery", "synthesis"]
       }
-    ]);
+      ]).returning();
+      console.log(`✅ Created ${expertLessons.length} expert lessons`);
+    } catch (error) {
+      console.error("❌ Error creating expert lessons:", error);
+    }
     
-    console.log("✅ Comprehensive lesson library created with 100+ professional-grade lessons");
+    const totalLessons = await db.select().from(lessons);
+    console.log(`✅ Total lesson library created: ${totalLessons.length} professional-grade lessons`);
 
     console.log("🎉 Database seeding completed successfully!");
     
