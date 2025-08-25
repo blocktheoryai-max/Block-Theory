@@ -17,17 +17,18 @@ export async function seedDatabase() {
           priceMonthly: "0",
           priceYearly: "0",
           features: [
-            "Access to basic lessons",
-            "Basic market analysis",
+            "Access to 10 foundation lessons",
+            "Basic trading simulator ($1K virtual)",
             "Community forum access",
-            "Limited simulation trades"
+            "Weekly market updates",
+            "Basic portfolio tracking"
           ],
-          hasSimulator: false,
+          hasSimulator: true,
           hasCommunity: true,
           hasAnalytics: false,
           hasLiveTrading: false,
-          hasMentoring: false,
-          hasSignals: false
+          hasSignals: false,
+
         },
         {
           tier: "basic",
@@ -35,18 +36,19 @@ export async function seedDatabase() {
           priceMonthly: "19.99",
           priceYearly: "199.99",
           features: [
-            "Access to intermediate lessons",
-            "Advanced technical analysis",
-            "Trading simulator with $10K virtual",
-            "Basic portfolio analytics",
+            "Complete lesson library (50+ lessons)",
+            "Advanced trading simulator ($10K virtual)",
+            "Progress tracking & analytics",
+            "Technical analysis tools",
+            "Community access",
             "Email support"
           ],
           hasSimulator: true,
           hasCommunity: true,
           hasAnalytics: true,
           hasLiveTrading: false,
-          hasMentoring: false,
-          hasSignals: false
+          hasSignals: false,
+
         },
         {
           tier: "pro",
@@ -54,19 +56,19 @@ export async function seedDatabase() {
           priceMonthly: "49.99",
           priceYearly: "499.99",
           features: [
-            "Access to advanced lessons",
-            "Professional trading tools",
-            "Real-time market data",
-            "Advanced portfolio analytics",
-            "Trading signals & alerts",
+            "Everything in Basic",
+            "Real-time market data & alerts",
+            "AI-powered trading signals",
+            "Advanced analytics dashboard",
+            "Whale activity tracking",
             "Priority support"
           ],
           hasSimulator: true,
           hasCommunity: true,
           hasAnalytics: true,
           hasLiveTrading: true,
-          hasMentoring: false,
-          hasSignals: true
+          hasSignals: true,
+
         },
         {
           tier: "elite",
@@ -75,18 +77,19 @@ export async function seedDatabase() {
           priceYearly: "999.99", 
           features: [
             "Everything in Pro",
-            "1-on-1 mentoring sessions",
-            "Private Discord community",
-            "Exclusive content & strategies", 
-            "Custom trading bot development",
-            "White-glove onboarding"
+            "Exclusive premium content",
+            "Early access to new features",
+            "Advanced market insights",
+            "Custom alerts & notifications",
+            "VIP community access",
+            "Dedicated support channel"
           ],
           hasSimulator: true,
           hasCommunity: true,
           hasAnalytics: true,
           hasLiveTrading: true,
-          hasMentoring: true,
-          hasSignals: true
+          hasSignals: true,
+
         }
       ]);
       console.log("✅ Subscription plans created");

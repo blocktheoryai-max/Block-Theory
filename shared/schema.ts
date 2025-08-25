@@ -243,7 +243,6 @@ export const subscriptionPlans = pgTable("subscription_plans", {
   hasCommunity: boolean("has_community").default(false),
   hasAnalytics: boolean("has_analytics").default(false),
   hasLiveTrading: boolean("has_live_trading").default(false),
-  hasMentoring: boolean("has_mentoring").default(false),
   hasSignals: boolean("has_signals").default(false),
   isActive: boolean("is_active").default(true),
   createdAt: timestamp("created_at").defaultNow(),
@@ -364,20 +363,6 @@ export const learningStreaks = pgTable("learning_streaks", {
 // Removed duplicate - using the first definition above
 
 // Mentoring sessions for Elite tier
-export const mentoringBookings = pgTable("mentoring_bookings", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  userId: varchar("user_id").references(() => users.id).notNull(),
-  mentorId: varchar("mentor_id").references(() => users.id).notNull(),
-  sessionType: text("session_type").notNull(), // "trading_review", "strategy_planning", "q_and_a"
-  sessionTitle: text("session_title").notNull(),
-  scheduledAt: timestamp("scheduled_at").notNull(),
-  duration: integer("duration").default(60), // minutes
-  meetingUrl: text("meeting_url"),
-  notes: text("notes"),
-  status: text("status").default("scheduled"), // "scheduled", "completed", "cancelled", "no_show"
-  feedback: jsonb("feedback"),
-  createdAt: timestamp("created_at").defaultNow(),
-});
 
 // Analytics for admin dashboard
 export const userAnalytics = pgTable("user_analytics", {
