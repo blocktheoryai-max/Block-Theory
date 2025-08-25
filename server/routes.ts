@@ -2,6 +2,7 @@ import express, { type Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { setupAuth, isAuthenticated, requiresSubscription } from "./replitAuth";
+import { emailService } from "./emailService";
 import { insertTradeSchema, insertForumPostSchema } from "@shared/schema";
 import { liveDataService } from "./liveDataService";
 import Stripe from "stripe";
@@ -286,6 +287,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
         // Activate subscription
         await storage.updateUserSubscription(userId, planTier, "active");
         
+        // Send subscription confirmation email
+        const user = await storage.getUser(userId);
+        if (user?.email) {
+          const planName = await storage.getSubscriptionPlan(paymentIntent.metadata.planId);
+          const userName = user.firstName || user.username;
+          await emailService.sendSubscriptionConfirmationEmail(
+            user.email, 
+            userName, 
+            planName?.name || planTier, 
+            paymentIntent.amount,
+            isYearly
+          );
+        }
+        
         res.json({ 
           message: "Subscription activated successfully",
           tier: planTier,
@@ -316,6 +331,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
         trialEndDate.setDate(trialEndDate.getDate() + 14);
         
         await storage.updateUserSubscription(userId, "pro", "trialing");
+        
+        // Send trial started email
+        if (user.email) {
+          const userName = user.firstName || user.username;
+          await emailService.sendTrialStartedEmail(user.email, userName, trialEndDate);
+        }
         
         res.json({ 
           message: "14-day Pro trial started",
