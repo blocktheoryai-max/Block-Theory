@@ -226,7 +226,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           metadata: { userId }
         });
         stripeCustomerId = customer.id;
-        await storage.updateUserStripeInfo(userId, stripeCustomerId);
+        await storage.updateUserStripeInfo(userId, stripeCustomerId, "");
       }
       
       // Create payment intent
@@ -1161,6 +1161,151 @@ Focus on making complex blockchain concepts understandable for users learning ab
     } catch (error) {
       console.error('Create price alert error:', error);
       res.status(500).json({ message: 'Failed to create price alert' });
+    }
+  });
+
+  // AI Trading Assistant Endpoints
+  app.post('/api/ai/portfolio-analysis', async (req, res) => {
+    try {
+      const { userId, portfolioData } = req.body;
+      
+      if (!process.env.OPENAI_API_KEY) {
+        return res.status(500).json({ error: 'AI service not configured' });
+      }
+
+      // Get user's portfolio and market data
+      const portfolio = portfolioData || await storage.getUserPortfolio(userId);
+      const marketData = liveDataService.getMarketData();
+      
+      // Prepare portfolio analysis prompt
+      const portfolioSummary = portfolio.map((holding: any) => {
+        const marketInfo = Object.values(marketData).find(coin => coin.symbol === holding.symbol);
+        return `${holding.symbol}: ${holding.amount} coins at avg price $${holding.averagePrice}, current price $${marketInfo?.price || 'N/A'}, 24h change: ${marketInfo?.change24h || 0}%`;
+      }).join(', ');
+
+      const prompt = `As an expert crypto trading analyst, analyze this portfolio and provide insights:
+
+Portfolio: ${portfolioSummary}
+
+Provide analysis in JSON format with:
+1. overall_health: score 1-100
+2. risk_level: "low", "medium", "high"
+3. diversification_score: 1-100
+4. top_performers: array of best performing assets
+5. underperformers: array of worst performing assets
+6. recommendations: array of 3-5 specific actionable recommendations
+7. market_outlook: brief outlook for the portfolio
+8. next_actions: 2-3 immediate suggested actions`;
+
+      const response = await openai.chat.completions.create({
+        model: "gpt-4", // the newest OpenAI model is "gpt-5" which was released August 7, 2025. do not change this unless explicitly requested by the user
+        messages: [{ role: "user", content: prompt }],
+        response_format: { type: "json_object" },
+        max_tokens: 1000
+      });
+
+      const analysis = JSON.parse(response.choices[0].message.content || '{}');
+      res.json(analysis);
+    } catch (error) {
+      console.error('AI portfolio analysis error:', error);
+      res.status(500).json({ error: 'Failed to analyze portfolio' });
+    }
+  });
+
+  app.post('/api/ai/strategy-recommendations', async (req, res) => {
+    try {
+      const { userId, riskTolerance = 'medium', investmentGoal = 'growth', timeHorizon = 'long_term' } = req.body;
+      
+      if (!process.env.OPENAI_API_KEY) {
+        return res.status(500).json({ error: 'AI service not configured' });
+      }
+
+      const marketData = liveDataService.getMarketData();
+      
+      // Get current market conditions
+      const topCoins = Object.values(marketData).slice(0, 10).map(coin => 
+        `${coin.symbol}: $${coin.price} (${coin.change24h}%)`
+      ).join(', ');
+
+      const prompt = `As a crypto trading strategist, create personalized trading strategies based on:
+
+Risk Tolerance: ${riskTolerance}
+Investment Goal: ${investmentGoal}
+Time Horizon: ${timeHorizon}
+Current Market: ${topCoins}
+
+Provide response in JSON format with:
+1. primary_strategy: {name, description, risk_level, expected_return}
+2. asset_allocation: array of {symbol, percentage, rationale}
+3. entry_strategies: array of specific entry point recommendations
+4. risk_management: {stop_loss_strategy, position_sizing, diversification_rules}
+5. market_timing: current market assessment and timing recommendations
+6. alternative_strategies: 2 backup strategy options`;
+
+      const response = await openai.chat.completions.create({
+        model: "gpt-4", // the newest OpenAI model is "gpt-5" which was released August 7, 2025. do not change this unless explicitly requested by the user
+        messages: [{ role: "user", content: prompt }],
+        response_format: { type: "json_object" },
+        max_tokens: 1200
+      });
+
+      const strategies = JSON.parse(response.choices[0].message.content || '{}');
+      res.json(strategies);
+    } catch (error) {
+      console.error('AI strategy recommendations error:', error);
+      res.status(500).json({ error: 'Failed to generate strategies' });
+    }
+  });
+
+  app.post('/api/ai/portfolio-optimization', async (req, res) => {
+    try {
+      const { userId, currentPortfolio, optimizationGoal = 'risk_adjusted_returns' } = req.body;
+      
+      if (!process.env.OPENAI_API_KEY) {
+        return res.status(500).json({ error: 'AI service not configured' });
+      }
+
+      const marketData = liveDataService.getMarketData();
+      
+      // Get portfolio and market context
+      const portfolio = currentPortfolio || await storage.getUserPortfolio(userId);
+      const portfolioValue = portfolio.reduce((total: any, holding: any) => {
+        const marketInfo = Object.values(marketData).find(coin => coin.symbol === holding.symbol);
+        return total + (parseFloat(holding.amount) * (marketInfo?.price || 0));
+      }, 0);
+
+      const currentHoldings = portfolio.map((holding: any) => {
+        const marketInfo = Object.values(marketData).find(coin => coin.symbol === holding.symbol);
+        const currentValue = parseFloat(holding.amount) * (marketInfo?.price || 0);
+        return `${holding.symbol}: ${((currentValue / portfolioValue) * 100).toFixed(1)}% ($${currentValue.toFixed(2)})`;
+      }).join(', ');
+
+      const prompt = `As a portfolio optimization expert, optimize this crypto portfolio:
+
+Current Holdings: ${currentHoldings}
+Total Value: $${portfolioValue.toFixed(2)}
+Optimization Goal: ${optimizationGoal}
+
+Provide optimization in JSON format with:
+1. current_analysis: {total_value, risk_score, diversification_rating}
+2. optimized_allocation: array of {symbol, target_percentage, current_percentage, adjustment_needed}
+3. rebalancing_actions: array of specific buy/sell recommendations
+4. risk_metrics: {expected_volatility, sharpe_ratio_estimate, max_drawdown_estimate}
+5. performance_projection: 3-month and 12-month outlook
+6. optimization_rationale: explanation of changes recommended`;
+
+      const response = await openai.chat.completions.create({
+        model: "gpt-4", // the newest OpenAI model is "gpt-5" which was released August 7, 2025. do not change this unless explicitly requested by the user
+        messages: [{ role: "user", content: prompt }],
+        response_format: { type: "json_object" },
+        max_tokens: 1200
+      });
+
+      const optimization = JSON.parse(response.choices[0].message.content || '{}');
+      res.json(optimization);
+    } catch (error) {
+      console.error('AI portfolio optimization error:', error);
+      res.status(500).json({ error: 'Failed to optimize portfolio' });
     }
   });
 

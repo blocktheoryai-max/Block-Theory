@@ -39,8 +39,9 @@ export default function Navigation() {
 
   // Advanced tools dropdown
   const advancedTools = [
+    { path: "/ai-assistant", label: translate("nav.ai", "AI Assistant"), icon: Brain },
     { path: "/whale-tracker", label: translate("nav.whale", "Whale Tracker"), icon: Fish },
-    { path: "/whitepaper-analyzer", label: translate("nav.whitepaper", "AI Analyzer"), icon: Brain },
+    { path: "/whitepaper-analyzer", label: translate("nav.whitepaper", "AI Analyzer"), icon: FileText },
     { path: "/technical-analysis", label: translate("nav.technical", "Technical Analysis"), icon: LineChart },
   ];
 

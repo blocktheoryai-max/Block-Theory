@@ -44,7 +44,7 @@ export default function Pricing() {
       period: "month",
       description: "Unlock the complete lesson library and advanced simulator",
       features: [
-        "Complete video library (200+ lessons)",
+        "Complete video library (50+ lessons)",
         "Advanced trading simulator",
         "Progress tracking & analytics",
         "Community access",
@@ -103,7 +103,7 @@ export default function Pricing() {
     {
       icon: BookOpen,
       title: "Comprehensive Curriculum",
-      description: "500+ video lessons covering everything from basics to advanced trading strategies"
+      description: "50+ professional video lessons covering everything from basics to advanced trading strategies"
     },
     {
       icon: PlayCircle,

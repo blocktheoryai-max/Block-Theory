@@ -17,6 +17,7 @@ import TechnicalAnalysis from "@/pages/technical-analysis";
 import Checkout from "@/pages/checkout";
 import NftMarketplace from "@/pages/nft-marketplace";
 import ChatRooms from "@/pages/chat-rooms";
+import AiAssistant from "@/pages/ai-assistant";
 import NotFound from "@/pages/not-found";
 import { useAuth } from "@/hooks/useAuth";
 import Navigation from "@/components/Navigation";
@@ -41,6 +42,7 @@ function Router() {
         <Route path="/technical-analysis" component={TechnicalAnalysis} />
         <Route path="/nft-marketplace" component={NftMarketplace} />
         <Route path="/chat-rooms" component={ChatRooms} />
+        <Route path="/ai-assistant" component={AiAssistant} />
         <Route component={NotFound} />
       </Switch>
     </>
