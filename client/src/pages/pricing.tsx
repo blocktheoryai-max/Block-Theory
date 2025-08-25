@@ -32,7 +32,7 @@ export default function Pricing() {
       limitations: [
         "Limited simulation features",
         "No advanced lessons",
-        "No personalized coaching"
+        "No AI assistant access"
       ],
       buttonText: "Get Started Free",
       buttonVariant: "outline" as const,
@@ -65,11 +65,11 @@ export default function Pricing() {
       features: [
         "Everything in Basic",
         "Live trading sessions (weekly)",
-        "Premium market signals",
+        "Premium automated signals",
         "Advanced analytics dashboard",
-        "1-on-1 mentoring (monthly)",
+        "AI-powered portfolio insights",
         "Private Discord community",
-        "Priority support",
+        "Priority email support",
         "Early access to new features"
       ],
       limitations: [],
@@ -81,16 +81,16 @@ export default function Pricing() {
       name: "Elite",
       price: "$99.99",
       period: "month",
-      description: "Ultimate trading education with personal coaching",
+      description: "Ultimate trading education with AI-powered insights",
       features: [
         "Everything in Pro",
-        "Weekly 1-on-1 coaching calls",
-        "Custom trading strategies",
-        "Portfolio review sessions",
-        "Exclusive market insights",
+        "Advanced AI trading assistant",
+        "Automated strategy recommendations",
+        "AI portfolio optimization",
+        "Exclusive premium market data",
         "VIP Discord channels",
-        "Phone & video support",
-        "Custom lesson requests"
+        "24/7 automated support chat",
+        "Access to all premium content"
       ],
       limitations: [],
       buttonText: "Go Elite",
