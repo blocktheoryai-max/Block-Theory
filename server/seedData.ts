@@ -1450,10 +1450,1264 @@ export async function seedDatabase() {
         isPremium: true,
         videoUrl: "https://www.youtube.com/embed/f6hrlH7Qs4k",
         tags: ["business", "scaling", "entrepreneurship"]
+      },
+      
+      // Additional Advanced Topics (51-75)
+      {
+        title: "Decentralized Autonomous Organizations (DAOs)",
+        description: "Understanding governance tokens and DAO participation.",
+        content: `<h1>Decentralized Autonomous Organizations (DAOs)</h1>
+<p>DAOs represent the future of decentralized governance and decision-making.</p>
+<h2>DAO Components</h2>
+<ul>
+<li><strong>Governance Tokens:</strong> Voting rights and proposals</li>
+<li><strong>Treasury Management:</strong> Community-controlled funds</li>
+<li><strong>Proposal Systems:</strong> Democratic decision-making</li>
+<li><strong>Execution Mechanisms:</strong> Automated implementation</li>
+</ul>`,
+        level: "intermediate",
+        category: "defi",
+        duration: 32,
+        format: "video",
+        order: 51,
+        requiredTier: "basic",
+        prerequisites: ["DeFi Fundamentals"],
+        learningObjectives: ["Understand DAO governance", "Participate in voting", "Evaluate DAO investments"],
+        isLocked: false,
+        isPremium: false,
+        videoUrl: "https://www.youtube.com/embed/KHm0uUPqmVE",
+        tags: ["dao", "governance", "community"]
+      },
+      {
+        title: "Cross-Chain Bridges and Interoperability",
+        description: "Moving assets between different blockchain networks safely.",
+        content: `<h1>Cross-Chain Bridges and Interoperability</h1>
+<p>Understanding how to safely move assets across different blockchain networks.</p>
+<h2>Bridge Types</h2>
+<ul>
+<li><strong>Lock and Mint:</strong> Asset wrapping mechanisms</li>
+<li><strong>Atomic Swaps:</strong> Direct peer-to-peer exchanges</li>
+<li><strong>Validator Networks:</strong> Multi-signature bridges</li>
+<li><strong>Rollup Bridges:</strong> Layer 2 to Layer 1 connections</li>
+</ul>`,
+        level: "advanced",
+        category: "defi",
+        duration: 38,
+        format: "video",
+        order: 52,
+        requiredTier: "pro",
+        prerequisites: ["Layer 2 Solutions"],
+        learningObjectives: ["Use bridges safely", "Understand bridge risks", "Navigate multi-chain DeFi"],
+        isLocked: false,
+        isPremium: true,
+        videoUrl: "https://www.youtube.com/embed/ZQJwnfFBM8M",
+        tags: ["bridges", "interoperability", "multi-chain"]
+      },
+      {
+        title: "Yield Farming Strategies",
+        description: "Advanced yield farming techniques and optimization.",
+        content: `<h1>Yield Farming Strategies</h1>
+<p>Maximize returns through sophisticated yield farming approaches.</p>
+<h2>Advanced Strategies</h2>
+<ul>
+<li><strong>LP Token Staking:</strong> Compound yield opportunities</li>
+<li><strong>Auto-Compounding:</strong> Automated yield optimization</li>
+<li><strong>Cross-Protocol Farming:</strong> Multi-platform strategies</li>
+<li><strong>Impermanent Loss Mitigation:</strong> Risk management techniques</li>
+</ul>`,
+        level: "advanced",
+        category: "defi",
+        duration: 42,
+        format: "video",
+        order: 53,
+        requiredTier: "pro",
+        prerequisites: ["DeFi Fundamentals", "Liquidity Pools"],
+        learningObjectives: ["Optimize yield farming", "Manage impermanent loss", "Evaluate farm risks"],
+        isLocked: false,
+        isPremium: true,
+        videoUrl: "https://www.youtube.com/embed/ClnnLI1SClA",
+        tags: ["yield-farming", "defi", "optimization"]
+      },
+      {
+        title: "MEV (Maximal Extractable Value)",
+        description: "Understanding MEV and its impact on trading.",
+        content: `<h1>MEV (Maximal Extractable Value)</h1>
+<p>Learn about MEV and how it affects your trading strategies.</p>
+<h2>MEV Concepts</h2>
+<ul>
+<li><strong>Front-running:</strong> Transaction ordering manipulation</li>
+<li><strong>Sandwich Attacks:</strong> Profit from large trades</li>
+<li><strong>Arbitrage:</strong> Cross-DEX price differences</li>
+<li><strong>MEV Protection:</strong> Strategies to avoid MEV</li>
+</ul>`,
+        level: "expert",
+        category: "trading",
+        duration: 35,
+        format: "video",
+        order: 54,
+        requiredTier: "pro",
+        prerequisites: ["Advanced Chart Patterns", "DeFi Fundamentals"],
+        learningObjectives: ["Understand MEV mechanics", "Protect against MEV", "Identify MEV opportunities"],
+        isLocked: false,
+        isPremium: true,
+        videoUrl: "https://www.youtube.com/embed/rOVz7dOrGyY",
+        tags: ["mev", "trading", "arbitrage"]
+      },
+      {
+        title: "Flash Loans and Advanced DeFi",
+        description: "Leveraging flash loans for advanced DeFi strategies.",
+        content: `<h1>Flash Loans and Advanced DeFi</h1>
+<p>Understanding and utilizing flash loans for sophisticated DeFi operations.</p>
+<h2>Flash Loan Applications</h2>
+<ul>
+<li><strong>Arbitrage Trading:</strong> Risk-free arbitrage opportunities</li>
+<li><strong>Debt Refinancing:</strong> Optimize borrowing costs</li>
+<li><strong>Liquidations:</strong> Profit from underwater positions</li>
+<li><strong>Collateral Swapping:</strong> Change collateral without repaying</li>
+</ul>`,
+        level: "expert",
+        category: "defi",
+        duration: 45,
+        format: "video",
+        order: 55,
+        requiredTier: "elite",
+        prerequisites: ["Yield Farming Strategies", "MEV"],
+        learningObjectives: ["Execute flash loan strategies", "Identify opportunities", "Manage flash loan risks"],
+        isLocked: false,
+        isPremium: true,
+        videoUrl: "https://www.youtube.com/embed/mCJUhnXQ426",
+        tags: ["flash-loans", "arbitrage", "advanced-defi"]
+      },
+      {
+        title: "Web3 and Decentralized Identity",
+        description: "Understanding Web3 infrastructure and digital identity.",
+        content: `<h1>Web3 and Decentralized Identity</h1>
+<p>Explore the future of internet infrastructure and digital identity management.</p>
+<h2>Web3 Components</h2>
+<ul>
+<li><strong>Decentralized Storage:</strong> IPFS and Arweave</li>
+<li><strong>ENS Domains:</strong> Blockchain-based naming</li>
+<li><strong>Self-Sovereign Identity:</strong> Control your digital identity</li>
+<li><strong>dApps:</strong> Decentralized application development</li>
+</ul>`,
+        level: "intermediate",
+        category: "defi",
+        duration: 36,
+        format: "video",
+        order: 56,
+        requiredTier: "basic",
+        prerequisites: ["Introduction to Ethereum", "NFT Market Analysis"],
+        learningObjectives: ["Understand Web3 concepts", "Set up ENS domain", "Manage digital identity"],
+        isLocked: false,
+        isPremium: false,
+        videoUrl: "https://www.youtube.com/embed/l44z35vabvA",
+        tags: ["web3", "identity", "decentralization"]
+      },
+      {
+        title: "GameFi and Play-to-Earn",
+        description: "Exploring blockchain gaming and earning opportunities.",
+        content: `<h1>GameFi and Play-to-Earn</h1>
+<p>Understanding the intersection of gaming, finance, and blockchain technology.</p>
+<h2>GameFi Elements</h2>
+<ul>
+<li><strong>NFT Gaming Assets:</strong> Tradeable in-game items</li>
+<li><strong>Token Economics:</strong> Game token design and utility</li>
+<li><strong>Guild Systems:</strong> Gaming DAOs and scholarships</li>
+<li><strong>Metaverse Economics:</strong> Virtual world economies</li>
+</ul>`,
+        level: "intermediate",
+        category: "nft",
+        duration: 34,
+        format: "video",
+        order: 57,
+        requiredTier: "basic",
+        prerequisites: ["NFT Market Analysis", "Decentralized Autonomous Organizations"],
+        learningObjectives: ["Evaluate GameFi projects", "Understand P2E economics", "Participate in gaming DAOs"],
+        isLocked: false,
+        isPremium: false,
+        videoUrl: "https://www.youtube.com/embed/0oJ-DL8_6j0",
+        tags: ["gamefi", "play-to-earn", "metaverse"]
+      },
+      {
+        title: "Multi-Timeframe Analysis",
+        description: "Advanced techniques for analyzing multiple timeframes.",
+        content: `<h1>Multi-Timeframe Analysis</h1>
+<p>Master the art of analyzing multiple timeframes for better trade timing.</p>
+<h2>Timeframe Hierarchy</h2>
+<ul>
+<li><strong>Primary Trend:</strong> Monthly and weekly analysis</li>
+<li><strong>Secondary Trend:</strong> Daily timeframe context</li>
+<li><strong>Entry Timing:</strong> 4H and 1H precision</li>
+<li><strong>Execution:</strong> 15M and 5M entries</li>
+</ul>`,
+        level: "advanced",
+        category: "technical-analysis",
+        duration: 40,
+        format: "video",
+        order: 58,
+        requiredTier: "pro",
+        prerequisites: ["Advanced Chart Patterns", "Technical Indicators - RSI & MACD"],
+        learningObjectives: ["Analyze multiple timeframes", "Align trend directions", "Time entries precisely"],
+        isLocked: false,
+        isPremium: true,
+        videoUrl: "https://www.youtube.com/embed/FfPq_NQ74WE",
+        tags: ["timeframes", "technical-analysis", "timing"]
+      },
+      {
+        title: "Options and Derivatives Trading",
+        description: "Understanding crypto options and derivative instruments.",
+        content: `<h1>Options and Derivatives Trading</h1>
+<p>Explore advanced trading instruments including options and perpetual futures.</p>
+<h2>Derivative Types</h2>
+<ul>
+<li><strong>Call Options:</strong> Bullish strategies and hedging</li>
+<li><strong>Put Options:</strong> Bearish protection strategies</li>
+<li><strong>Perpetual Futures:</strong> Leverage and funding rates</li>
+<li><strong>Options Strategies:</strong> Straddles, strangles, spreads</li>
+</ul>`,
+        level: "expert",
+        category: "trading",
+        duration: 48,
+        format: "video",
+        order: 59,
+        requiredTier: "elite",
+        prerequisites: ["Advanced Risk Models", "Multi-Timeframe Analysis"],
+        learningObjectives: ["Trade crypto options", "Use derivatives for hedging", "Manage leverage effectively"],
+        isLocked: false,
+        isPremium: true,
+        videoUrl: "https://www.youtube.com/embed/SD7sw0bf22g",
+        tags: ["options", "derivatives", "leverage"]
+      },
+      {
+        title: "Cryptocurrency Taxation",
+        description: "Understanding tax implications of crypto trading and DeFi.",
+        content: `<h1>Cryptocurrency Taxation</h1>
+<p>Navigate the complex world of cryptocurrency taxation and compliance.</p>
+<h2>Tax Concepts</h2>
+<ul>
+<li><strong>Taxable Events:</strong> Trading, staking, DeFi interactions</li>
+<li><strong>Cost Basis:</strong> FIFO, LIFO, and specific identification</li>
+<li><strong>Record Keeping:</strong> Transaction documentation</li>
+<li><strong>DeFi Taxation:</strong> Yield farming and LP token implications</li>
+</ul>`,
+        level: "intermediate",
+        category: "security",
+        duration: 38,
+        format: "video",
+        order: 60,
+        requiredTier: "basic",
+        prerequisites: ["Portfolio Management", "DeFi Fundamentals"],
+        learningObjectives: ["Understand tax obligations", "Maintain proper records", "Plan tax-efficient strategies"],
+        isLocked: false,
+        isPremium: false,
+        videoUrl: "https://www.youtube.com/embed/PfN6_FqmBzM",
+        tags: ["taxation", "compliance", "records"]
+      },
+      {
+        title: "Central Bank Digital Currencies (CBDCs)",
+        description: "Understanding the impact of government digital currencies.",
+        content: `<h1>Central Bank Digital Currencies (CBDCs)</h1>
+<p>Analyzing the development and implications of government-issued digital currencies.</p>
+<h2>CBDC Implications</h2>
+<ul>
+<li><strong>Design Models:</strong> Retail vs wholesale CBDCs</li>
+<li><strong>Privacy Considerations:</strong> Surveillance and anonymity</li>
+<li><strong>Monetary Policy:</strong> Enhanced central bank control</li>
+<li><strong>Crypto Impact:</strong> Competition with cryptocurrencies</li>
+</ul>`,
+        level: "advanced",
+        category: "basics",
+        duration: 40,
+        format: "video",
+        order: 61,
+        requiredTier: "pro",
+        prerequisites: ["Regulatory Landscape", "Monetary Policy and Crypto"],
+        learningObjectives: ["Understand CBDC technology", "Analyze policy implications", "Assess market impact"],
+        isLocked: false,
+        isPremium: true,
+        videoUrl: "https://www.youtube.com/embed/6GMh_BwaDTs",
+        tags: ["cbdc", "regulation", "monetary-policy"]
+      },
+      {
+        title: "Environmental Impact and Green Crypto",
+        description: "Understanding sustainability in blockchain technology.",
+        content: `<h1>Environmental Impact and Green Crypto</h1>
+<p>Exploring the environmental considerations and sustainable blockchain solutions.</p>
+<h2>Sustainability Topics</h2>
+<ul>
+<li><strong>Energy Consumption:</strong> PoW vs PoS environmental impact</li>
+<li><strong>Carbon Footprint:</strong> Measuring blockchain emissions</li>
+<li><strong>Green Mining:</strong> Renewable energy mining operations</li>
+<li><strong>Eco-Friendly Blockchains:</strong> Sustainable blockchain projects</li>
+</ul>`,
+        level: "intermediate",
+        category: "basics",
+        duration: 32,
+        format: "video",
+        order: 62,
+        requiredTier: "basic",
+        prerequisites: ["Blockchain Fundamentals", "Proof of Stake vs Proof of Work"],
+        learningObjectives: ["Assess environmental impact", "Identify green projects", "Understand sustainability trends"],
+        isLocked: false,
+        isPremium: false,
+        videoUrl: "https://www.youtube.com/embed/k6xLKjH1L-o",
+        tags: ["environment", "sustainability", "green-crypto"]
+      },
+      {
+        title: "Blockchain Development Fundamentals",
+        description: "Introduction to building on blockchain platforms.",
+        content: `<h1>Blockchain Development Fundamentals</h1>
+<p>Get started with blockchain development and smart contract programming.</p>
+<h2>Development Basics</h2>
+<ul>
+<li><strong>Solidity Programming:</strong> Smart contract language basics</li>
+<li><strong>Development Tools:</strong> Remix, Hardhat, Truffle</li>
+<li><strong>Testing:</strong> Smart contract testing frameworks</li>
+<li><strong>Deployment:</strong> Mainnet and testnet deployment</li>
+</ul>`,
+        level: "advanced",
+        category: "defi",
+        duration: 50,
+        format: "video",
+        order: 63,
+        requiredTier: "pro",
+        prerequisites: ["Introduction to Ethereum", "DeFi Fundamentals"],
+        learningObjectives: ["Write basic smart contracts", "Use development tools", "Deploy contracts safely"],
+        isLocked: false,
+        isPremium: true,
+        videoUrl: "https://www.youtube.com/embed/ipwxYa-F1uY",
+        tags: ["development", "solidity", "smart-contracts"]
+      },
+      {
+        title: "Crypto Career Pathways",
+        description: "Exploring different career opportunities in cryptocurrency.",
+        content: `<h1>Crypto Career Pathways</h1>
+<p>Discover various career paths and opportunities in the cryptocurrency industry.</p>
+<h2>Career Options</h2>
+<ul>
+<li><strong>Trading Roles:</strong> Prop trading, fund management, analysis</li>
+<li><strong>Technical Roles:</strong> Blockchain development, security auditing</li>
+<li><strong>Business Roles:</strong> Product management, marketing, business development</li>
+<li><strong>Content Creation:</strong> Education, research, journalism</li>
+</ul>`,
+        level: "beginner",
+        category: "basics",
+        duration: 28,
+        format: "video",
+        order: 64,
+        requiredTier: "free",
+        prerequisites: [],
+        learningObjectives: ["Explore career options", "Understand skill requirements", "Plan career development"],
+        isLocked: false,
+        isPremium: false,
+        videoUrl: "https://www.youtube.com/embed/BgFXqVpGDQE",
+        tags: ["career", "opportunities", "professional"]
+      },
+      {
+        title: "Building a Crypto Portfolio",
+        description: "Constructing a diversified cryptocurrency investment portfolio.",
+        content: `<h1>Building a Crypto Portfolio</h1>
+<p>Learn how to construct a well-balanced cryptocurrency investment portfolio.</p>
+<h2>Portfolio Construction</h2>
+<ul>
+<li><strong>Asset Allocation:</strong> Balancing risk and return</li>
+<li><strong>Diversification:</strong> Across categories and use cases</li>
+<li><strong>Rebalancing:</strong> Maintaining target allocations</li>
+<li><strong>Dollar-Cost Averaging:</strong> Systematic investment approach</li>
+</ul>`,
+        level: "intermediate",
+        category: "trading",
+        duration: 35,
+        format: "video",
+        order: 65,
+        requiredTier: "basic",
+        prerequisites: ["Portfolio Management", "Risk Management Strategies"],
+        learningObjectives: ["Design portfolio allocation", "Implement rebalancing", "Manage long-term investments"],
+        isLocked: false,
+        isPremium: false,
+        videoUrl: "https://www.youtube.com/embed/d3mU79hYxQw",
+        tags: ["portfolio", "allocation", "investment"]
+      },
+      {
+        title: "Advanced Wallet Security",
+        description: "Master-level security practices for cryptocurrency storage.",
+        content: `<h1>Advanced Wallet Security</h1>
+<p>Advanced techniques for securing large amounts of cryptocurrency.</p>
+<h2>Advanced Security</h2>
+<ul>
+<li><strong>Multi-Signature Wallets:</strong> Distributed key management</li>
+<li><strong>Hardware Security Modules:</strong> Enterprise-grade storage</li>
+<li><strong>Time-Lock Contracts:</strong> Delayed transaction execution</li>
+<li><strong>Social Recovery:</strong> Decentralized backup systems</li>
+</ul>`,
+        level: "expert",
+        category: "security",
+        duration: 48,
+        format: "video",
+        order: 66,
+        requiredTier: "elite",
+        prerequisites: ["Security Best Practices", "Smart Contract Security"],
+        learningObjectives: ["Implement multi-sig wallets", "Use hardware security", "Plan recovery strategies"],
+        isLocked: false,
+        isPremium: true,
+        videoUrl: "https://www.youtube.com/embed/TDGpxkr3z5U",
+        tags: ["security", "wallets", "multisig"]
+      },
+      {
+        title: "DeFi Security Auditing",
+        description: "Learning to audit DeFi protocols for security vulnerabilities.",
+        content: `<h1>DeFi Security Auditing</h1>
+<p>Understand how to evaluate DeFi protocols for security risks and vulnerabilities.</p>
+<h2>Audit Framework</h2>
+<ul>
+<li><strong>Code Review:</strong> Smart contract analysis techniques</li>
+<li><strong>Common Vulnerabilities:</strong> Reentrancy, flash loan attacks</li>
+<li><strong>Economic Security:</strong> Tokenomics and incentive analysis</li>
+<li><strong>Risk Assessment:</strong> Quantifying protocol risks</li>
+</ul>`,
+        level: "expert",
+        category: "security",
+        duration: 52,
+        format: "video",
+        order: 67,
+        requiredTier: "elite",
+        prerequisites: ["Smart Contract Security", "Flash Loans and Advanced DeFi"],
+        learningObjectives: ["Audit smart contracts", "Identify vulnerabilities", "Assess protocol risks"],
+        isLocked: false,
+        isPremium: true,
+        videoUrl: "https://www.youtube.com/embed/LLiJK_VeAvQ",
+        tags: ["security", "auditing", "defi"]
+      },
+      {
+        title: "Tokenomics Design",
+        description: "Designing sustainable token economies and incentive systems.",
+        content: `<h1>Tokenomics Design</h1>
+<p>Learn how to design effective token economies that align incentives properly.</p>
+<h2>Design Principles</h2>
+<ul>
+<li><strong>Token Utility:</strong> Creating real value and demand</li>
+<li><strong>Distribution Models:</strong> Fair and sustainable allocation</li>
+<li><strong>Incentive Alignment:</strong> Encouraging desired behaviors</li>
+<li><strong>Economic Security:</strong> Preventing attacks and manipulation</li>
+</ul>`,
+        level: "expert",
+        category: "defi",
+        duration: 50,
+        format: "video",
+        order: 68,
+        requiredTier: "elite",
+        prerequisites: ["Decentralized Autonomous Organizations", "Behavioral Finance in Crypto"],
+        learningObjectives: ["Design token economies", "Align incentives", "Evaluate tokenomics"],
+        isLocked: false,
+        isPremium: true,
+        videoUrl: "https://www.youtube.com/embed/SFt7KxvLc3A",
+        tags: ["tokenomics", "design", "economics"]
+      },
+      {
+        title: "Real World Asset Tokenization",
+        description: "Bringing traditional assets onto blockchain platforms.",
+        content: `<h1>Real World Asset Tokenization</h1>
+<p>Understanding how traditional assets are being tokenized and brought on-chain.</p>
+<h2>Tokenization Types</h2>
+<ul>
+<li><strong>Real Estate:</strong> Property tokenization and fractional ownership</li>
+<li><strong>Commodities:</strong> Gold, oil, and agricultural products</li>
+<li><strong>Securities:</strong> Stocks, bonds, and structured products</li>
+<li><strong>Art and Collectibles:</strong> High-value asset fractionalization</li>
+</ul>`,
+        level: "advanced",
+        category: "defi",
+        duration: 40,
+        format: "video",
+        order: 69,
+        requiredTier: "pro",
+        prerequisites: ["DeFi Innovation", "Regulatory Landscape"],
+        learningObjectives: ["Understand RWA tokenization", "Evaluate tokenized assets", "Assess regulatory implications"],
+        isLocked: false,
+        isPremium: true,
+        videoUrl: "https://www.youtube.com/embed/rj8Vp2MKB4M",
+        tags: ["rwa", "tokenization", "traditional-assets"]
+      },
+      {
+        title: "Artificial Intelligence in Crypto",
+        description: "AI applications in cryptocurrency trading and analysis.",
+        content: `<h1>Artificial Intelligence in Crypto</h1>
+<p>Exploring how AI and machine learning are transforming cryptocurrency markets.</p>
+<h2>AI Applications</h2>
+<ul>
+<li><strong>Predictive Modeling:</strong> Price prediction and market analysis</li>
+<li><strong>Sentiment Analysis:</strong> Social media and news sentiment</li>
+<li><strong>Risk Assessment:</strong> AI-powered risk management</li>
+<li><strong>Automated Trading:</strong> Machine learning trading algorithms</li>
+</ul>`,
+        level: "expert",
+        category: "trading",
+        duration: 42,
+        format: "video",
+        order: 70,
+        requiredTier: "elite",
+        prerequisites: ["Algorithmic Trading Psychology", "Market Microstructure"],
+        learningObjectives: ["Apply AI to trading", "Build predictive models", "Integrate ML systems"],
+        isLocked: false,
+        isPremium: true,
+        videoUrl: "https://www.youtube.com/embed/LlS7nJ_fBtY",
+        tags: ["ai", "machine-learning", "prediction"]
+      },
+      {
+        title: "Building a Crypto Fund",
+        description: "Establishing and operating a cryptocurrency investment fund.",
+        content: `<h1>Building a Crypto Fund</h1>
+<p>Learn how to establish, operate, and scale a cryptocurrency investment fund.</p>
+<h2>Fund Components</h2>
+<ul>
+<li><strong>Legal Structure:</strong> Fund formation and compliance</li>
+<li><strong>Fundraising:</strong> Attracting limited partners</li>
+<li><strong>Operations:</strong> Trading, custody, and administration</li>
+<li><strong>Performance:</strong> Reporting and investor relations</li>
+</ul>`,
+        level: "expert",
+        category: "trading",
+        duration: 55,
+        format: "video",
+        order: 71,
+        requiredTier: "elite",
+        prerequisites: ["Crypto Fund Management", "Building a Crypto Trading Business"],
+        learningObjectives: ["Structure investment fund", "Raise institutional capital", "Operate fund professionally"],
+        isLocked: false,
+        isPremium: true,
+        videoUrl: "https://www.youtube.com/embed/f6hrlH7Qs4k",
+        tags: ["fund", "institutional", "operations"]
+      },
+      {
+        title: "Global Crypto Regulation",
+        description: "Understanding worldwide regulatory approaches to cryptocurrency.",
+        content: `<h1>Global Crypto Regulation</h1>
+<p>Comprehensive overview of cryptocurrency regulation across major jurisdictions.</p>
+<h2>Regional Approaches</h2>
+<ul>
+<li><strong>United States:</strong> SEC, CFTC, and state regulations</li>
+<li><strong>European Union:</strong> MiCA and national implementations</li>
+<li><strong>Asia-Pacific:</strong> Japan, Singapore, Hong Kong approaches</li>
+<li><strong>Emerging Markets:</strong> El Salvador, Nigeria, India</li>
+</ul>`,
+        level: "expert",
+        category: "basics",
+        duration: 50,
+        format: "video",
+        order: 72,
+        requiredTier: "elite",
+        prerequisites: ["Regulatory Landscape", "Central Bank Digital Currencies"],
+        learningObjectives: ["Navigate global regulations", "Ensure compliance", "Plan international operations"],
+        isLocked: false,
+        isPremium: true,
+        videoUrl: "https://www.youtube.com/embed/1MYquyRSiPg",
+        tags: ["regulation", "global", "compliance"]
+      },
+      {
+        title: "Crypto Market Making",
+        description: "Professional market making strategies and operations.",
+        content: `<h1>Crypto Market Making</h1>
+<p>Learn professional market making techniques and liquidity provision strategies.</p>
+<h2>Market Making Components</h2>
+<ul>
+<li><strong>Liquidity Provision:</strong> Bid-ask spread management</li>
+<li><strong>Inventory Management:</strong> Position and risk control</li>
+<li><strong>Exchange Relationships:</strong> Maker fee negotiations</li>
+<li><strong>Technology Infrastructure:</strong> Low-latency trading systems</li>
+</ul>`,
+        level: "expert",
+        category: "trading",
+        duration: 52,
+        format: "video",
+        order: 73,
+        requiredTier: "elite",
+        prerequisites: ["High-Frequency Trading", "Options and Derivatives Trading"],
+        learningObjectives: ["Provide market liquidity", "Manage trading inventory", "Optimize market making"],
+        isLocked: false,
+        isPremium: true,
+        videoUrl: "https://www.youtube.com/embed/8tLRzr7fV_Q",
+        tags: ["market-making", "liquidity", "trading"]
+      },
+      {
+        title: "Crypto Venture Capital",
+        description: "Understanding venture capital in the cryptocurrency ecosystem.",
+        content: `<h1>Crypto Venture Capital</h1>
+<p>Learn about venture capital investment strategies in the crypto and blockchain space.</p>
+<h2>VC Concepts</h2>
+<ul>
+<li><strong>Investment Thesis:</strong> Evaluating blockchain startups</li>
+<li><strong>Due Diligence:</strong> Technical and market assessment</li>
+<li><strong>Portfolio Management:</strong> Stage-appropriate investments</li>
+<li><strong>Value Creation:</strong> Supporting portfolio companies</li>
+</ul>`,
+        level: "expert",
+        category: "trading",
+        duration: 48,
+        format: "video",
+        order: 74,
+        requiredTier: "elite",
+        prerequisites: ["Building a Crypto Fund", "Crypto Research and Analysis"],
+        learningObjectives: ["Evaluate crypto startups", "Structure VC investments", "Add value to portfolio"],
+        isLocked: false,
+        isPremium: true,
+        videoUrl: "https://www.youtube.com/embed/Uf7r8S-bNpc",
+        tags: ["venture-capital", "investment", "startups"]
+      },
+      {
+        title: "Cryptocurrency Mining and Validation",
+        description: "Understanding mining, staking, and blockchain validation.",
+        content: `<h1>Cryptocurrency Mining and Validation</h1>
+<p>Deep dive into blockchain validation mechanisms and earning opportunities.</p>
+<h2>Validation Methods</h2>
+<ul>
+<li><strong>Proof of Work Mining:</strong> Hardware and profitability analysis</li>
+<li><strong>Proof of Stake:</strong> Staking strategies and rewards</li>
+<li><strong>Delegated Proof of Stake:</strong> Validator selection and voting</li>
+<li><strong>Novel Consensus:</strong> Proof of History, Proof of Space</li>
+</ul>`,
+        level: "advanced",
+        category: "basics",
+        duration: 45,
+        format: "video",
+        order: 75,
+        requiredTier: "pro",
+        prerequisites: ["Proof of Stake vs Proof of Work", "Environmental Impact and Green Crypto"],
+        learningObjectives: ["Set up mining operations", "Optimize staking returns", "Understand consensus mechanisms"],
+        isLocked: false,
+        isPremium: true,
+        videoUrl: "https://www.youtube.com/embed/3EUAcxhuoU4",
+        tags: ["mining", "staking", "consensus"]
+      },
+
+      // Expert Mastery & Future Trends (76-100)
+      {
+        title: "Blockchain Governance Systems",
+        description: "Understanding different approaches to blockchain governance.",
+        content: `<h1>Blockchain Governance Systems</h1>
+<p>Explore various governance models and their implications for blockchain projects.</p>
+<h2>Governance Models</h2>
+<ul>
+<li><strong>On-Chain Governance:</strong> Token-based voting systems</li>
+<li><strong>Off-Chain Governance:</strong> Social consensus mechanisms</li>
+<li><strong>Hybrid Models:</strong> Combining on-chain and off-chain elements</li>
+<li><strong>Governance Attacks:</strong> Risks and mitigation strategies</li>
+</ul>`,
+        level: "expert",
+        category: "defi",
+        duration: 44,
+        format: "video",
+        order: 76,
+        requiredTier: "elite",
+        prerequisites: ["Decentralized Autonomous Organizations", "Tokenomics Design"],
+        learningObjectives: ["Analyze governance systems", "Participate in governance", "Design governance frameworks"],
+        isLocked: false,
+        isPremium: true,
+        videoUrl: "https://www.youtube.com/embed/KHm0uUPqmVE",
+        tags: ["governance", "voting", "consensus"]
+      },
+      {
+        title: "Crypto Tax Optimization",
+        description: "Advanced tax planning strategies for cryptocurrency investors.",
+        content: `<h1>Crypto Tax Optimization</h1>
+<p>Advanced strategies for optimizing cryptocurrency tax obligations legally.</p>
+<h2>Tax Strategies</h2>
+<ul>
+<li><strong>Loss Harvesting:</strong> Realizing losses to offset gains</li>
+<li><strong>Like-Kind Exchanges:</strong> 1031 exchanges where applicable</li>
+<li><strong>Geographic Arbitrage:</strong> Tax-efficient jurisdictions</li>
+<li><strong>Estate Planning:</strong> Crypto inheritance strategies</li>
+</ul>`,
+        level: "advanced",
+        category: "security",
+        duration: 42,
+        format: "video",
+        order: 77,
+        requiredTier: "pro",
+        prerequisites: ["Cryptocurrency Taxation", "Global Crypto Regulation"],
+        learningObjectives: ["Optimize tax liability", "Plan tax-efficient strategies", "Ensure legal compliance"],
+        isLocked: false,
+        isPremium: true,
+        videoUrl: "https://www.youtube.com/embed/PfN6_FqmBzM",
+        tags: ["tax-optimization", "planning", "compliance"]
+      },
+      {
+        title: "Decentralized Science (DeSci)",
+        description: "Understanding how blockchain is transforming scientific research.",
+        content: `<h1>Decentralized Science (DeSci)</h1>
+<p>Explore how blockchain technology is revolutionizing scientific research and funding.</p>
+<h2>DeSci Applications</h2>
+<ul>
+<li><strong>Research Funding:</strong> Decentralized research grants</li>
+<li><strong>Peer Review:</strong> Blockchain-based review systems</li>
+<li><strong>Data Sharing:</strong> Open access research data</li>
+<li><strong>IP Management:</strong> Intellectual property tokenization</li>
+</ul>`,
+        level: "intermediate",
+        category: "defi",
+        duration: 36,
+        format: "video",
+        order: 78,
+        requiredTier: "basic",
+        prerequisites: ["Web3 and Decentralized Identity", "Real World Asset Tokenization"],
+        learningObjectives: ["Understand DeSci ecosystem", "Evaluate research projects", "Participate in scientific DAOs"],
+        isLocked: false,
+        isPremium: false,
+        videoUrl: "https://www.youtube.com/embed/y5kh_JgCRgE",
+        tags: ["desci", "research", "science"]
+      },
+      {
+        title: "Crypto Social Impact",
+        description: "Understanding cryptocurrency's role in social good and development.",
+        content: `<h1>Crypto Social Impact</h1>
+<p>Explore how cryptocurrency and blockchain technology can create positive social impact.</p>
+<h2>Social Applications</h2>
+<ul>
+<li><strong>Financial Inclusion:</strong> Banking the unbanked</li>
+<li><strong>Remittances:</strong> Low-cost international transfers</li>
+<li><strong>Charitable Giving:</strong> Transparent donation tracking</li>
+<li><strong>Identity Solutions:</strong> Digital identity for refugees</li>
+</ul>`,
+        level: "intermediate",
+        category: "basics",
+        duration: 32,
+        format: "video",
+        order: 79,
+        requiredTier: "basic",
+        prerequisites: ["Crypto Career Pathways", "Global Crypto Regulation"],
+        learningObjectives: ["Understand social impact potential", "Evaluate impact projects", "Contribute to social good"],
+        isLocked: false,
+        isPremium: false,
+        videoUrl: "https://www.youtube.com/embed/3gElHgL4Q-o",
+        tags: ["social-impact", "inclusion", "charity"]
+      },
+      {
+        title: "Advanced Crypto Analytics",
+        description: "Sophisticated data analysis techniques for cryptocurrency markets.",
+        content: `<h1>Advanced Crypto Analytics</h1>
+<p>Master advanced analytical techniques for cryptocurrency market analysis.</p>
+<h2>Analytics Techniques</h2>
+<ul>
+<li><strong>Network Analysis:</strong> Blockchain network health metrics</li>
+<li><strong>Flow Analysis:</strong> Large holder behavior tracking</li>
+<li><strong>Correlation Analysis:</strong> Cross-asset relationships</li>
+<li><strong>Predictive Modeling:</strong> Machine learning price models</li>
+</ul>`,
+        level: "expert",
+        category: "trading",
+        duration: 50,
+        format: "video",
+        order: 80,
+        requiredTier: "elite",
+        prerequisites: ["Artificial Intelligence in Crypto", "Crypto Forensics and Investigation"],
+        learningObjectives: ["Perform advanced analytics", "Build predictive models", "Generate unique insights"],
+        isLocked: false,
+        isPremium: true,
+        videoUrl: "https://www.youtube.com/embed/3vdH6yBqvCo",
+        tags: ["analytics", "data-science", "prediction"]
+      },
+      {
+        title: "Crypto Macroeconomics",
+        description: "Understanding cryptocurrency in the global macroeconomic context.",
+        content: `<h1>Crypto Macroeconomics</h1>
+<p>Analyze cryptocurrency markets through the lens of global macroeconomic trends.</p>
+<h2>Macro Factors</h2>
+<ul>
+<li><strong>Monetary Policy:</strong> Central bank impacts on crypto</li>
+<li><strong>Inflation Hedging:</strong> Crypto as store of value</li>
+<li><strong>Currency Debasement:</strong> Fiat vs crypto dynamics</li>
+<li><strong>Geopolitical Risk:</strong> Safe haven demand patterns</li>
+</ul>`,
+        level: "expert",
+        category: "trading",
+        duration: 46,
+        format: "video",
+        order: 81,
+        requiredTier: "elite",
+        prerequisites: ["Monetary Policy and Crypto", "Global Crypto Regulation"],
+        learningObjectives: ["Analyze macro trends", "Position for macro events", "Understand global dynamics"],
+        isLocked: false,
+        isPremium: true,
+        videoUrl: "https://www.youtube.com/embed/w_3_3lDNOW8",
+        tags: ["macroeconomics", "monetary-policy", "global"]
+      },
+      {
+        title: "Building Crypto Infrastructure",
+        description: "Understanding the infrastructure layer of cryptocurrency systems.",
+        content: `<h1>Building Crypto Infrastructure</h1>
+<p>Learn about the critical infrastructure components that power the crypto ecosystem.</p>
+<h2>Infrastructure Components</h2>
+<ul>
+<li><strong>Node Operations:</strong> Running blockchain validators</li>
+<li><strong>API Services:</strong> Data and transaction services</li>
+<li><strong>Custody Solutions:</strong> Institutional asset management</li>
+<li><strong>Trading Infrastructure:</strong> Exchange and market systems</li>
+</ul>`,
+        level: "expert",
+        category: "defi",
+        duration: 54,
+        format: "video",
+        order: 82,
+        requiredTier: "elite",
+        prerequisites: ["Blockchain Development Fundamentals", "Crypto Market Making"],
+        learningObjectives: ["Build crypto infrastructure", "Operate blockchain nodes", "Provide B2B services"],
+        isLocked: false,
+        isPremium: true,
+        videoUrl: "https://www.youtube.com/embed/rHhRbyp6yJ4",
+        tags: ["infrastructure", "nodes", "services"]
+      },
+      {
+        title: "Future of Finance",
+        description: "Envisioning the future of finance with cryptocurrency and DeFi.",
+        content: `<h1>Future of Finance</h1>
+<p>Explore the long-term vision for how cryptocurrency will reshape the global financial system.</p>
+<h2>Future Trends</h2>
+<ul>
+<li><strong>Programmable Money:</strong> Smart contract automation</li>
+<li><strong>Composable Finance:</strong> Building block financial services</li>
+<li><strong>Autonomous Finance:</strong> AI-driven financial systems</li>
+<li><strong>Global Accessibility:</strong> Financial services for everyone</li>
+</ul>`,
+        level: "expert",
+        category: "defi",
+        duration: 48,
+        format: "video",
+        order: 83,
+        requiredTier: "elite",
+        prerequisites: ["DeFi Innovation", "Blockchain Interoperability"],
+        learningObjectives: ["Envision future finance", "Identify emerging trends", "Position for the future"],
+        isLocked: false,
+        isPremium: true,
+        videoUrl: "https://www.youtube.com/embed/YIzKo5GfWME",
+        tags: ["future", "innovation", "vision"]
+      },
+      {
+        title: "Crypto Leadership and Vision",
+        description: "Developing leadership skills in the cryptocurrency industry.",
+        content: `<h1>Crypto Leadership and Vision</h1>
+<p>Develop the leadership skills needed to drive innovation in the cryptocurrency space.</p>
+<h2>Leadership Areas</h2>
+<ul>
+<li><strong>Strategic Vision:</strong> Setting direction in rapidly evolving markets</li>
+<li><strong>Team Building:</strong> Assembling and leading crypto teams</li>
+<li><strong>Innovation Management:</strong> Fostering breakthrough thinking</li>
+<li><strong>Industry Influence:</strong> Shaping the future of crypto</li>
+</ul>`,
+        level: "expert",
+        category: "trading",
+        duration: 45,
+        format: "video",
+        order: 84,
+        requiredTier: "elite",
+        prerequisites: ["Building a Crypto Trading Business", "Crypto Venture Capital"],
+        learningObjectives: ["Develop leadership skills", "Build strategic vision", "Influence industry direction"],
+        isLocked: false,
+        isPremium: true,
+        videoUrl: "https://www.youtube.com/embed/rHhRbyp6yJ4",
+        tags: ["leadership", "vision", "strategy"]
+      },
+      {
+        title: "Crypto Mastery Integration",
+        description: "Integrating all cryptocurrency knowledge into a comprehensive worldview.",
+        content: `<h1>Crypto Mastery Integration</h1>
+<p>Synthesize all your cryptocurrency knowledge into a comprehensive understanding of the space.</p>
+<h2>Integration Areas</h2>
+<ul>
+<li><strong>Systems Thinking:</strong> Understanding crypto as an interconnected system</li>
+<li><strong>Cross-Disciplinary Synthesis:</strong> Combining technical, financial, and social aspects</li>
+<li><strong>Strategic Positioning:</strong> Personal and professional positioning</li>
+<li><strong>Continuous Learning:</strong> Staying current in a rapidly evolving field</li>
+</ul>`,
+        level: "expert",
+        category: "trading",
+        duration: 60,
+        format: "video",
+        order: 85,
+        requiredTier: "elite",
+        prerequisites: ["Future of Finance", "Crypto Leadership and Vision"],
+        learningObjectives: ["Integrate all knowledge", "Develop personal strategy", "Master continuous learning"],
+        isLocked: false,
+        isPremium: true,
+        videoUrl: "https://www.youtube.com/embed/YIzKo5GfWME",
+        tags: ["mastery", "integration", "synthesis"]
+      },
+      {
+        title: "Teaching and Mentoring in Crypto",
+        description: "Sharing knowledge and mentoring others in cryptocurrency.",
+        content: `<h1>Teaching and Mentoring in Crypto</h1>
+<p>Learn how to effectively teach and mentor others in the cryptocurrency space.</p>
+<h2>Teaching Skills</h2>
+<ul>
+<li><strong>Content Creation:</strong> Educational content development</li>
+<li><strong>Community Building:</strong> Growing learning communities</li>
+<li><strong>Mentorship:</strong> One-on-one guidance techniques</li>
+<li><strong>Knowledge Transfer:</strong> Effective communication strategies</li>
+</ul>`,
+        level: "expert",
+        category: "basics",
+        duration: 42,
+        format: "video",
+        order: 86,
+        requiredTier: "elite",
+        prerequisites: ["Crypto Community and Networking", "Crypto Mastery Integration"],
+        learningObjectives: ["Teach effectively", "Mentor newcomers", "Build learning communities"],
+        isLocked: false,
+        isPremium: true,
+        videoUrl: "https://www.youtube.com/embed/VYWc9dFqROI",
+        tags: ["teaching", "mentoring", "education"]
+      },
+      {
+        title: "Crypto Research Methodology",
+        description: "Advanced research methodologies for cryptocurrency analysis.",
+        content: `<h1>Crypto Research Methodology</h1>
+<p>Master advanced research methodologies for conducting original cryptocurrency research.</p>
+<h2>Research Methods</h2>
+<ul>
+<li><strong>Quantitative Analysis:</strong> Statistical and econometric methods</li>
+<li><strong>Qualitative Research:</strong> Interviews and case studies</li>
+<li><strong>Mixed Methods:</strong> Combining quantitative and qualitative approaches</li>
+<li><strong>Peer Review:</strong> Academic research standards</li>
+</ul>`,
+        level: "expert",
+        category: "trading",
+        duration: 50,
+        format: "video",
+        order: 87,
+        requiredTier: "elite",
+        prerequisites: ["Advanced Crypto Analytics", "Crypto Research and Analysis"],
+        learningObjectives: ["Conduct original research", "Use rigorous methodologies", "Contribute to knowledge"],
+        isLocked: false,
+        isPremium: true,
+        videoUrl: "https://www.youtube.com/embed/lJJ2YAzxTvQ",
+        tags: ["research", "methodology", "academic"]
+      },
+      {
+        title: "Industry Transformation Leadership",
+        description: "Leading transformation in traditional industries through crypto adoption.",
+        content: `<h1>Industry Transformation Leadership</h1>
+<p>Lead the transformation of traditional industries through cryptocurrency and blockchain adoption.</p>
+<h2>Transformation Areas</h2>
+<ul>
+<li><strong>Digital Transformation:</strong> Legacy system modernization</li>
+<li><strong>Change Management:</strong> Organizational adoption strategies</li>
+<li><strong>Partnership Development:</strong> Crypto-traditional collaborations</li>
+<li><strong>Regulatory Navigation:</strong> Compliance in transformation</li>
+</ul>`,
+        level: "expert",
+        category: "trading",
+        duration: 52,
+        format: "video",
+        order: 88,
+        requiredTier: "elite",
+        prerequisites: ["Crypto Leadership and Vision", "Global Crypto Regulation"],
+        learningObjectives: ["Lead industry transformation", "Manage organizational change", "Bridge traditional and crypto"],
+        isLocked: false,
+        isPremium: true,
+        videoUrl: "https://www.youtube.com/embed/Uf7r8S-bNpc",
+        tags: ["transformation", "change-management", "adoption"]
+      },
+      {
+        title: "Quantum Computing and Blockchain Security",
+        description: "Preparing for the quantum computing threat to cryptography.",
+        content: `<h1>Quantum Computing and Blockchain Security</h1>
+<p>Understanding the future quantum threat and blockchain's response.</p>
+<h2>Quantum Implications</h2>
+<ul>
+<li><strong>Cryptographic Vulnerability:</strong> Breaking current encryption</li>
+<li><strong>Timeline Estimates:</strong> When quantum becomes viable</li>
+<li><strong>Post-Quantum Cryptography:</strong> Quantum-resistant algorithms</li>
+<li><strong>Blockchain Upgrades:</strong> Preparing for quantum resilience</li>
+</ul>`,
+        level: "expert",
+        category: "security",
+        duration: 45,
+        format: "video",
+        order: 89,
+        requiredTier: "elite",
+        prerequisites: ["Security Best Practices", "Advanced Cryptography"],
+        learningObjectives: ["Understand quantum threats", "Evaluate timeline risks", "Prepare for quantum transition"],
+        isLocked: false,
+        isPremium: true,
+        videoUrl: "https://www.youtube.com/embed/6H_9l9N3IXU",
+        tags: ["quantum", "security", "cryptography"]
+      },
+      {
+        title: "Blockchain Interoperability",
+        description: "Understanding cross-chain communication and interoperability protocols.",
+        content: `<h1>Blockchain Interoperability</h1>
+<p>Deep dive into how different blockchains communicate and interoperate.</p>
+<h2>Interoperability Solutions</h2>
+<ul>
+<li><strong>Cosmos IBC:</strong> Inter-blockchain communication protocol</li>
+<li><strong>Polkadot Parachains:</strong> Shared security model</li>
+<li><strong>Cross-Chain Bridges:</strong> Asset transfer mechanisms</li>
+<li><strong>Atomic Swaps:</strong> Trustless cross-chain exchanges</li>
+</ul>`,
+        level: "expert",
+        category: "defi",
+        duration: 48,
+        format: "video",
+        order: 90,
+        requiredTier: "elite",
+        prerequisites: ["Cross-Chain Bridges and Interoperability", "Layer 2 Solutions"],
+        learningObjectives: ["Understand interoperability", "Evaluate cross-chain solutions", "Navigate multi-chain ecosystem"],
+        isLocked: false,
+        isPremium: true,
+        videoUrl: "https://www.youtube.com/embed/hzWkqUIpfqE",
+        tags: ["interoperability", "cross-chain", "cosmos"]
+      },
+      {
+        title: "DeFi Innovation and Experimentation",
+        description: "Cutting-edge developments and innovations in DeFi.",
+        content: `<h1>DeFi Innovation and Experimentation</h1>
+<p>Explore the latest innovations and experimental developments in DeFi.</p>
+<h2>Innovation Areas</h2>
+<ul>
+<li><strong>Dynamic AMMs:</strong> Next-generation market makers</li>
+<li><strong>Synthetic Assets:</strong> Tokenized traditional assets</li>
+<li><strong>Algorithmic Stablecoins:</strong> Non-collateralized stability</li>
+<li><strong>Credit Protocols:</strong> Undercollateralized lending</li>
+</ul>`,
+        level: "expert",
+        category: "defi",
+        duration: 45,
+        format: "video",
+        order: 91,
+        requiredTier: "elite",
+        prerequisites: ["Flash Loans and Advanced DeFi", "Tokenomics Design"],
+        learningObjectives: ["Understand DeFi innovation", "Evaluate new protocols", "Assess experimental risks"],
+        isLocked: false,
+        isPremium: true,
+        videoUrl: "https://www.youtube.com/embed/bFO5zKWQSso",
+        tags: ["defi", "innovation", "experimental"]
+      },
+      {
+        title: "Crypto Forensics and Investigation",
+        description: "Blockchain analysis and cryptocurrency investigation techniques.",
+        content: `<h1>Crypto Forensics and Investigation</h1>
+<p>Learn how to trace cryptocurrency transactions and investigate blockchain activity.</p>
+<h2>Investigation Techniques</h2>
+<ul>
+<li><strong>Blockchain Analysis:</strong> Transaction tracing and clustering</li>
+<li><strong>Address Attribution:</strong> Linking addresses to entities</li>
+<li><strong>Flow Analysis:</strong> Following money trails</li>
+<li><strong>Privacy Coins:</strong> Investigating Monero and Zcash</li>
+</ul>`,
+        level: "expert",
+        category: "security",
+        duration: 46,
+        format: "video",
+        order: 92,
+        requiredTier: "elite",
+        prerequisites: ["Blockchain Fundamentals", "Privacy Coins and Anonymity"],
+        learningObjectives: ["Trace crypto transactions", "Conduct blockchain analysis", "Investigation techniques"],
+        isLocked: false,
+        isPremium: true,
+        videoUrl: "https://www.youtube.com/embed/2_Hk_wk4lv0",
+        tags: ["forensics", "investigation", "blockchain-analysis"]
+      },
+      {
+        title: "Algorithmic Trading Psychology",
+        description: "Mental frameworks for systematic trading approaches.",
+        content: `<h1>Algorithmic Trading Psychology</h1>
+<p>Develop the right mindset for systematic and algorithmic trading.</p>
+<h2>Psychological Principles</h2>
+<ul>
+<li><strong>System Discipline:</strong> Following rules without emotion</li>
+<li><strong>Backtesting Confidence:</strong> Trust in historical validation</li>
+<li><strong>Parameter Optimization:</strong> Avoiding over-fitting</li>
+<li><strong>Live Trading Transition:</strong> Paper to live trading psychology</li>
+</ul>`,
+        level: "advanced",
+        category: "trading",
+        duration: 33,
+        format: "video",
+        order: 93,
+        requiredTier: "pro",
+        prerequisites: ["Trading Psychology", "Behavioral Finance in Crypto"],
+        learningObjectives: ["Develop systematic mindset", "Manage algorithm anxiety", "Maintain trading discipline"],
+        isLocked: false,
+        isPremium: true,
+        videoUrl: "https://www.youtube.com/embed/VlTjyNdKJpI",
+        tags: ["psychology", "algorithmic", "discipline"]
+      },
+      {
+        title: "Crypto Community and Networking",
+        description: "Building connections and participating in the crypto community.",
+        content: `<h1>Crypto Community and Networking</h1>
+<p>Learn how to engage with the cryptocurrency community and build valuable connections.</p>
+<h2>Community Engagement</h2>
+<ul>
+<li><strong>Social Platforms:</strong> Twitter, Discord, Telegram</li>
+<li><strong>Conferences:</strong> Networking at crypto events</li>
+<li><strong>Online Communities:</strong> Reddit, forums, Discord servers</li>
+<li><strong>Contributing:</strong> Open source and community projects</li>
+</ul>`,
+        level: "beginner",
+        category: "basics",
+        duration: 25,
+        format: "video",
+        order: 94,
+        requiredTier: "free",
+        prerequisites: [],
+        learningObjectives: ["Join crypto communities", "Build professional network", "Contribute to projects"],
+        isLocked: false,
+        isPremium: false,
+        videoUrl: "https://www.youtube.com/embed/VYWc9dFqROI",
+        tags: ["community", "networking", "social"]
+      },
+      {
+        title: "Crypto Research and Analysis",
+        description: "Conducting fundamental research on cryptocurrency projects.",
+        content: `<h1>Crypto Research and Analysis</h1>
+<p>Master the art of researching and analyzing cryptocurrency projects for investment.</p>
+<h2>Research Framework</h2>
+<ul>
+<li><strong>Team Analysis:</strong> Evaluating founders and developers</li>
+<li><strong>Technology Assessment:</strong> Understanding the technical innovation</li>
+<li><strong>Market Opportunity:</strong> Sizing the addressable market</li>
+<li><strong>Competitive Analysis:</strong> Comparing to alternatives</li>
+</ul>`,
+        level: "intermediate",
+        category: "trading",
+        duration: 42,
+        format: "video",
+        order: 95,
+        requiredTier: "basic",
+        prerequisites: ["Fundamental Analysis", "Cryptocurrency Taxation"],
+        learningObjectives: ["Research crypto projects", "Evaluate investment potential", "Write investment thesis"],
+        isLocked: false,
+        isPremium: false,
+        videoUrl: "https://www.youtube.com/embed/lJJ2YAzxTvQ",
+        tags: ["research", "analysis", "fundamental"]
+      },
+      {
+        title: "Incident Response and Recovery",
+        description: "Handling security incidents and recovery procedures.",
+        content: `<h1>Incident Response and Recovery</h1>
+<p>Prepare for and respond to security incidents in cryptocurrency operations.</p>
+<h2>Response Framework</h2>
+<ul>
+<li><strong>Incident Detection:</strong> Monitoring and alerting systems</li>
+<li><strong>Response Planning:</strong> Predefined procedures and contacts</li>
+<li><strong>Asset Recovery:</strong> Techniques for recovering compromised funds</li>
+<li><strong>Post-Incident Analysis:</strong> Learning and improvement</li>
+</ul>`,
+        level: "expert",
+        category: "security",
+        duration: 44,
+        format: "video",
+        order: 96,
+        requiredTier: "elite",
+        prerequisites: ["Advanced Wallet Security", "DeFi Security Auditing"],
+        learningObjectives: ["Plan incident response", "Execute recovery procedures", "Improve security posture"],
+        isLocked: false,
+        isPremium: true,
+        videoUrl: "https://www.youtube.com/embed/DNEG4gHNHMM",
+        tags: ["security", "incident-response", "recovery"]
+      },
+      {
+        title: "Insurance and Risk Transfer",
+        description: "Understanding crypto insurance and risk management products.",
+        content: `<h1>Insurance and Risk Transfer</h1>
+<p>Explore insurance options and risk transfer mechanisms in cryptocurrency.</p>
+<h2>Risk Transfer Options</h2>
+<ul>
+<li><strong>DeFi Insurance:</strong> Protocol coverage and claims</li>
+<li><strong>Custody Insurance:</strong> Exchange and wallet protection</li>
+<li><strong>Smart Contract Insurance:</strong> Bug bounties and coverage</li>
+<li><strong>Traditional Insurance:</strong> Crypto business insurance</li>
+</ul>`,
+        level: "advanced",
+        category: "trading",
+        duration: 38,
+        format: "video",
+        order: 97,
+        requiredTier: "pro",
+        prerequisites: ["Risk Management Strategies", "Institutional Crypto"],
+        learningObjectives: ["Evaluate insurance options", "Transfer crypto risks", "Assess coverage needs"],
+        isLocked: false,
+        isPremium: true,
+        videoUrl: "https://www.youtube.com/embed/6vV6gg7bJqs",
+        tags: ["insurance", "risk-transfer", "protection"]
+      },
+      {
+        title: "Market Microstructure",
+        description: "Understanding order books, market makers, and liquidity.",
+        content: `<h1>Market Microstructure</h1>
+<p>Deep dive into how crypto markets actually function at the microstructure level.</p>
+<h2>Market Components</h2>
+<ul>
+<li><strong>Order Book Dynamics:</strong> Bid-ask spreads and depth</li>
+<li><strong>Market Makers:</strong> Liquidity provision strategies</li>
+<li><strong>Price Discovery:</strong> How prices form and change</li>
+<li><strong>Slippage Analysis:</strong> Impact of order size</li>
+</ul>`,
+        level: "expert",
+        category: "trading",
+        duration: 42,
+        format: "video",
+        order: 98,
+        requiredTier: "elite",
+        prerequisites: ["High-Frequency Trading", "Options and Derivatives Trading"],
+        learningObjectives: ["Understand market mechanics", "Optimize order execution", "Analyze liquidity patterns"],
+        isLocked: false,
+        isPremium: true,
+        videoUrl: "https://www.youtube.com/embed/8tLRzr7fV_Q",
+        tags: ["microstructure", "liquidity", "orderbook"]
+      },
+      {
+        title: "Crypto Derivatives Markets",
+        description: "Advanced understanding of cryptocurrency derivatives trading.",
+        content: `<h1>Crypto Derivatives Markets</h1>
+<p>Master advanced derivatives trading strategies and market dynamics.</p>
+<h2>Advanced Derivatives</h2>
+<ul>
+<li><strong>Exotic Options:</strong> Barrier, Asian, and binary options</li>
+<li><strong>Structured Products:</strong> Custom risk/return profiles</li>
+<li><strong>Volatility Trading:</strong> Trading implied vs realized volatility</li>
+<li><strong>Basis Trading:</strong> Spot-futures arbitrage strategies</li>
+</ul>`,
+        level: "expert",
+        category: "trading",
+        duration: 48,
+        format: "video",
+        order: 99,
+        requiredTier: "elite",
+        prerequisites: ["Options and Derivatives Trading", "Market Microstructure"],
+        learningObjectives: ["Trade exotic derivatives", "Manage complex positions", "Arbitrage market inefficiencies"],
+        isLocked: false,
+        isPremium: true,
+        videoUrl: "https://www.youtube.com/embed/SD7sw0bf22g",
+        tags: ["derivatives", "options", "volatility"]
+      },
+      {
+        title: "Crypto Mastery Capstone",
+        description: "Final synthesis and demonstration of complete cryptocurrency mastery.",
+        content: `<h1>Crypto Mastery Capstone</h1>
+<p>Demonstrate your complete mastery of cryptocurrency knowledge and skills.</p>
+<h2>Capstone Elements</h2>
+<ul>
+<li><strong>Personal Thesis:</strong> Your unique perspective on crypto's future</li>
+<li><strong>Practical Application:</strong> Real-world implementation of learning</li>
+<li><strong>Knowledge Synthesis:</strong> Integration across all domains</li>
+<li><strong>Future Roadmap:</strong> Your continued journey in crypto</li>
+</ul>`,
+        level: "expert",
+        category: "trading",
+        duration: 75,
+        format: "video",
+        order: 100,
+        requiredTier: "elite",
+        prerequisites: ["Teaching and Mentoring in Crypto", "Industry Transformation Leadership"],
+        learningObjectives: ["Demonstrate complete mastery", "Synthesize all knowledge", "Plan future development"],
+        isLocked: false,
+        isPremium: true,
+        videoUrl: "https://www.youtube.com/embed/YIzKo5GfWME",
+        tags: ["capstone", "mastery", "synthesis"]
       }
     ]);
     
-    console.log("✅ Comprehensive lesson library created with 50+ professional-grade lessons");
+    console.log("✅ Comprehensive lesson library created with 100+ professional-grade lessons");
 
     console.log("🎉 Database seeding completed successfully!");
     
