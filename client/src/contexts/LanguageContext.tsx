@@ -73,7 +73,7 @@ export const LanguageProvider = ({ children }: LanguageProviderProps) => {
     }
 
     const cacheKey = `${key}_${currentLanguage.code}`;
-    return translationCache[cacheKey] || fallback;
+    return (translationCache[cacheKey] as unknown as string) || fallback;
   };
 
   // Async function to load translations (can be called later)
@@ -86,7 +86,7 @@ export const LanguageProvider = ({ children }: LanguageProviderProps) => {
     // Check cache first
     const cacheKey = `${text}_${targetLanguage}`;
     if (translationCache[cacheKey]) {
-      return translationCache[cacheKey];
+      return (translationCache[cacheKey] as unknown as string);
     }
 
     try {

@@ -22,8 +22,8 @@ export function useSubscriptionStatus() {
   return {
     subscription,
     isLoading,
-    tier: subscription?.tier || 'free',
-    status: subscription?.status || 'inactive',
-    isTrialActive: subscription?.trialEndDate && new Date(subscription.trialEndDate) > new Date(),
+    tier: (subscription as any)?.tier || 'free',
+    status: (subscription as any)?.status || 'inactive',
+    isTrialActive: (subscription as any)?.trialEndDate && new Date((subscription as any).trialEndDate) > new Date(),
   };
 }

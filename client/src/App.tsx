@@ -31,7 +31,7 @@ function Router() {
   const { isAuthenticated, isLoading } = useAuth();
 
   return (
-    <>
+    <div className="min-h-screen bg-background">
       <Navigation />
       <Switch>
         <Route path="/" component={Dashboard} />
@@ -55,7 +55,7 @@ function Router() {
         <Route path="/cookie-policy" component={CookiePolicy} />
         <Route component={NotFound} />
       </Switch>
-    </>
+    </div>
   );
 }
 
@@ -64,9 +64,7 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <LanguageProvider>
         <TooltipProvider>
-          <div className="min-h-screen bg-background">
-            <Router />
-          </div>
+          <Router />
           <Toaster />
         </TooltipProvider>
       </LanguageProvider>
