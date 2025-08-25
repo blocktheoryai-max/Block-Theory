@@ -15,6 +15,8 @@ import WhaleTracker from "@/pages/whale-tracker";
 import WhitepaperAnalyzer from "@/pages/whitepaper-analyzer";
 import TechnicalAnalysis from "@/pages/technical-analysis";
 import Checkout from "@/pages/checkout";
+import NftMarketplace from "@/pages/nft-marketplace";
+import ChatRooms from "@/pages/chat-rooms";
 import NotFound from "@/pages/not-found";
 import { useAuth } from "@/hooks/useAuth";
 import Navigation from "@/components/Navigation";
@@ -34,6 +36,11 @@ function Router() {
         <Route path="/community" component={Community} />
         <Route path="/pricing" component={Pricing} />
         <Route path="/checkout" component={Checkout} />
+        <Route path="/whale-tracker" component={WhaleTracker} />
+        <Route path="/whitepaper-analyzer" component={WhitepaperAnalyzer} />
+        <Route path="/technical-analysis" component={TechnicalAnalysis} />
+        <Route path="/nft-marketplace" component={NftMarketplace} />
+        <Route path="/chat-rooms" component={ChatRooms} />
         <Route component={NotFound} />
       </Switch>
     </>

@@ -1,6 +1,27 @@
 import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
-import { TrendingUp, BookOpen, BarChart3, FileText, Users, DollarSign, Fish, Activity } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { 
+  TrendingUp, 
+  BookOpen, 
+  BarChart3, 
+  FileText, 
+  Users, 
+  DollarSign, 
+  Fish, 
+  Activity,
+  MessageCircle,
+  Palette,
+  Brain,
+  LineChart,
+  ChevronDown,
+  Zap
+} from "lucide-react";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -8,12 +29,29 @@ export default function Navigation() {
   const [location] = useLocation();
   const { translate } = useLanguage();
 
-  const navItems = [
+  // Core navigation items
+  const coreNavItems = [
     { path: "/", label: translate("nav.home", "Home"), icon: TrendingUp },
     { path: "/learn", label: translate("nav.learn", "Learn"), icon: BookOpen },
     { path: "/simulate", label: translate("nav.simulate", "Simulate"), icon: BarChart3 },
     { path: "/analyze", label: translate("nav.analyze", "Analyze"), icon: Activity },
+  ];
+
+  // Advanced tools dropdown
+  const advancedTools = [
+    { path: "/whale-tracker", label: translate("nav.whale", "Whale Tracker"), icon: Fish },
+    { path: "/whitepaper-analyzer", label: translate("nav.whitepaper", "AI Analyzer"), icon: Brain },
+    { path: "/technical-analysis", label: translate("nav.technical", "Technical Analysis"), icon: LineChart },
+  ];
+
+  // Marketplace and community
+  const marketplaceItems = [
+    { path: "/nft-marketplace", label: translate("nav.nft", "NFT Market"), icon: Palette },
+    { path: "/chat-rooms", label: translate("nav.chat", "Chat Rooms"), icon: MessageCircle },
     { path: "/community", label: translate("nav.community", "Community"), icon: Users },
+  ];
+
+  const finalNavItems = [
     { path: "/pricing", label: translate("nav.pricing", "Pricing"), icon: DollarSign },
   ];
 
@@ -29,7 +67,8 @@ export default function Navigation() {
           </Link>
 
           <div className="hidden md:flex items-center space-x-1">
-            {navItems.map((item) => {
+            {/* Core Navigation */}
+            {coreNavItems.map((item) => {
               const Icon = item.icon;
               const isActive = location === item.path;
               
@@ -39,6 +78,89 @@ export default function Navigation() {
                     variant={isActive ? "default" : "ghost"}
                     size="sm"
                     className="flex items-center gap-2"
+                    data-testid={`nav-${item.path.replace('/', '') || 'home'}`}
+                  >
+                    <Icon className="h-4 w-4" />
+                    {item.label}
+                  </Button>
+                </Link>
+              );
+            })}
+
+            {/* Advanced Tools Dropdown */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  className="flex items-center gap-2"
+                  data-testid="nav-tools-dropdown"
+                >
+                  <Zap className="h-4 w-4" />
+                  Tools
+                  <ChevronDown className="h-3 w-3" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                {advancedTools.map((item) => {
+                  const Icon = item.icon;
+                  return (
+                    <DropdownMenuItem key={item.path} asChild>
+                      <Link href={item.path} className="w-full">
+                        <div className="flex items-center gap-2 w-full" data-testid={`nav-${item.path.replace('/', '').replace('-', '_')}`}>
+                          <Icon className="h-4 w-4" />
+                          {item.label}
+                        </div>
+                      </Link>
+                    </DropdownMenuItem>
+                  );
+                })}
+              </DropdownMenuContent>
+            </DropdownMenu>
+
+            {/* Marketplace & Community Dropdown */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  className="flex items-center gap-2"
+                  data-testid="nav-marketplace-dropdown"
+                >
+                  <Users className="h-4 w-4" />
+                  Social
+                  <ChevronDown className="h-3 w-3" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                {marketplaceItems.map((item) => {
+                  const Icon = item.icon;
+                  return (
+                    <DropdownMenuItem key={item.path} asChild>
+                      <Link href={item.path} className="w-full">
+                        <div className="flex items-center gap-2 w-full" data-testid={`nav-${item.path.replace('/', '').replace('-', '_')}`}>
+                          <Icon className="h-4 w-4" />
+                          {item.label}
+                        </div>
+                      </Link>
+                    </DropdownMenuItem>
+                  );
+                })}
+              </DropdownMenuContent>
+            </DropdownMenu>
+
+            {/* Final Items */}
+            {finalNavItems.map((item) => {
+              const Icon = item.icon;
+              const isActive = location === item.path;
+              
+              return (
+                <Link key={item.path} href={item.path}>
+                  <Button
+                    variant={isActive ? "default" : "ghost"}
+                    size="sm"
+                    className="flex items-center gap-2"
+                    data-testid={`nav-${item.path.replace('/', '')}`}
                   >
                     <Icon className="h-4 w-4" />
                     {item.label}
