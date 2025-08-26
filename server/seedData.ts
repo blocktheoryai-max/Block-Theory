@@ -314,6 +314,9 @@ export async function seedDatabase() {
         isLocked: false,
         isPremium: false,
         videoUrl: "https://www.youtube.com/embed/d8IBpfs9bf4",
+        hasVideo: true,
+        hasQuiz: true,
+        hasSimulation: false,
         tags: ["security", "wallets", "safety"]
       },
       {
@@ -757,14 +760,91 @@ export async function seedDatabase() {
       // Expert/Elite Track - Lessons 21-35
       {
         title: "Advanced Security Practices",
-        description: "Advanced security practices for serious crypto investors.",
+        description: "Enterprise-grade security for protecting significant crypto holdings using multi-signature wallets and operational security.",
         content: `<h1>Advanced Security Practices</h1>
-<p>As your crypto holdings grow, security becomes increasingly critical.</p>
-<h2>Advanced Security Measures</h2>
+<p>Protecting substantial cryptocurrency holdings requires enterprise-grade security measures beyond basic wallet protection. This advanced course covers sophisticated security architectures used by institutions and serious investors.</p>
+
+<h2>Multi-Signature Wallet Architecture</h2>
+<h3>2-of-3 Multisig Setup</h3>
 <ul>
-<li><strong>Multi-Sig Wallets:</strong> Require multiple signatures</li>
-<li><strong>Hardware Security Modules:</strong> Enterprise-grade protection</li>
-<li><strong>Social Recovery:</strong> Trusted contacts can help recover access</li>
+<li><strong>Hardware Wallet A:</strong> Primary device kept in secure location</li>
+<li><strong>Hardware Wallet B:</strong> Secondary device stored in separate secure location</li>
+<li><strong>Mobile/Desktop Key:</strong> Third key for operational flexibility</li>
+</ul>
+
+<h3>3-of-5 Multisig for Large Holdings</h3>
+<ul>
+<li><strong>Geographic Distribution:</strong> Keys stored across different locations</li>
+<li><strong>Role Separation:</strong> Different individuals control different keys</li>
+<li><strong>Emergency Recovery:</strong> Social recovery with trusted parties</li>
+<li><strong>Corporate Governance:</strong> Board approval for large transactions</li>
+</ul>
+
+<h2>Hardware Security Modules (HSMs)</h2>
+<h3>Enterprise-Grade Protection</h3>
+<ul>
+<li><strong>FIPS 140-2 Level 3/4:</strong> Government-grade security standards</li>
+<li><strong>Tamper Evidence:</strong> Physical destruction if compromised</li>
+<li><strong>Secure Key Generation:</strong> True randomness for private keys</li>
+<li><strong>API Integration:</strong> Programmatic transaction signing</li>
+</ul>
+
+<h2>Operational Security (OpSec)</h2>
+<h3>Physical Security</h3>
+<ul>
+<li><strong>Secure Locations:</strong> Bank safe deposit boxes, home safes</li>
+<li><strong>Access Controls:</strong> Biometric locks, surveillance systems</li>
+<li><strong>Environmental Protection:</strong> Fire-proof, water-proof storage</li>
+<li><strong>Decoy Measures:</strong> False wallets with small amounts</li>
+</ul>
+
+<h3>Digital Security</h3>
+<ul>
+<li><strong>Air-Gapped Computers:</strong> Offline transaction signing</li>
+<li><strong>Dedicated Hardware:</strong> Never-online devices for key storage</li>
+<li><strong>Encrypted Communication:</strong> Signal, ProtonMail for sensitive communications</li>
+<li><strong>VPN/Tor Usage:</strong> Anonymous network access</li>
+</ul>
+
+<h3>Social Engineering Defense</h3>
+<ul>
+<li><strong>Information Compartmentalization:</strong> Limit who knows about holdings</li>
+<li><strong>Communication Protocols:</strong> Verification procedures for transactions</li>
+<li><strong>Emergency Procedures:</strong> Response to threats or coercion</li>
+<li><strong>Legal Protections:</strong> Trusts, LLCs for asset protection</li>
+</ul>
+
+<h2>Advanced Backup Strategies</h2>
+<h3>Seed Phrase Security</h3>
+<ul>
+<li><strong>Metal Storage:</strong> Cryptosteel, metal plates for fire/water resistance</li>
+<li><strong>Geographic Distribution:</strong> Multiple locations for redundancy</li>
+<li><strong>Encryption Layers:</strong> BIP39 passphrases for additional security</li>
+<li><strong>Shamir's Secret Sharing:</strong> Splitting seeds across multiple shares</li>
+</ul>
+
+<h3>Time-Lock Mechanisms</h3>
+<ul>
+<li><strong>Inheritance Planning:</strong> Automatic transfers after inactivity periods</li>
+<li><strong>Gradual Release:</strong> Staged access to large holdings</li>
+<li><strong>Emergency Delays:</strong> Cooling-off periods for large transactions</li>
+</ul>
+
+<h2>Institutional Security Frameworks</h2>
+<h3>Custody Solutions</h3>
+<ul>
+<li><strong>Third-Party Custody:</strong> Coinbase Custody, BitGo, Fireblocks</li>
+<li><strong>Self-Custody Systems:</strong> Corporate wallet infrastructures</li>
+<li><strong>Hybrid Approaches:</strong> Combining custody and self-custody</li>
+<li><strong>Insurance Coverage:</strong> Crypto insurance for institutional holdings</li>
+</ul>
+
+<h3>Compliance and Governance</h3>
+<ul>
+<li><strong>Internal Controls:</strong> Approval workflows, audit trails</li>
+<li><strong>Regulatory Compliance:</strong> AML/KYC requirements</li>
+<li><strong>Risk Assessment:</strong> Regular security audits and updates</li>
+<li><strong>Incident Response:</strong> Procedures for security breaches</li>
 </ul>`,
         level: "advanced",
         category: "security",
@@ -773,11 +853,14 @@ export async function seedDatabase() {
         order: 21,
         requiredTier: "pro",
         prerequisites: ["Crypto Wallet Security"],
-        learningObjectives: ["Implement advanced security", "Protect large holdings", "Maintain operational security"],
+        learningObjectives: ["Design multi-signature wallet architectures", "Implement enterprise-grade operational security", "Establish institutional custody frameworks", "Develop comprehensive backup and recovery procedures"],
         isLocked: false,
         isPremium: true,
-        videoUrl: "https://www.youtube.com/embed/d8IBpfs9bf4",
-        tags: ["advanced-security", "multi-sig", "opsec"]
+        hasVideo: true,
+        hasQuiz: true,
+        hasSimulation: false,
+        videoUrl: "https://www.youtube.com/embed/3zNVDIz6Snw",
+        tags: ["advanced-security", "multi-sig", "opsec", "enterprise", "custody"]
       },
       {
         title: "Yield Farming Strategies",
@@ -1874,15 +1957,135 @@ export async function seedDatabase() {
       },
       {
         title: "DeFi Security Auditing",
-        description: "Learning to audit DeFi protocols for security vulnerabilities.",
+        description: "Professional-grade security auditing methodologies for evaluating DeFi protocols, smart contracts, and tokenomics vulnerabilities.",
         content: `<h1>DeFi Security Auditing</h1>
-<p>Understand how to evaluate DeFi protocols for security risks and vulnerabilities.</p>
-<h2>Audit Framework</h2>
+<p>Master the systematic approach to security auditing used by professional firms like Trail of Bits, ConsenSys Diligence, and OpenZeppelin. This expert-level course teaches you to identify and assess security vulnerabilities in DeFi protocols.</p>
+
+<h2>Smart Contract Security Analysis</h2>
+<h3>Static Analysis Tools</h3>
 <ul>
-<li><strong>Code Review:</strong> Smart contract analysis techniques</li>
-<li><strong>Common Vulnerabilities:</strong> Reentrancy, flash loan attacks</li>
-<li><strong>Economic Security:</strong> Tokenomics and incentive analysis</li>
-<li><strong>Risk Assessment:</strong> Quantifying protocol risks</li>
+<li><strong>Slither:</strong> Automated vulnerability detection for Solidity</li>
+<li><strong>Mythril:</strong> Symbolic execution for finding security bugs</li>
+<li><strong>Oyente:</strong> EVM bytecode analysis for common vulnerabilities</li>
+<li><strong>Securify:</strong> ETH Zurich's formal verification tool</li>
+</ul>
+
+<h3>Manual Code Review Process</h3>
+<ol>
+<li><strong>Architecture Analysis:</strong> Understanding protocol design and flow</li>
+<li><strong>Access Control Review:</strong> Permission systems and role management</li>
+<li><strong>State Machine Analysis:</strong> Contract state transitions and edge cases</li>
+<li><strong>External Dependencies:</strong> Oracle, library, and integration risks</li>
+<li><strong>Upgrade Mechanisms:</strong> Proxy patterns and governance risks</li>
+</ol>
+
+<h2>Critical Vulnerability Categories</h2>
+<h3>Reentrancy Attacks</h3>
+<ul>
+<li><strong>Classic Reentrancy:</strong> Single-function recursive calls</li>
+<li><strong>Cross-Function Reentrancy:</strong> State corruption across functions</li>
+<li><strong>Cross-Contract Reentrancy:</strong> External contract interactions</li>
+<li><strong>Read-Only Reentrancy:</strong> View function manipulation</li>
+</ul>
+
+<h3>Flash Loan Attack Vectors</h3>
+<ul>
+<li><strong>Price Oracle Manipulation:</strong> AMM price distortion attacks</li>
+<li><strong>Governance Token Attacks:</strong> Borrowing voting power</li>
+<li><strong>Liquidation Manipulation:</strong> Triggering artificial liquidations</li>
+<li><strong>Arbitrage Exploitation:</strong> Cross-protocol price differences</li>
+</ul>
+
+<h3>MEV (Maximal Extractable Value) Risks</h3>
+<ul>
+<li><strong>Front-Running:</strong> Transaction ordering exploitation</li>
+<li><strong>Back-Running:</strong> Post-transaction profit extraction</li>
+<li><strong>Sandwich Attacks:</strong> Price manipulation for profit</li>
+<li><strong>Time-Bandit Attacks:</strong> Block reorganization for profit</li>
+</ul>
+
+<h2>Economic Security Assessment</h2>
+<h3>Tokenomics Analysis</h3>
+<ul>
+<li><strong>Inflation Mechanisms:</strong> Token emission and dilution risks</li>
+<li><strong>Governance Token Distribution:</strong> Concentration and voting power</li>
+<li><strong>Incentive Alignment:</strong> User vs protocol incentives</li>
+<li><strong>Economic Sustainability:</strong> Long-term protocol viability</li>
+</ul>
+
+<h3>Liquidity and Market Risks</h3>
+<ul>
+<li><strong>Impermanent Loss:</strong> AMM liquidity provider risks</li>
+<li><strong>Slippage Tolerance:</strong> Large trade execution risks</li>
+<li><strong>Market Manipulation:</strong> Thin liquidity exploitation</li>
+<li><strong>Bank Run Scenarios:</strong> Mass withdrawal handling</li>
+</ul>
+
+<h2>Protocol-Specific Risk Factors</h2>
+<h3>Lending Protocols (Aave, Compound)</h3>
+<ul>
+<li><strong>Collateral Risk Models:</strong> Asset correlation and volatility</li>
+<li><strong>Liquidation Mechanisms:</strong> Threshold and penalty analysis</li>
+<li><strong>Interest Rate Models:</strong> Utilization curves and stability</li>
+<li><strong>Bad Debt Scenarios:</strong> Protocol insolvency risks</li>
+</ul>
+
+<h3>AMM Protocols (Uniswap, Curve)</h3>
+<ul>
+<li><strong>Invariant Preservation:</strong> Mathematical formula integrity</li>
+<li><strong>Fee Structure Analysis:</strong> LP incentive sustainability</li>
+<li><strong>Concentrated Liquidity:</strong> Capital efficiency vs risk trade-offs</li>
+<li><strong>Multi-Asset Pools:</strong> Complex correlation risks</li>
+</ul>
+
+<h3>Yield Farming Protocols</h3>
+<ul>
+<li><strong>Reward Distribution:</strong> Fair allocation mechanisms</li>
+<li><strong>Strategy Risk Assessment:</strong> Underlying protocol dependencies</li>
+<li><strong>Auto-Compounding Security:</strong> Automated reinvestment risks</li>
+<li><strong>Withdrawal Delays:</strong> Liquidity lock mechanisms</li>
+</ul>
+
+<h2>Professional Audit Methodology</h2>
+<h3>Initial Assessment (Week 1)</h3>
+<ol>
+<li><strong>Scope Definition:</strong> Contracts, timeframes, and deliverables</li>
+<li><strong>Documentation Review:</strong> Whitepaper, technical specs, previous audits</li>
+<li><strong>Architecture Mapping:</strong> Contract interactions and dependencies</li>
+<li><strong>Test Suite Analysis:</strong> Coverage and edge case testing</li>
+</ol>
+
+<h3>Deep Dive Analysis (Week 2-3)</h3>
+<ol>
+<li><strong>Automated Tool Runs:</strong> Static analysis and vulnerability scanning</li>
+<li><strong>Manual Code Review:</strong> Line-by-line security analysis</li>
+<li><strong>Economic Model Testing:</strong> Scenario analysis and stress testing</li>
+<li><strong>Integration Testing:</strong> Cross-protocol interaction risks</li>
+</ol>
+
+<h3>Reporting and Remediation (Week 4)</h3>
+<ol>
+<li><strong>Vulnerability Classification:</strong> Critical, High, Medium, Low severity</li>
+<li><strong>Exploit Proof-of-Concepts:</strong> Demonstrable attack vectors</li>
+<li><strong>Remediation Recommendations:</strong> Specific code fixes and improvements</li>
+<li><strong>Follow-up Testing:</strong> Verification of fixes</li>
+</ol>
+
+<h2>Tools and Resources</h2>
+<h3>Professional Audit Tools</h3>
+<ul>
+<li><strong>Echidna:</strong> Property-based fuzz testing</li>
+<li><strong>Manticore:</strong> Symbolic execution engine</li>
+<li><strong>Scribble:</strong> Runtime verification specifications</li>
+<li><strong>Hardhat:</strong> Development environment for testing</li>
+</ul>
+
+<h3>Industry Resources</h3>
+<ul>
+<li><strong>DeFiSafety:</strong> Protocol safety rankings</li>
+<li><strong>Rekt.news:</strong> DeFi exploit post-mortems</li>
+<li><strong>Code4rena:</strong> Competitive audit platform</li>
+<li><strong>Immunefi:</strong> Bug bounty platform for DeFi</li>
 </ul>`,
         level: "expert",
         category: "security",
@@ -1891,11 +2094,14 @@ export async function seedDatabase() {
         order: 67,
         requiredTier: "elite",
         prerequisites: ["Smart Contract Security", "Flash Loans and Advanced DeFi"],
-        learningObjectives: ["Audit smart contracts", "Identify vulnerabilities", "Assess protocol risks"],
+        learningObjectives: ["Execute professional smart contract audits", "Identify critical DeFi vulnerabilities", "Perform economic security assessments", "Implement comprehensive audit methodologies"],
         isLocked: false,
         isPremium: true,
+        hasVideo: true,
+        hasQuiz: true,
+        hasSimulation: true,
         videoUrl: "https://www.youtube.com/embed/LLiJK_VeAvQ",
-        tags: ["security", "auditing", "defi"]
+        tags: ["security", "auditing", "defi", "smart-contracts", "professional"]
       },
       {
         title: "Tokenomics Design",
