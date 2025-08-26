@@ -589,15 +589,165 @@ export async function seedDatabase() {
       },
       {
         title: "Altcoin Analysis Framework",
-        description: "Systematic approach to evaluating alternative cryptocurrencies.",
-        content: `<h1>Altcoin Analysis Framework</h1>
-<p>Not all cryptocurrencies are created equal. Learn to evaluate projects systematically.</p>
-<h2>Fundamental Analysis</h2>
+        description: "Coin Bureau's systematic methodology for evaluating alternative cryptocurrencies using professional due diligence frameworks.",
+        content: `<h1>Professional Altcoin Analysis Framework</h1>
+<p>Master Guy Turner's comprehensive methodology used by institutional investors and professional analysts to systematically evaluate alternative cryptocurrency projects. This framework separates legitimate innovations from speculative tokens using data-driven analysis.</p>
+
+<h2>Multi-Layer Evaluation System</h2>
+<h3>Technology Assessment (30% Weight)</h3>
 <ul>
-<li><strong>Team & Leadership:</strong> Experience and track record</li>
-<li><strong>Technology:</strong> Innovation and scalability</li>
-<li><strong>Use Case:</strong> Real-world problem solving</li>
-<li><strong>Tokenomics:</strong> Supply distribution and incentives</li>
+<li><strong>Consensus Mechanism Innovation:</strong> Novel approaches to security and scalability</li>
+<li><strong>Technical Differentiation:</strong> Unique solutions to blockchain trilemma</li>
+<li><strong>Code Quality Analysis:</strong> GitHub activity, contributor expertise, audit results</li>
+<li><strong>Scalability Architecture:</strong> Transaction throughput and cost efficiency</li>
+<li><strong>Interoperability Features:</strong> Cross-chain compatibility and ecosystem integration</li>
+</ul>
+
+<h3>Team and Governance Analysis (25% Weight)</h3>
+<ul>
+<li><strong>Founding Team Credentials:</strong> Previous blockchain experience, academic backgrounds</li>
+<li><strong>Advisory Board Quality:</strong> Industry experts, institutional connections</li>
+<li><strong>Development Team Size:</strong> Core contributors, retention rates, hiring velocity</li>
+<li><strong>Governance Model:</strong> Decentralization level, voting mechanisms, proposal processes</li>
+<li><strong>Communication Transparency:</strong> Regular updates, technical documentation quality</li>
+</ul>
+
+<h3>Market and Use Case Validation (20% Weight)</h3>
+<ul>
+<li><strong>Problem-Market Fit:</strong> Addressing real-world inefficiencies</li>
+<li><strong>Total Addressable Market:</strong> Market size and growth potential</li>
+<li><strong>Competitive Landscape:</strong> Direct competitors and differentiation</li>
+<li><strong>Adoption Metrics:</strong> Active users, transaction volume, network effects</li>
+<li><strong>Partnership Ecosystem:</strong> Enterprise relationships, developer tools</li>
+</ul>
+
+<h3>Tokenomics Deep Dive (15% Weight)</h3>
+<ul>
+<li><strong>Token Utility Model:</strong> Staking, governance, transaction fees, value accrual</li>
+<li><strong>Supply Mechanics:</strong> Inflation/deflation schedules, maximum supply</li>
+<li><strong>Distribution Analysis:</strong> Fair launch vs pre-allocation, vesting schedules</li>
+<li><strong>Economic Sustainability:</strong> Long-term incentive alignment</li>
+<li><strong>Stakeholder Alignment:</strong> Token holder vs protocol value alignment</li>
+</ul>
+
+<h3>Financial and Performance Metrics (10% Weight)</h3>
+<ul>
+<li><strong>Network Value Metrics:</strong> NVT ratio, Metcalfe's law application</li>
+<li><strong>On-Chain Activity:</strong> Active addresses, transaction patterns</li>
+<li><strong>Developer Ecosystem:</strong> GitHub stars, forks, community contributions</li>
+<li><strong>Market Performance:</strong> Price action relative to BTC/ETH, volatility analysis</li>
+<li><strong>Liquidity Assessment:</strong> Exchange listings, trading volume, market depth</li>
+</ul>
+
+<h2>Sector-Specific Analysis Frameworks</h2>
+<h3>Layer 1 Blockchain Assessment</h3>
+<ul>
+<li><strong>Consensus Security:</strong> Validator count, stake distribution, attack costs</li>
+<li><strong>Developer Ecosystem:</strong> Programming languages, tools, documentation</li>
+<li><strong>dApp Activity:</strong> Total value locked, application diversity</li>
+<li><strong>Roadmap Execution:</strong> Milestone achievement, upgrade governance</li>
+</ul>
+
+<h3>DeFi Protocol Evaluation</h3>
+<ul>
+<li><strong>Smart Contract Security:</strong> Audit history, bug bounty programs</li>
+<li><strong>Total Value Locked Trends:</strong> Growth sustainability, capital efficiency</li>
+<li><strong>Protocol Revenue:</strong> Fee generation, revenue sharing mechanisms</li>
+<li><strong>Competitive Moat:</strong> Network effects, switching costs</li>
+</ul>
+
+<h3>Infrastructure Project Analysis</h3>
+<ul>
+<li><strong>Network Effects:</strong> Usage growth, integration partnerships</li>
+<li><strong>Business Model Viability:</strong> Revenue streams, customer acquisition</li>
+<li><strong>Regulatory Compliance:</strong> Legal structure, compliance framework</li>
+<li><strong>Enterprise Adoption:</strong> B2B relationships, institutional usage</li>
+</ul>
+
+<h2>Risk Assessment Matrix</h2>
+<h3>Technical Risks (High Impact Categories)</h3>
+<ul>
+<li><strong>Smart Contract Vulnerabilities:</strong> Code audit history, exploit potential</li>
+<li><strong>Centralization Risks:</strong> Node concentration, validator control</li>
+<li><strong>Scalability Bottlenecks:</strong> Performance limitations, congestion issues</li>
+<li><strong>Upgrade Risk:</strong> Hard fork governance, backward compatibility</li>
+</ul>
+
+<h3>Market Risks (Medium Impact Categories)</h3>
+<ul>
+<li><strong>Regulatory Uncertainty:</strong> Government crackdown potential</li>
+<li><strong>Competition Risk:</strong> Better alternatives, market share loss</li>
+<li><strong>Adoption Risk:</strong> User growth stagnation, network effects failure</li>
+<li><strong>Token Concentration:</strong> Whale holdings, distribution inequality</li>
+</ul>
+
+<h3>Execution Risks (Variable Impact)</h3>
+<ul>
+<li><strong>Team Risk:</strong> Key person dependency, talent retention</li>
+<li><strong>Funding Risk:</strong> Treasury management, runway sustainability</li>
+<li><strong>Partnership Risk:</strong> Critical relationship dependencies</li>
+<li><strong>Marketing Risk:</strong> Community building, narrative sustainability</li>
+</ul>
+
+<h2>Quantitative Scoring System</h2>
+<h3>Fundamental Score Calculation</h3>
+<ul>
+<li><strong>Technology Score (0-30):</strong> Innovation × Execution × Security</li>
+<li><strong>Team Score (0-25):</strong> Experience × Track Record × Transparency</li>
+<li><strong>Market Score (0-20):</strong> TAM × Competition × Adoption</li>
+<li><strong>Tokenomics Score (0-15):</strong> Utility × Sustainability × Alignment</li>
+<li><strong>Financial Score (0-10):</strong> Metrics × Performance × Liquidity</li>
+</ul>
+
+<h3>Rating Categories</h3>
+<ul>
+<li><strong>Excellent (90-100):</strong> Top-tier projects with clear competitive advantages</li>
+<li><strong>Strong (75-89):</strong> Solid projects with good fundamentals</li>
+<li><strong>Average (60-74):</strong> Decent projects with some concerns</li>
+<li><strong>Weak (40-59):</strong> Questionable projects with significant risks</li>
+<li><strong>Poor (0-39):</strong> Avoid - high risk of failure or scam</li>
+</ul>
+
+<h2>Professional Analysis Tools and Resources</h2>
+<h3>On-Chain Analytics Platforms</h3>
+<ul>
+<li><strong>Messari:</strong> Comprehensive project profiles and metrics</li>
+<li><strong>Glassnode:</strong> Network health and adoption indicators</li>
+<li><strong>DeFiLlama:</strong> Protocol TVL and yield farming analytics</li>
+<li><strong>Token Terminal:</strong> Revenue and fundamental metrics</li>
+</ul>
+
+<h3>Development Activity Tracking</h3>
+<ul>
+<li><strong>GitHub Analysis:</strong> Commit frequency, contributor activity</li>
+<li><strong>Developer Surveys:</strong> Stack Overflow, Electric Capital reports</li>
+<li><strong>Documentation Quality:</strong> Technical papers, API docs</li>
+<li><strong>Community Engagement:</strong> Discord, Telegram, forum activity</li>
+</ul>
+
+<h3>Market Intelligence Sources</h3>
+<ul>
+<li><strong>Research Reports:</strong> Delphi Digital, Messari Pro, The Block Research</li>
+<li><strong>Institutional Sentiment:</strong> Grayscale holdings, MicroStrategy moves</li>
+<li><strong>Regulatory Monitoring:</strong> Legal developments, compliance updates</li>
+<li><strong>Competitive Intelligence:</strong> Feature comparisons, roadmap analysis</li>
+</ul>
+
+<h2>Investment Decision Framework</h2>
+<h3>Position Sizing Based on Conviction</h3>
+<ul>
+<li><strong>High Conviction (5-10%):</strong> Score 85+, multiple validation signals</li>
+<li><strong>Medium Conviction (2-5%):</strong> Score 70-84, solid fundamentals</li>
+<li><strong>Low Conviction (0.5-2%):</strong> Score 60-69, speculative position</li>
+<li><strong>Pass (0%):</strong> Score below 60, wait for improvements</li>
+</ul>
+
+<h3>Entry and Exit Criteria</h3>
+<ul>
+<li><strong>Entry Signals:</strong> Fundamental score improvement, technical breakout</li>
+<li><strong>Accumulation Strategy:</strong> Dollar-cost averaging during development</li>
+<li><strong>Exit Triggers:</strong> Fundamental deterioration, better alternatives</li>
+<li><strong>Rebalancing Rules:</strong> Position sizing adjustments based on conviction changes</li>
 </ul>`,
         level: "intermediate",
         category: "analysis",
@@ -606,11 +756,14 @@ export async function seedDatabase() {
         order: 14,
         requiredTier: "basic",
         prerequisites: ["Introduction to Ethereum"],
-        learningObjectives: ["Evaluate altcoin projects", "Analyze tokenomics", "Compare competitive advantages"],
+        learningObjectives: ["Master systematic altcoin evaluation", "Apply quantitative scoring frameworks", "Assess risk-reward ratios professionally", "Make data-driven investment decisions"],
         isLocked: false,
         isPremium: false,
-        videoUrl: "https://www.youtube.com/embed/VYWc9dFqROI",
-        tags: ["altcoins", "analysis", "fundamentals"]
+        hasVideo: true,
+        hasQuiz: true,
+        hasSimulation: true,
+        videoUrl: "https://www.youtube.com/embed/M3EFi_POhps",
+        tags: ["altcoins", "analysis", "fundamentals", "coin-bureau", "due-diligence"]
       },
       {
         title: "Psychology of Trading",
@@ -734,14 +887,129 @@ export async function seedDatabase() {
       },
       {
         title: "Portfolio Diversification",
-        description: "Building balanced cryptocurrency portfolios.",
-        content: `<h1>Portfolio Diversification in Crypto</h1>
-<p>Diversification helps manage risk in volatile crypto markets.</p>
-<h2>Diversification Strategies</h2>
+        description: "Professional portfolio construction using BlackRock's institutional strategies and risk-balanced allocation models.",
+        content: `<h1>Portfolio Diversification in Cryptocurrency</h1>
+<p>Master the institutional portfolio construction strategies used by firms like BlackRock and Goldman Sachs to build resilient cryptocurrency portfolios that perform across different market cycles.</p>
+
+<h2>Institutional Diversification Framework</h2>
+<h3>BlackRock's Bitcoin Integration Model</h3>
 <ul>
-<li><strong>By Market Cap:</strong> Large, mid, small cap allocation</li>
-<li><strong>By Sector:</strong> DeFi, gaming, infrastructure, payments</li>
-<li><strong>By Risk Level:</strong> Conservative to speculative allocation</li>
+<li><strong>Core Portfolio Allocation:</strong> 1-3% Bitcoin for aggressive to moderate profiles</li>
+<li><strong>Portfolio Behavior Analysis:</strong> Bitcoin's low correlation with traditional assets</li>
+<li><strong>Risk-Adjusted Returns:</strong> Enhancing Sharpe ratios through strategic crypto allocation</li>
+<li><strong>Rebalancing Triggers:</strong> Systematic rebalancing at 25% deviation thresholds</li>
+</ul>
+
+<h2>Multi-Dimensional Diversification Strategies</h2>
+<h3>By Market Capitalization</h3>
+<ul>
+<li><strong>Large Cap (60%):</strong> Bitcoin, Ethereum - established store of value and infrastructure</li>
+<li><strong>Mid Cap (25%):</strong> Solana, Cardano, Polygon - emerging platforms with proven adoption</li>
+<li><strong>Small Cap (10%):</strong> Promising Layer 2 solutions and specialized protocols</li>
+<li><strong>Micro Cap (5%):</strong> High-risk, high-reward early-stage innovations</li>
+</ul>
+
+<h3>By Blockchain Sector</h3>
+<ul>
+<li><strong>Infrastructure (40%):</strong> Layer 1 blockchains, interoperability protocols</li>
+<li><strong>DeFi Protocols (20%):</strong> DEXs, lending platforms, yield aggregators</li>
+<li><strong>Application Layer (15%):</strong> Gaming, NFTs, social platforms</li>
+<li><strong>Enterprise Solutions (15%):</strong> Supply chain, identity, payments</li>
+<li><strong>Emerging Narratives (10%):</strong> AI agents, quantum-resistant, sustainability</li>
+</ul>
+
+<h3>By Risk Profile Classification</h3>
+<ul>
+<li><strong>Conservative Core (50%):</strong> Bitcoin, Ethereum, established stablecoins</li>
+<li><strong>Growth Allocation (30%):</strong> Proven Layer 1s, major DeFi protocols</li>
+<li><strong>Speculative Position (15%):</strong> Emerging technologies, new narratives</li>
+<li><strong>Venture Exposure (5%):</strong> Pre-launch tokens, private deals</li>
+</ul>
+
+<h2>Geographic and Regulatory Diversification</h2>
+<h3>Jurisdictional Risk Management</h3>
+<ul>
+<li><strong>U.S. Regulatory Exposure:</strong> SEC-compliant tokens, registered exchanges</li>
+<li><strong>European Integration:</strong> MiCA-compliant protocols, EU-based projects</li>
+<li><strong>Asian Innovation Hubs:</strong> Singapore, Hong Kong, Japan-based developments</li>
+<li><strong>Emerging Markets:</strong> Latin America, Africa adoption plays</li>
+</ul>
+
+<h2>Correlation Analysis and Risk Modeling</h2>
+<h3>Asset Correlation Monitoring</h3>
+<ul>
+<li><strong>Crypto-Crypto Correlations:</strong> Target maximum 0.7 correlation between major holdings</li>
+<li><strong>Traditional Asset Correlations:</strong> Monitor BTC-S&P 500, ETH-NASDAQ relationships</li>
+<li><strong>Macro Factor Exposure:</strong> Interest rate sensitivity, inflation hedging properties</li>
+<li><strong>Stress Testing:</strong> Portfolio performance in various market scenarios</li>
+</ul>
+
+<h3>Advanced Risk Metrics</h3>
+<ul>
+<li><strong>Value at Risk (VaR):</strong> 1-day and 30-day maximum loss estimation</li>
+<li><strong>Maximum Drawdown:</strong> Historical peak-to-trough decline analysis</li>
+<li><strong>Sharpe Ratio Optimization:</strong> Risk-adjusted return maximization</li>
+<li><strong>Sortino Ratio:</strong> Downside deviation-focused performance measurement</li>
+</ul>
+
+<h2>Dynamic Rebalancing Strategies</h2>
+<h3>Systematic Rebalancing Rules</h3>
+<ul>
+<li><strong>Threshold Rebalancing:</strong> 20-25% deviation triggers for major holdings</li>
+<li><strong>Time-Based Rebalancing:</strong> Monthly, quarterly, or semi-annual schedules</li>
+<li><strong>Volatility-Adjusted Rebalancing:</strong> More frequent during high volatility periods</li>
+<li><strong>Tax-Optimized Rebalancing:</strong> Minimizing taxable events through strategic timing</li>
+</ul>
+
+<h3>Portfolio Construction Models</h3>
+<ul>
+<li><strong>Equal Weight Model:</strong> Democratic allocation across selected assets</li>
+<li><strong>Market Cap Weighted:</strong> Proportional to total market valuation</li>
+<li><strong>Risk Parity Model:</strong> Equal risk contribution from each asset</li>
+<li><strong>Factor-Based Model:</strong> Momentum, value, quality, and low-volatility factors</li>
+</ul>
+
+<h2>Institutional-Grade Portfolio Tools</h2>
+<h3>Professional Portfolio Management Platforms</h3>
+<ul>
+<li><strong>Coinbase Prime:</strong> Institutional custody and portfolio analytics</li>
+<li><strong>Fireblocks:</strong> Enterprise wallet infrastructure and reporting</li>
+<li><strong>BitGo:</strong> Multi-signature custody and compliance tools</li>
+<li><strong>Anchorage Digital:</strong> Bank-grade custody and portfolio services</li>
+</ul>
+
+<h3>Analytics and Reporting Tools</h3>
+<ul>
+<li><strong>Messari Pro:</strong> Professional-grade portfolio tracking and analysis</li>
+<li><strong>Glassnode:</strong> On-chain analytics and risk metrics</li>
+<li><strong>CoinTracker:</strong> Tax-optimized portfolio management</li>
+<li><strong>TokenTerminal:</strong> Fundamental metrics and valuation models</li>
+</ul>
+
+<h2>Advanced Diversification Techniques</h2>
+<h3>Options and Derivatives Integration</h3>
+<ul>
+<li><strong>Covered Call Strategies:</strong> Income generation on core holdings</li>
+<li><strong>Protective Puts:</strong> Downside protection for concentrated positions</li>
+<li><strong>Collar Strategies:</strong> Range-bound risk management</li>
+<li><strong>Futures Hedging:</strong> Market neutral exposure management</li>
+</ul>
+
+<h3>Yield Generation Diversification</h3>
+<ul>
+<li><strong>Staking Diversification:</strong> Multiple proof-of-stake networks</li>
+<li><strong>DeFi Yield Farming:</strong> Diversified liquidity provision strategies</li>
+<li><strong>Lending Protocols:</strong> Multiple platform exposure (Aave, Compound, Maker)</li>
+<li><strong>Real World Assets (RWA):</strong> Tokenized real estate, commodities, bonds</li>
+</ul>
+
+<h2>Tax-Efficient Portfolio Management</h2>
+<h3>Optimization Strategies</h3>
+<ul>
+<li><strong>Tax Loss Harvesting:</strong> Systematic realization of losses to offset gains</li>
+<li><strong>Long-Term Capital Gains:</strong> Holding period optimization for tax efficiency</li>
+<li><strong>Like-Kind Exchange Considerations:</strong> Historical 1031 exchange strategies</li>
+<li><strong>Charitable Giving:</strong> Tax-efficient crypto donation strategies</li>
 </ul>`,
         level: "intermediate",
         category: "trading",
@@ -750,11 +1018,14 @@ export async function seedDatabase() {
         order: 20,
         requiredTier: "basic",
         prerequisites: ["Risk Management Strategies"],
-        learningObjectives: ["Build diversified portfolios", "Balance risk and reward", "Rebalance strategies"],
+        learningObjectives: ["Implement institutional diversification frameworks", "Apply correlation analysis and risk modeling", "Execute systematic rebalancing strategies", "Optimize tax-efficient portfolio management"],
         isLocked: false,
         isPremium: false,
-        videoUrl: "https://www.youtube.com/embed/VYWc9dFqROI",
-        tags: ["portfolio", "diversification", "risk-management"]
+        hasVideo: true,
+        hasQuiz: true,
+        hasSimulation: true,
+        videoUrl: "https://www.youtube.com/embed/WZ1S5lPqOSA",
+        tags: ["portfolio", "diversification", "risk-management", "institutional", "BlackRock"]
       },
       
       // Expert/Elite Track - Lessons 21-35
