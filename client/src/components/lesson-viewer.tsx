@@ -1,11 +1,13 @@
 import { useState } from "react";
-import { ChevronLeft, ChevronRight, Play, CheckCircle, Lock, Clock } from "lucide-react";
+import { ChevronLeft, ChevronRight, Play, CheckCircle, Lock, Clock, Presentation, BookOpen } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
+import { LessonSlideshow } from "./lesson-slideshow";
+import { generateSlidesFromContent, generateCategorySpecificSlides } from "@/lib/slideshow-generator";
 
 interface LessonViewerProps {
   lessonId: string;
@@ -14,6 +16,7 @@ interface LessonViewerProps {
 
 export default function LessonViewer({ lessonId, onClose }: LessonViewerProps) {
   const [currentProgress, setCurrentProgress] = useState(0);
+  const [viewMode, setViewMode] = useState<'content' | 'slideshow'>('content');
   const queryClient = useQueryClient();
   const { toast } = useToast();
 
@@ -86,10 +89,38 @@ export default function LessonViewer({ lessonId, onClose }: LessonViewerProps) {
             onClick={onClose}
             variant="ghost"
             className="flex items-center text-slate-600 hover:text-slate-900"
+            data-testid="back-to-lessons-button"
           >
             <ChevronLeft className="mr-2 h-4 w-4" />
             Back to Lessons
           </Button>
+          
+          {/* View Mode Toggle */}
+          <div className="flex items-center space-x-2">
+            <div className="flex bg-gray-100 rounded-lg p-1">
+              <Button
+                variant={viewMode === 'content' ? 'default' : 'ghost'}
+                size="sm"
+                onClick={() => setViewMode('content')}
+                className="h-8"
+                data-testid="content-view-button"
+              >
+                <BookOpen className="w-4 h-4 mr-2" />
+                Content
+              </Button>
+              <Button
+                variant={viewMode === 'slideshow' ? 'default' : 'ghost'}
+                size="sm"
+                onClick={() => setViewMode('slideshow')}
+                className="h-8"
+                data-testid="slideshow-view-button"
+              >
+                <Presentation className="w-4 h-4 mr-2" />
+                Slideshow
+              </Button>
+            </div>
+          </div>
+          
           <div className="flex items-center space-x-2">
             <Badge className={`text-xs font-semibold px-3 py-1 ${getLevelColor(lesson.level)}`}>
               {lesson.level}
@@ -138,17 +169,27 @@ export default function LessonViewer({ lessonId, onClose }: LessonViewerProps) {
           </div>
         </div>
 
-        {/* Lesson Content */}
-        <div className="prose prose-slate max-w-none mb-8">
-          <div className="bg-gradient-to-r from-primary/10 to-secondary/10 rounded-xl p-6 mb-6">
-            <h2 className="text-xl font-semibold text-slate-900 mb-4">What You'll Learn</h2>
-            <div className="whitespace-pre-line text-slate-700 leading-relaxed">
-              {lesson.content}
+        {/* Main Content Area */}
+        {viewMode === 'slideshow' ? (
+          <LessonSlideshow 
+            lessonTitle={lesson.title}
+            slides={lesson.content ? 
+              generateSlidesFromContent(lesson.content, lesson.title) : 
+              generateCategorySpecificSlides(lesson.category, lesson.title)
+            }
+            onComplete={() => handleProgressUpdate(100, true)}
+          />
+        ) : (
+          <div className="prose prose-slate max-w-none mb-8">
+            <div className="bg-gradient-to-r from-primary/10 to-secondary/10 rounded-xl p-6 mb-6">
+              <h2 className="text-xl font-semibold text-slate-900 mb-4">What You'll Learn</h2>
+              <div className="whitespace-pre-line text-slate-700 leading-relaxed">
+                {lesson.content}
+              </div>
             </div>
-          </div>
 
-          {/* Interactive Elements */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            {/* Interactive Elements */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
             <div className="bg-white border border-slate-200 rounded-xl p-6">
               <h3 className="font-semibold text-slate-900 mb-3">Key Concepts</h3>
               <ul className="space-y-2 text-slate-600">
@@ -182,8 +223,10 @@ export default function LessonViewer({ lessonId, onClose }: LessonViewerProps) {
             </div>
           </div>
         </div>
+        )}
 
-        {/* Action Buttons */}
+        {/* Action Buttons - Only show in content mode */}
+        {viewMode === 'content' && (
         <div className="flex items-center justify-between pt-6 border-t border-slate-200">
           <Button
             variant="outline"
@@ -214,6 +257,7 @@ export default function LessonViewer({ lessonId, onClose }: LessonViewerProps) {
             </Button>
           </div>
         </div>
+        )}
       </div>
     </div>
   );
