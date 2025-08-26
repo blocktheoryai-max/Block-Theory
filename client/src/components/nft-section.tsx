@@ -6,6 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import TourLaunchButton from "./tour-launch-button";
 
 export default function NftSection() {
   const [selectedCollection, setSelectedCollection] = useState<string | null>(null);

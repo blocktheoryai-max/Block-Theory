@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Search, Filter, TrendingUp, TrendingDown, Eye, Heart, ShoppingCart } from "lucide-react";
 import type { NftCollection, NftAsset } from "@shared/schema";
+import TourLaunchButton from "@/components/tour-launch-button";
 
 export default function NftMarketplace() {
   const [selectedCategory, setSelectedCategory] = useState("all");
@@ -30,12 +31,15 @@ export default function NftMarketplace() {
 
   return (
     <div className="container mx-auto px-4 py-8" data-testid="page-nft-marketplace">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-2">NFT Marketplace</h1>
-        <p className="text-muted-foreground">Discover, collect, and trade unique digital assets</p>
+      <div className="mb-8 flex justify-between items-start">
+        <div>
+          <h1 className="text-3xl font-bold mb-2">NFT Marketplace</h1>
+          <p className="text-muted-foreground">Discover, collect, and trade unique digital assets</p>
+        </div>
+        <TourLaunchButton variant="header" />
       </div>
 
-      <Tabs defaultValue="collections" className="space-y-6">
+      <Tabs defaultValue="collections" className="space-y-6" data-testid="tabs-collections">
         <TabsList>
           <TabsTrigger value="collections">Collections</TabsTrigger>
           <TabsTrigger value="assets">Individual NFTs</TabsTrigger>
@@ -67,7 +71,7 @@ export default function NftMarketplace() {
             </SelectContent>
           </Select>
           <Select value={sortBy} onValueChange={setSortBy}>
-            <SelectTrigger className="w-[180px]">
+            <SelectTrigger className="w-[180px]" data-testid="select-sort-collections">
               <SelectValue placeholder="Sort by" />
             </SelectTrigger>
             <SelectContent>
@@ -210,6 +214,32 @@ export default function NftMarketplace() {
           </div>
         </TabsContent>
       </Tabs>
+
+      {/* Market Stats Section for Tour */}
+      <div className="mt-12 p-6 bg-gradient-to-r from-purple-50 to-blue-50 rounded-lg" data-testid="text-market-stats">
+        <h3 className="text-lg font-semibold mb-4 text-center">NFT Market Overview</h3>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+          <div>
+            <p className="text-2xl font-bold text-purple-600">$6.7B</p>
+            <p className="text-sm text-gray-600">Market Cap</p>
+          </div>
+          <div>
+            <p className="text-2xl font-bold text-blue-600">$125.8M</p>
+            <p className="text-sm text-gray-600">24h Volume</p>
+          </div>
+          <div>
+            <p className="text-2xl font-bold text-green-600">156K+</p>
+            <p className="text-sm text-gray-600">Collections</p>
+          </div>
+          <div>
+            <p className="text-2xl font-bold text-orange-600">23.4K</p>
+            <p className="text-sm text-gray-600">Active Traders</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Floating Tour Button */}
+      <TourLaunchButton variant="floating" />
     </div>
   );
 }
