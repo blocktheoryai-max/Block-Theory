@@ -1,10 +1,11 @@
-import { Palette, TrendingUp, Users, Award, ShoppingCart, Eye, Heart } from "lucide-react";
+import { Palette, TrendingUp, Users, Award, ShoppingCart, Eye, Heart, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 
 export default function NftSection() {
   const [selectedCollection, setSelectedCollection] = useState<string | null>(null);
@@ -40,57 +41,22 @@ export default function NftSection() {
     },
   ];
 
-  const mockCollections = [
-    {
-      id: "1",
-      name: "CyberPunks 2024",
-      description: "Futuristic digital art collection",
-      floorPrice: "2.4",
-      change24h: "+15.2",
-      owners: 1247,
-      totalSupply: 10000,
-      imageUrl: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImEiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPjxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiNmZjAwZmYiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMwMGZmZmYiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0idXJsKCNhKSIvPjx0ZXh0IHg9IjUwIiB5PSI1NSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjE2IiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+Q1A8L3RleHQ+PC9zdmc+"
-    },
-    {
-      id: "2",
-      name: "Digital Dreamscapes",
-      description: "Abstract art from emerging artists",
-      floorPrice: "0.8",
-      change24h: "-3.1",
-      owners: 892,
-      totalSupply: 5000,
-      imageUrl: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImIiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPjxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiNmZmE1MDAiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNmZjAwZmYiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0idXJsKCNiKSIvPjx0ZXh0IHg9IjUwIiB5PSI1NSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjE2IiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+REQ8L3RleHQ+PC9zdmc+"
-    },
-    {
-      id: "3",
-      name: "Pixel Warriors",
-      description: "8-bit style gaming NFT collection",
-      floorPrice: "1.2",
-      change24h: "+8.7",
-      owners: 2156,
-      totalSupply: 8000,
-      imageUrl: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImMiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPjxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiMwMGZmMDAiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMwMGZmZmYiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0idXJsKCNjKSIvPjx0ZXh0IHg9IjUwIiB5PSI1NSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjE2IiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+UFc8L3RleHQ+PC9zdmc+"
-    }
-  ];
+  // Fetch real NFT data from API
+  const { data: nftCollections = [], isLoading: collectionsLoading } = useQuery({
+    queryKey: ["/api/nft/collections"],
+  });
 
-  const mockNftAssets = [
-    {
-      id: "asset-1",
-      name: "CyberPunk #4207",
-      price: "3.2",
-      rarity: "Rare",
-      collection: "CyberPunks 2024",
-      imageUrl: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImQiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPjxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiNmZjAwZmYiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMwMGZmZmYiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0idXJsKCNkKSIvPjx0ZXh0IHg9IjEwMCIgeT0iMTEwIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjQiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj4jNDIwNzwvdGV4dD48L3N2Zz4="
-    },
-    {
-      id: "asset-2", 
-      name: "Dream Portal #891",
-      price: "1.5",
-      rarity: "Common",
-      collection: "Digital Dreamscapes",
-      imageUrl: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImUiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPjxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiNmZmE1MDAiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNmZjAwZmYiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0idXJsKCNlKSIvPjx0ZXh0IHg9IjEwMCIgeT0iMTEwIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjQiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj4jODkxPC90ZXh0Pjwvc3ZnPg=="
-    }
-  ];
+  const { data: nftAssets = [], isLoading: assetsLoading } = useQuery({
+    queryKey: ["/api/nft/assets"],
+  });
+
+  const { data: nftAnalytics } = useQuery({
+    queryKey: ["/api/nft/analytics"],
+  });
+
+  // Use real data instead of mock data
+  const actualCollections = Array.isArray(nftCollections) ? nftCollections.slice(0, 3) : [];
+  const actualAssets = Array.isArray(nftAssets) ? nftAssets.slice(0, 2) : [];
 
   const getLevelColor = (level: string) => {
     switch (level) {
@@ -211,7 +177,7 @@ export default function NftSection() {
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-                    {mockCollections.map((collection) => (
+                    {actualCollections.map((collection: any) => (
                       <Card key={collection.id} className="hover:shadow-lg transition-shadow cursor-pointer">
                         <CardContent className="p-4">
                           <div className="aspect-square rounded-lg overflow-hidden mb-4">
@@ -241,6 +207,14 @@ export default function NftSection() {
                               <span className="text-sm font-medium">{collection.owners.toLocaleString()}</span>
                             </div>
                           </div>
+                          <div className="mt-4">
+                            <Button asChild size="sm" variant="outline">
+                              <a href={collection.openseaUrl} target="_blank" rel="noopener noreferrer">
+                                <ExternalLink className="h-4 w-4 mr-2" />
+                                View on OpenSea
+                              </a>
+                            </Button>
+                          </div>
                         </CardContent>
                       </Card>
                     ))}
@@ -249,7 +223,7 @@ export default function NftSection() {
                   <div>
                     <h4 className="text-lg font-semibold text-slate-900 mb-4">Trending NFTs</h4>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      {mockNftAssets.map((asset) => (
+                      {actualAssets.map((asset: any) => (
                         <Card key={asset.id} className="hover:shadow-lg transition-shadow">
                           <CardContent className="p-4">
                             <div className="flex space-x-4">
@@ -270,9 +244,11 @@ export default function NftSection() {
                                 <p className="text-sm text-slate-600 mb-2">{asset.collection}</p>
                                 <div className="flex items-center justify-between">
                                   <span className="text-lg font-bold text-slate-900">{asset.price} ETH</span>
-                                  <Button size="sm" className="bg-purple-600 hover:bg-purple-700">
-                                    <ShoppingCart className="w-4 h-4 mr-1" />
-                                    Buy
+                                  <Button size="sm" asChild className="bg-purple-600 hover:bg-purple-700">
+                                    <a href={asset.openseaUrl} target="_blank" rel="noopener noreferrer">
+                                      <Eye className="w-4 h-4 mr-1" />
+                                      View
+                                    </a>
                                   </Button>
                                 </div>
                               </div>

@@ -24,62 +24,9 @@ export default function NftMarketplace() {
     queryKey: ["/api/nft/assets"],
   });
 
-  const mockCollections = [
-    {
-      id: "1",
-      name: "CyberPunks 2024",
-      description: "Futuristic digital art collection",
-      floorPrice: "2.4",
-      totalVolume: "1240.5",
-      change24h: "+15.2",
-      owners: 1247,
-      totalSupply: 10000,
-      imageUrl: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImEiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPjxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiNmZjAwZmYiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMwMGZmZmYiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0idXJsKCNhKSIvPjx0ZXh0IHg9IjUwIiB5PSI1NSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjE2IiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+Q1A8L3RleHQ+PC9zdmc+"
-    },
-    {
-      id: "2",
-      name: "Digital Dreamscapes",
-      description: "Abstract art from emerging artists",
-      floorPrice: "0.8",
-      totalVolume: "450.2",
-      change24h: "-3.1",
-      owners: 892,
-      totalSupply: 5000,
-      imageUrl: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImIiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPjxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiMwMGZmMDAiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNmZmZmMDAiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0idXJsKCNiKSIvPjx0ZXh0IHg9IjUwIiB5PSI1NSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjE2IiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+REQ8L3RleHQ+PC9zdmc+"
-    },
-    {
-      id: "3",
-      name: "Crypto Kitties Reborn",
-      description: "Next generation collectible cats",
-      floorPrice: "1.2",
-      totalVolume: "890.7",
-      change24h: "+8.7",
-      owners: 2103,
-      totalSupply: 15000,
-      imageUrl: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImMiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPjxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiNmZjZkMDAiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNmZjAwOTAiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0idXJsKCNjKSIvPjx0ZXh0IHg9IjUwIiB5PSI1NSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjE2IiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+Q0s8L3RleHQ+PC9zdmc+"
-    }
-  ];
-
-  const mockAssets = [
-    {
-      id: "1",
-      name: "CyberPunk #1234",
-      description: "Rare neon warrior with lightning eyes",
-      price: "2.5",
-      rarity: "Legendary",
-      collection: "CyberPunks 2024",
-      imageUrl: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImEiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPjxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiNmZjAwZmYiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMwMGZmZmYiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0idXJsKCNhKSIvPjx0ZXh0IHg9IjUwIiB5PSI1NSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjEwIiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+IzEyMzQ8L3RleHQ+PC9zdmc+"
-    },
-    {
-      id: "2", 
-      name: "Dreamscape #0567",
-      description: "Ethereal landscape with floating islands",
-      price: "0.9",
-      rarity: "Rare",
-      collection: "Digital Dreamscapes",
-      imageUrl: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImIiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPjxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiMwMGZmMDAiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNmZmZmMDAiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0idXJsKCNiKSIvPjx0ZXh0IHg9IjUwIiB5PSI1NSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjEwIiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+IzA1Njc8L3RleHQ+PC9zdmc+"
-    }
-  ];
+  // Replace mock data with actual API data
+  const actualCollections = Array.isArray(collections) ? collections : [];
+  const actualAssets = Array.isArray(assets) ? assets : [];
 
   return (
     <div className="container mx-auto px-4 py-8" data-testid="page-nft-marketplace">
@@ -134,7 +81,7 @@ export default function NftMarketplace() {
 
         <TabsContent value="collections" className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {mockCollections.map((collection) => (
+            {actualCollections.map((collection: any) => (
               <Card key={collection.id} className="group hover:shadow-lg transition-all duration-300" data-testid={`card-collection-${collection.id}`}>
                 <CardHeader className="p-0">
                   <div className="aspect-square relative overflow-hidden rounded-t-lg">
@@ -181,10 +128,19 @@ export default function NftMarketplace() {
                       <p className="font-semibold">{collection.totalSupply.toLocaleString()}</p>
                     </div>
                   </div>
-                  <Button className="w-full mt-4" data-testid={`button-view-collection-${collection.id}`}>
-                    <Eye className="h-4 w-4 mr-2" />
-                    View Collection
-                  </Button>
+                  <div className="flex gap-2 mt-4">
+                    <Button asChild className="flex-1" data-testid={`button-view-collection-${collection.id}`}>
+                      <a href={collection.openseaUrl} target="_blank" rel="noopener noreferrer">
+                        <Eye className="h-4 w-4 mr-2" />
+                        View on OpenSea
+                      </a>
+                    </Button>
+                    {collection.verified && (
+                      <Badge variant="secondary" className="bg-blue-100 text-blue-800">
+                        ✓ Verified
+                      </Badge>
+                    )}
+                  </div>
                 </CardContent>
               </Card>
             ))}
@@ -193,7 +149,7 @@ export default function NftMarketplace() {
 
         <TabsContent value="assets" className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {mockAssets.map((asset) => (
+            {actualAssets.map((asset: any) => (
               <Card key={asset.id} className="group hover:shadow-lg transition-all duration-300" data-testid={`card-asset-${asset.id}`}>
                 <CardHeader className="p-0">
                   <div className="aspect-square relative overflow-hidden rounded-t-lg">
@@ -221,11 +177,22 @@ export default function NftMarketplace() {
                       <span className="text-xs text-muted-foreground">Price</span>
                       <p className="font-semibold">{asset.price} ETH</p>
                     </div>
-                    <Button size="sm" data-testid={`button-buy-asset-${asset.id}`}>
-                      <ShoppingCart className="h-4 w-4 mr-1" />
-                      Buy
+                    <Button size="sm" asChild data-testid={`button-buy-asset-${asset.id}`}>
+                      <a href={asset.openseaUrl} target="_blank" rel="noopener noreferrer">
+                        <Eye className="h-4 w-4 mr-1" />
+                        View
+                      </a>
                     </Button>
                   </div>
+                  {asset.traits && (
+                    <div className="text-xs text-muted-foreground mt-2">
+                      {asset.traits.slice(0, 2).map((trait: any, index: number) => (
+                        <span key={index} className="inline-block bg-gray-100 rounded px-2 py-1 mr-1 mb-1">
+                          {trait.trait_type}: {trait.value}
+                        </span>
+                      ))}
+                    </div>
+                  )}
                 </CardContent>
               </Card>
             ))}
