@@ -14,6 +14,7 @@ import Pricing from "@/pages/pricing";
 import WhaleTracker from "@/pages/whale-tracker";
 import WhitepaperAnalyzer from "@/pages/whitepaper-analyzer";
 import TechnicalAnalysis from "@/pages/technical-analysis";
+import EnterpriseShowcase from "@/pages/enterprise-showcase";
 import Checkout from "@/pages/checkout";
 import NftMarketplace from "@/pages/nft-marketplace";
 import ChatRooms from "@/pages/chat-rooms";
@@ -26,12 +27,14 @@ import CookiePolicy from "@/pages/cookie-policy";
 import NotFound from "@/pages/not-found";
 import { useAuth } from "@/hooks/useAuth";
 import Navigation from "@/components/Navigation";
+import LaunchEnhancementBanner from "@/components/launch-enhancement-banner";
 
 function Router() {
   const { isAuthenticated, isLoading } = useAuth();
 
   return (
     <div className="min-h-screen bg-background">
+      <LaunchEnhancementBanner />
       <Navigation />
       <Switch>
         <Route path="/" component={Dashboard} />
@@ -45,6 +48,7 @@ function Router() {
         <Route path="/whale-tracker" component={WhaleTracker} />
         <Route path="/whitepaper-analyzer" component={WhitepaperAnalyzer} />
         <Route path="/technical-analysis" component={TechnicalAnalysis} />
+        <Route path="/enterprise-showcase" component={EnterpriseShowcase} />
         <Route path="/nft-marketplace" component={NftMarketplace} />
         <Route path="/chat-rooms" component={ChatRooms} />
         <Route path="/ai-assistant" component={AiAssistant} />
