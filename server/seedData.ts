@@ -138,6 +138,7 @@ export async function seedDatabase() {
         isLocked: false,
         isPremium: false,
         videoUrl: "https://www.youtube.com/embed/VYWc9dFqROI",
+        hasVideo: true,
         hasQuiz: true,
         hasSimulation: false,
         tags: ["cryptocurrency", "basics", "introduction"]
@@ -183,6 +184,7 @@ export async function seedDatabase() {
         isLocked: false,
         isPremium: false,
         videoUrl: "https://www.youtube.com/embed/SSo_EIwHSd4",
+        hasVideo: true,
         hasQuiz: true,
         hasSimulation: true,
         tags: ["blockchain", "technology", "fundamentals"]
@@ -222,6 +224,9 @@ export async function seedDatabase() {
         isLocked: false,
         isPremium: false,
         videoUrl: "https://www.youtube.com/embed/bBC-nXj3Ng4",
+        hasVideo: true,
+        hasQuiz: true,
+        hasSimulation: false,
         tags: ["bitcoin", "cryptocurrency", "mining"]
       },
       {
@@ -264,6 +269,9 @@ export async function seedDatabase() {
         isLocked: false,
         isPremium: false,
         videoUrl: "https://www.youtube.com/embed/jxLkbJozKbY",
+        hasVideo: true,
+        hasQuiz: true,
+        hasSimulation: false,
         tags: ["ethereum", "smart-contracts", "defi"]
       },
       {

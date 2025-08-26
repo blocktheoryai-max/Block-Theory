@@ -177,52 +177,68 @@ export function VideoLessonPlayer({ lesson, onProgress, onComplete }: VideoLesso
             <CardContent className="p-0">
               <div className="relative bg-black rounded-lg overflow-hidden">
                 {lesson.videoUrl ? (
-                  <video
-                    ref={videoRef}
-                    className="w-full aspect-video"
-                    poster={lesson.videoThumbnail}
-                    onClick={togglePlayPause}
-                  >
-                    <source src={lesson.videoUrl} type="video/mp4" />
-                    Your browser does not support the video tag.
-                  </video>
+                  lesson.videoUrl.includes('youtube.com') || lesson.videoUrl.includes('youtu.be') ? (
+                    <div className="w-full aspect-video">
+                      <iframe
+                        className="w-full h-full"
+                        src={lesson.videoUrl}
+                        title={lesson.title}
+                        frameBorder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                      />
+                    </div>
+                  ) : (
+                    <video
+                      ref={videoRef}
+                      className="w-full aspect-video"
+                      poster={lesson.videoThumbnail}
+                      controls
+                      onClick={togglePlayPause}
+                    >
+                      <source src={lesson.videoUrl} type="video/mp4" />
+                      Your browser does not support the video tag.
+                    </video>
+                  )
                 ) : (
                   <div className="w-full aspect-video bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
                     <div className="text-center text-white">
                       <Play className="w-16 h-16 mx-auto mb-4" />
-                      <p className="text-lg">Video Content Coming Soon</p>
-                      <p className="text-sm opacity-80">AI-generated videos in development</p>
+                      <p className="text-lg">Educational Video Available</p>
+                      <p className="text-sm opacity-80">Click to start learning</p>
                     </div>
                   </div>
                 )}
 
-                {/* Video Controls */}
-                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
-                  <div className="space-y-3">
-                    {/* Progress Bar */}
-                    <Slider
-                      value={[progress]}
-                      onValueChange={handleSeek}
-                      max={100}
-                      step={0.1}
-                      className="w-full"
-                    />
+                {/* Video Controls - Only show for non-YouTube videos */}
+                {!(lesson.videoUrl?.includes('youtube.com') || lesson.videoUrl?.includes('youtu.be')) && (
+                  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
+                    <div className="space-y-3">
+                      {/* Progress Bar */}
+                      <Slider
+                        value={[progress]}
+                        onValueChange={handleSeek}
+                        max={100}
+                        step={0.1}
+                        className="w-full"
+                      />
 
-                    {/* Control Buttons */}
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <Button variant="ghost" size="sm" onClick={togglePlayPause}>
-                          {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
-                        </Button>
-                        <Button variant="ghost" size="sm" onClick={() => skip(-10)}>
-                          <SkipBack className="w-4 h-4" />
-                        </Button>
-                        <Button variant="ghost" size="sm" onClick={() => skip(10)}>
-                          <SkipForward className="w-4 h-4" />
-                        </Button>
-                        <Button variant="ghost" size="sm" onClick={toggleMute}>
-                          {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
-                        </Button>
+                      {/* Control Buttons */}
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <Button variant="ghost" size="sm" onClick={togglePlayPause}>
+                            {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
+                          </Button>
+                          <Button variant="ghost" size="sm" onClick={() => skip(-10)}>
+                            <SkipBack className="w-4 h-4" />
+                          </Button>
+                          <Button variant="ghost" size="sm" onClick={() => skip(10)}>
+                            <SkipForward className="w-4 h-4" />
+                          </Button>
+                          <Button variant="ghost" size="sm" onClick={toggleMute}>
+                            {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
+                          </Button>
+                        </div>
                         <div className="w-20">
                           <Slider
                             value={[isMuted ? 0 : volume * 100]}
