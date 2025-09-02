@@ -382,6 +382,68 @@ export const userAnalytics = pgTable("user_analytics", {
   createdAt: timestamp("created_at").defaultNow(),
 });
 
+// Support ticket system with priority based on subscription tier
+export const supportTickets = pgTable("support_tickets", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").references(() => users.id).notNull(),
+  subject: text("subject").notNull(),
+  message: text("message").notNull(),
+  category: text("category").default("general"), // "general", "technical", "billing", "feature"
+  priority: text("priority").default("low"), // "low", "medium", "high", "urgent"
+  status: text("status").default("open"), // "open", "in_progress", "resolved", "closed"
+  assignedTo: varchar("assigned_to").references(() => users.id),
+  resolvedAt: timestamp("resolved_at"),
+  responseTime: integer("response_time"), // in minutes
+  satisfaction: integer("satisfaction"), // 1-5 rating
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Feature flags for early access and gradual rollouts
+export const featureFlags = pgTable("feature_flags", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  name: text("name").notNull().unique(),
+  description: text("description"),
+  enabledForTiers: text("enabled_for_tiers").array().default(["elite", "pro"]), // Tiers with access
+  rolloutPercentage: integer("rollout_percentage").default(0), // 0-100 for gradual rollout
+  isActive: boolean("is_active").default(false),
+  metadata: jsonb("metadata"), // Additional configuration
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Live trading sessions schedule
+export const liveSessions = pgTable("live_sessions", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  hostId: varchar("host_id").references(() => users.id).notNull(),
+  title: text("title").notNull(),
+  description: text("description"),
+  sessionType: text("session_type").notNull(), // "webinar", "trading_room", "q&a", "analysis"
+  requiredTier: text("required_tier").default("pro"), // Minimum tier to attend
+  scheduledAt: timestamp("scheduled_at").notNull(),
+  duration: integer("duration").default(60), // in minutes
+  maxAttendees: integer("max_attendees").default(100),
+  recordingUrl: text("recording_url"),
+  streamUrl: text("stream_url"),
+  status: text("status").default("scheduled"), // "scheduled", "live", "completed", "cancelled"
+  attendeesCount: integer("attendees_count").default(0),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Weekly market reports
+export const marketReports = pgTable("market_reports", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  title: text("title").notNull(),
+  content: text("content").notNull(), // HTML content of the report
+  summary: text("summary"),
+  reportType: text("report_type").default("weekly"), // "weekly", "monthly", "special"
+  reportDate: timestamp("report_date").notNull(),
+  sentToSubscribers: boolean("sent_to_subscribers").default(false),
+  subscribersSent: integer("subscribers_sent").default(0),
+  openRate: decimal("open_rate", { precision: 5, scale: 2 }), // Email open rate percentage
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
 export const insertUserSchema = createInsertSchema(users).omit({
   id: true,
   createdAt: true,
@@ -453,6 +515,28 @@ export const insertPaymentTransactionSchema = createInsertSchema(paymentTransact
 });
 
 export const insertTradingSignalSchema = createInsertSchema(tradingSignals).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertSupportTicketSchema = createInsertSchema(supportTickets).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const insertFeatureFlagSchema = createInsertSchema(featureFlags).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const insertLiveSessionSchema = createInsertSchema(liveSessions).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertMarketReportSchema = createInsertSchema(marketReports).omit({
   id: true,
   createdAt: true,
 });

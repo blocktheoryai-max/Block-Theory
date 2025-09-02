@@ -295,6 +295,125 @@ export class EmailService {
   private stripHtml(html: string): string {
     return html.replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ').trim();
   }
+
+  // Weekly market report email
+  async sendWeeklyMarketReport(userEmail: string, userName: string, reportContent: any): Promise<boolean> {
+    const html = `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="utf-8">
+      <style>
+        .container { max-width: 600px; margin: 0 auto; font-family: Arial, sans-serif; line-height: 1.6; }
+        .header { background: linear-gradient(135deg, #3B82F6, #1E40AF); padding: 30px; text-align: center; color: white; }
+        .content { padding: 30px; background: white; }
+        .market-card { background: #f8f9fa; padding: 15px; border-radius: 8px; margin: 15px 0; }
+        .bullish { color: #10B981; font-weight: bold; }
+        .bearish { color: #EF4444; font-weight: bold; }
+        .button { display: inline-block; background: #3B82F6; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; margin: 20px 0; }
+        .footer { background: #f8f9fa; padding: 20px; text-align: center; color: #666; }
+      </style>
+    </head>
+    <body>
+      <div class="container">
+        <div class="header">
+          <h1>Weekly Market Report 📊</h1>
+          <p>${new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
+        </div>
+        
+        <div class="content">
+          <h2>Hi ${userName},</h2>
+          
+          <p>Here's your weekly crypto market analysis, exclusively for ${PLATFORM_NAME} subscribers.</p>
+          
+          <div class="market-card">
+            <h3>🔥 Top Movers This Week</h3>
+            ${reportContent.topMovers?.map((mover: any) => `
+              <p>${mover.symbol}: <span class="${mover.change > 0 ? 'bullish' : 'bearish'}">${mover.change > 0 ? '+' : ''}${mover.change}%</span> - ${mover.reason}</p>
+            `).join('') || ''}
+          </div>
+          
+          <div class="market-card">
+            <h3>💡 Key Market Insights</h3>
+            ${reportContent.insights?.map((insight: any) => `<li>${insight}</li>`).join('') || ''}
+          </div>
+          
+          <div class="market-card">
+            <h3>🎯 Trading Opportunities</h3>
+            ${reportContent.opportunities?.map((opp: any) => `
+              <p><strong>${opp.coin}:</strong> ${opp.action} - ${opp.reasoning}</p>
+            `).join('') || ''}
+          </div>
+          
+          <div class="market-card">
+            <h3>⚠️ Risk Alerts</h3>
+            ${reportContent.risks?.map((risk: any) => `<li>${risk}</li>`).join('') || ''}
+          </div>
+          
+          <h3>📈 Week Ahead Outlook</h3>
+          <p>${reportContent.outlook || 'Market conditions remain volatile. Stay informed and trade carefully.'}</p>
+          
+          <a href="${PLATFORM_URL}/analyze" class="button">View Full Analysis</a>
+          
+          <p><em>This report is for educational purposes only. Not financial advice.</em></p>
+        </div>
+        
+        <div class="footer">
+          <p>${PLATFORM_NAME} - Your Trusted Crypto Education Platform</p>
+          <p><a href="${PLATFORM_URL}/settings">Manage Preferences</a> | <a href="${PLATFORM_URL}/unsubscribe">Unsubscribe</a></p>
+        </div>
+      </div>
+    </body>
+    </html>`;
+
+    return this.sendEmail({
+      to: userEmail,
+      subject: `${PLATFORM_NAME} Weekly Market Report - ${new Date().toLocaleDateString()}`,
+      html,
+    });
+  }
+
+  // Trading signal alert email for Pro users
+  async sendTradingSignalAlert(userEmail: string, signal: any): Promise<boolean> {
+    const html = `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="utf-8">
+      <style>
+        .container { max-width: 600px; margin: 0 auto; font-family: Arial, sans-serif; }
+        .header { background: linear-gradient(135deg, #F59E0B, #DC2626); padding: 20px; text-align: center; color: white; }
+        .signal-box { background: #FEF3C7; border: 2px solid #F59E0B; padding: 20px; margin: 20px 0; border-radius: 8px; }
+        .buy { color: #10B981; }
+        .sell { color: #EF4444; }
+      </style>
+    </head>
+    <body>
+      <div class="container">
+        <div class="header">
+          <h1>⚡ Premium Trading Signal Alert</h1>
+        </div>
+        
+        <div class="signal-box">
+          <h2 class="${signal.signalType}">${signal.signalType.toUpperCase()} Signal: ${signal.symbol}</h2>
+          <p><strong>Entry Price:</strong> $${signal.entryPrice}</p>
+          <p><strong>Target Price:</strong> $${signal.targetPrice} (${signal.targetPercentage}%)</p>
+          <p><strong>Stop Loss:</strong> $${signal.stopLoss}</p>
+          <p><strong>Confidence:</strong> ${signal.confidence}/100</p>
+          <p><strong>Reasoning:</strong> ${signal.reasoning}</p>
+        </div>
+        
+        <p><em>This signal is for educational purposes only. Always do your own research.</em></p>
+      </div>
+    </body>
+    </html>`;
+
+    return this.sendEmail({
+      to: userEmail,
+      subject: `🔔 ${signal.signalType.toUpperCase()} Signal: ${signal.symbol} - ${PLATFORM_NAME} Pro`,
+      html,
+    });
+  }
 }
 
 export const emailService = EmailService.getInstance();

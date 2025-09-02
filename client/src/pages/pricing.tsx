@@ -22,36 +22,36 @@ export default function Pricing() {
       name: "Free",
       price: "$0",
       period: "forever",
-      description: "Perfect for getting started with crypto trading basics",
+      description: "Try Block Theory with limited access",
       features: [
-        "Access to 50 foundation video lessons",
-        "Basic trading simulator",
-        "Community access",
-        "Weekly market updates",
-        "Basic portfolio tracking"
+        "First 5 beginner lessons",
+        "Basic trading simulator ($1K portfolio)",
+        "Community forum (read-only)",
+        "Sample market analysis",
+        "Basic portfolio view"
       ],
       limitations: [
-        "Limited simulation features",
-        "No advanced lessons",
-        "No AI assistant access"
+        "Only 5 lessons available",
+        "Limited simulator features",
+        "No advanced content"
       ],
-      buttonText: "Get Started Free",
+      buttonText: "Start Free Trial",
       buttonVariant: "outline" as const,
       popular: false
     },
     {
       name: "Basic",
-      price: "$19.99",
+      price: "$24.99",
       period: "month",
       description: "Unlock the complete lesson library and advanced simulator",
       features: [
-        "Complete video library (50+ lessons)",
-        "Advanced trading simulator",
+        "Complete video library (100+ lessons)",
+        "Advanced trading simulator ($10K portfolio)",
         "Progress tracking & analytics",
-        "Community access",
-        "Weekly market reports",
+        "Community forum access",
+        "Weekly market reports (email)",
         "Technical analysis tools",
-        "Email support"
+        "Email support (48hr response)"
       ],
       limitations: [],
       buttonText: "Start Basic Plan",
@@ -60,18 +60,18 @@ export default function Pricing() {
     },
     {
       name: "Pro",
-      price: "$49.99",
+      price: "$59.99",
       period: "month",
       description: "Everything in Basic plus live sessions and premium tools",
       features: [
         "Everything in Basic",
-        "Live trading sessions (weekly)",
-        "Premium automated signals",
+        "Live trading sessions (3x weekly)",
+        "Premium AI trading signals (daily)",
         "Advanced analytics dashboard",
-        "AI-powered portfolio insights",
-        "Private Discord community",
-        "Priority email support",
-        "Early access to new features"
+        "AI-powered portfolio optimizer",
+        "Priority support (4hr response)",
+        "Early access to new features",
+        "Exclusive Discord channels"
       ],
       limitations: [],
       buttonText: "Upgrade to Pro",
@@ -80,18 +80,18 @@ export default function Pricing() {
     },
     {
       name: "Elite",
-      price: "$99.99",
+      price: "$149.99",
       period: "month",
       description: "Ultimate trading education with AI-powered insights",
       features: [
         "Everything in Pro",
-        "Advanced AI trading assistant",
-        "Automated strategy recommendations",
-        "AI portfolio optimization",
-        "Exclusive premium market data",
+        "1-on-1 mentoring sessions (monthly)",
+        "Automated AI trading strategies",
+        "Advanced portfolio optimization",
+        "Institutional-grade market data",
         "VIP Discord channels",
-        "24/7 automated support chat",
-        "Access to all premium content"
+        "Priority support (2hr response)",
+        "All future features included"
       ],
       limitations: [],
       buttonText: "Go Elite",
@@ -242,6 +242,86 @@ export default function Pricing() {
                 <p className="text-muted-foreground">{feature.description}</p>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Feature Comparison Table */}
+      <section className="py-16 bg-background">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl font-bold text-center mb-12">
+            Detailed Feature Comparison
+          </h2>
+          <div className="max-w-6xl mx-auto overflow-x-auto">
+            <table className="w-full border-collapse bg-card rounded-lg overflow-hidden">
+              <thead>
+                <tr className="border-b bg-muted">
+                  <th className="text-left p-4 font-semibold">Feature</th>
+                  <th className="text-center p-4">Free</th>
+                  <th className="text-center p-4 bg-primary/10">Basic</th>
+                  <th className="text-center p-4">Pro</th>
+                  <th className="text-center p-4">Elite</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr className="border-b hover:bg-muted/50">
+                  <td className="p-4 font-medium">Video Lessons</td>
+                  <td className="text-center p-4 text-muted-foreground">5</td>
+                  <td className="text-center p-4 bg-primary/10 font-medium">100+</td>
+                  <td className="text-center p-4 font-medium">100+</td>
+                  <td className="text-center p-4 font-medium">100+</td>
+                </tr>
+                <tr className="border-b hover:bg-muted/50">
+                  <td className="p-4 font-medium">Trading Simulator</td>
+                  <td className="text-center p-4 text-muted-foreground">Basic</td>
+                  <td className="text-center p-4 bg-primary/10 font-medium">Advanced</td>
+                  <td className="text-center p-4 font-medium">Advanced</td>
+                  <td className="text-center p-4 font-medium">Advanced</td>
+                </tr>
+                <tr className="border-b hover:bg-muted/50">
+                  <td className="p-4 font-medium">Weekly Market Reports</td>
+                  <td className="text-center p-4 text-muted-foreground">-</td>
+                  <td className="text-center p-4 bg-primary/10">✓</td>
+                  <td className="text-center p-4 text-green-600">✓</td>
+                  <td className="text-center p-4 text-green-600">✓</td>
+                </tr>
+                <tr className="border-b hover:bg-muted/50">
+                  <td className="p-4 font-medium">Live Trading Sessions</td>
+                  <td className="text-center p-4 text-muted-foreground">-</td>
+                  <td className="text-center p-4 bg-primary/10 text-muted-foreground">-</td>
+                  <td className="text-center p-4 font-medium text-blue-600">3x Weekly</td>
+                  <td className="text-center p-4 font-medium text-purple-600">Unlimited</td>
+                </tr>
+                <tr className="border-b hover:bg-muted/50">
+                  <td className="p-4 font-medium">AI Trading Signals</td>
+                  <td className="text-center p-4 text-muted-foreground">-</td>
+                  <td className="text-center p-4 bg-primary/10 text-muted-foreground">-</td>
+                  <td className="text-center p-4 font-medium text-blue-600">Daily</td>
+                  <td className="text-center p-4 font-medium text-purple-600">Real-time</td>
+                </tr>
+                <tr className="border-b hover:bg-muted/50">
+                  <td className="p-4 font-medium">Support Response Time</td>
+                  <td className="text-center p-4 text-muted-foreground">-</td>
+                  <td className="text-center p-4 bg-primary/10">48 hours</td>
+                  <td className="text-center p-4 font-medium">4 hours</td>
+                  <td className="text-center p-4 font-medium text-purple-600">2 hours</td>
+                </tr>
+                <tr className="border-b hover:bg-muted/50">
+                  <td className="p-4 font-medium">1-on-1 Mentoring</td>
+                  <td className="text-center p-4 text-muted-foreground">-</td>
+                  <td className="text-center p-4 bg-primary/10 text-muted-foreground">-</td>
+                  <td className="text-center p-4 text-muted-foreground">-</td>
+                  <td className="text-center p-4 font-medium text-purple-600">Monthly</td>
+                </tr>
+                <tr className="hover:bg-muted/50">
+                  <td className="p-4 font-medium">Early Access Features</td>
+                  <td className="text-center p-4 text-muted-foreground">-</td>
+                  <td className="text-center p-4 bg-primary/10 text-muted-foreground">-</td>
+                  <td className="text-center p-4 text-green-600">✓</td>
+                  <td className="text-center p-4 text-green-600">✓</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </section>

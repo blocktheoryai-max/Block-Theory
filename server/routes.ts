@@ -1874,6 +1874,297 @@ Provide optimization in JSON format with:
     }
   });
 
+  // Support ticket system with priority based on tier
+  app.post('/api/support/ticket', async (req, res) => {
+    try {
+      const { userId, subject, message, category = 'general' } = req.body;
+      
+      // Get user tier to determine priority
+      const user = await storage.getUser(userId);
+      const priority = user?.tier === 'elite' ? 'urgent' : 
+                      user?.tier === 'pro' ? 'high' : 
+                      user?.tier === 'basic' ? 'medium' : 'low';
+      
+      const ticket = {
+        id: crypto.randomUUID(),
+        userId,
+        subject,
+        message,
+        category,
+        priority,
+        status: 'open',
+        createdAt: new Date().toISOString(),
+      };
+      
+      // Store ticket (in production, save to database)
+      res.json({ 
+        message: 'Support ticket created successfully',
+        ticket,
+        estimatedResponse: priority === 'urgent' ? '2 hours' : 
+                         priority === 'high' ? '4 hours' :
+                         priority === 'medium' ? '24 hours' : '48 hours'
+      });
+    } catch (error) {
+      console.error('Support ticket error:', error);
+      res.status(500).json({ error: 'Failed to create support ticket' });
+    }
+  });
+
+  // Generate and send weekly market reports
+  app.post('/api/market-reports/generate', async (req, res) => {
+    try {
+      const marketData = liveDataService.getMarketData();
+      const newsData = liveDataService.getLatestNews();
+      
+      // Generate report using AI
+      const prompt = `Generate a comprehensive weekly crypto market report based on:
+      Market Data: ${JSON.stringify(Object.values(marketData).slice(0, 10))}
+      Recent News: ${JSON.stringify(newsData.slice(0, 5))}
+      
+      Format as JSON with:
+      1. topMovers: array of {symbol, change, reason} - top 5 performers
+      2. insights: array of 5 key market insights
+      3. opportunities: array of {coin, action, reasoning} - 3 trading opportunities
+      4. risks: array of 3 current market risks
+      5. outlook: string describing week ahead`;
+
+      const completion = await openai.chat.completions.create({
+        model: "gpt-4o",
+        messages: [{ role: "user", content: prompt }],
+        response_format: { type: "json_object" },
+        max_tokens: 1000
+      });
+
+      const reportContent = JSON.parse(completion.choices[0].message.content || '{}');
+      
+      // Send to all Basic+ subscribers
+      const basicAndAboveUsers = await storage.getAllUsers();
+      const eligibleUsers = basicAndAboveUsers.filter(u => 
+        u.tier === 'basic' || u.tier === 'pro' || u.tier === 'elite'
+      );
+      
+      let sentCount = 0;
+      for (const user of eligibleUsers) {
+        const success = await emailService.sendWeeklyMarketReport(
+          user.email, 
+          user.name, 
+          reportContent
+        );
+        if (success) sentCount++;
+      }
+      
+      res.json({ 
+        message: 'Weekly market report generated and sent',
+        recipientCount: sentCount,
+        reportHighlights: reportContent
+      });
+    } catch (error) {
+      console.error('Market report generation error:', error);
+      res.status(500).json({ error: 'Failed to generate market report' });
+    }
+  });
+
+  // Generate premium trading signals for Pro users
+  app.post('/api/trading-signals/generate', async (req, res) => {
+    try {
+      const marketData = liveDataService.getMarketData();
+      const topCoins = Object.values(marketData).slice(0, 20);
+      
+      // Use AI to analyze and generate signals
+      const prompt = `Analyze crypto market data and generate 3 high-confidence trading signals:
+      ${JSON.stringify(topCoins)}
+      
+      For each signal provide JSON:
+      {
+        symbol: string,
+        signalType: "buy" or "sell",
+        entryPrice: number,
+        targetPrice: number,
+        stopLoss: number,
+        confidence: 1-100,
+        reasoning: string (technical analysis),
+        timeframe: "short" or "medium" or "long"
+      }`;
+
+      const completion = await openai.chat.completions.create({
+        model: "gpt-4o",
+        messages: [{ role: "user", content: prompt }],
+        response_format: { type: "json_object" },
+        temperature: 0.3,
+        max_tokens: 800
+      });
+
+      const signals = JSON.parse(completion.choices[0].message.content || '{"signals": []}');
+      
+      // Send alerts to Pro+ users
+      const proUsers = await storage.getAllUsers();
+      const eligibleUsers = proUsers.filter(u => u.tier === 'pro' || u.tier === 'elite');
+      
+      for (const signal of signals.signals || []) {
+        // Add percentage calculation
+        signal.targetPercentage = ((signal.targetPrice - signal.entryPrice) / signal.entryPrice * 100).toFixed(2);
+        
+        // Send to eligible users
+        for (const user of eligibleUsers) {
+          await emailService.sendTradingSignalAlert(user.email, signal);
+        }
+      }
+      
+      res.json({ 
+        message: 'Trading signals generated',
+        signalsCount: signals.signals?.length || 0,
+        signals: signals.signals
+      });
+    } catch (error) {
+      console.error('Trading signal generation error:', error);
+      res.status(500).json({ error: 'Failed to generate trading signals' });
+    }
+  });
+
+  // Feature flags for early access
+  app.get('/api/feature-flags', async (req, res) => {
+    try {
+      const { userId } = req.query;
+      const user = userId ? await storage.getUser(userId as string) : null;
+      
+      // Define available feature flags
+      const allFlags = [
+        {
+          name: 'ai_portfolio_optimizer_v2',
+          description: 'Advanced AI portfolio optimization with ML predictions',
+          enabledForTiers: ['elite', 'pro'],
+          rolloutPercentage: 20,
+          isActive: true
+        },
+        {
+          name: 'advanced_whale_tracking',
+          description: 'Real-time whale wallet monitoring and alerts',
+          enabledForTiers: ['elite', 'pro'],
+          rolloutPercentage: 50,
+          isActive: true
+        },
+        {
+          name: 'social_trading',
+          description: 'Copy trading from successful traders',
+          enabledForTiers: ['elite'],
+          rolloutPercentage: 10,
+          isActive: true
+        },
+        {
+          name: 'defi_yield_optimizer',
+          description: 'Automated DeFi yield farming strategies',
+          enabledForTiers: ['pro', 'elite'],
+          rolloutPercentage: 30,
+          isActive: true
+        }
+      ];
+      
+      // Filter flags based on user tier
+      const userFlags = allFlags.filter(flag => {
+        if (!flag.isActive) return false;
+        if (!user) return false;
+        
+        // Pro and Elite get early access
+        if (flag.enabledForTiers.includes(user.tier || 'free')) {
+          return true;
+        }
+        
+        // Gradual rollout for others
+        return Math.random() * 100 < flag.rolloutPercentage;
+      });
+      
+      res.json({ 
+        flags: userFlags,
+        userTier: user?.tier || 'free'
+      });
+    } catch (error) {
+      console.error('Feature flags error:', error);
+      res.status(500).json({ error: 'Failed to fetch feature flags' });
+    }
+  });
+
+  // Live trading sessions schedule
+  app.get('/api/live-sessions', async (req, res) => {
+    try {
+      // Generate upcoming live sessions
+      const sessions = [
+        {
+          id: '1',
+          title: 'Weekly Market Analysis & Q&A',
+          description: 'Join our expert traders for live market analysis and your questions answered',
+          sessionType: 'webinar',
+          requiredTier: 'pro',
+          scheduledAt: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000).toISOString(), // 2 days from now
+          duration: 60,
+          hostName: 'Michael Chen - Senior Analyst',
+          streamUrl: 'https://youtube.com/live/example1',
+          status: 'scheduled'
+        },
+        {
+          id: '2',
+          title: 'Advanced Technical Analysis Workshop',
+          description: 'Deep dive into advanced chart patterns and indicators',
+          sessionType: 'trading_room',
+          requiredTier: 'pro',
+          scheduledAt: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toISOString(), // 5 days from now
+          duration: 90,
+          hostName: 'Sarah Williams - Head of Trading',
+          streamUrl: 'https://youtube.com/live/example2',
+          status: 'scheduled'
+        },
+        {
+          id: '3',
+          title: 'NFT Trading Strategies',
+          description: 'Learn how to identify and trade profitable NFT collections',
+          sessionType: 'analysis',
+          requiredTier: 'pro',
+          scheduledAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(), // 1 week from now
+          duration: 45,
+          hostName: 'David Park - NFT Specialist',
+          streamUrl: 'https://youtube.com/live/example3',
+          status: 'scheduled'
+        }
+      ];
+      
+      res.json({ 
+        upcomingSessions: sessions,
+        totalScheduled: sessions.length
+      });
+    } catch (error) {
+      console.error('Live sessions error:', error);
+      res.status(500).json({ error: 'Failed to fetch live sessions' });
+    }
+  });
+
+  // Register for live session
+  app.post('/api/live-sessions/register', async (req, res) => {
+    try {
+      const { userId, sessionId } = req.body;
+      const user = await storage.getUser(userId);
+      
+      if (!user) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+      
+      // Check if user has required tier
+      if (user.tier !== 'pro' && user.tier !== 'elite') {
+        return res.status(403).json({ 
+          error: 'Pro or Elite subscription required for live sessions',
+          upgradeUrl: '/pricing'
+        });
+      }
+      
+      res.json({ 
+        message: 'Successfully registered for live session',
+        sessionId,
+        accessDetails: 'You will receive an email with the session link 30 minutes before start'
+      });
+    } catch (error) {
+      console.error('Session registration error:', error);
+      res.status(500).json({ error: 'Failed to register for session' });
+    }
+  });
+
   const httpServer = createServer(app);
 
   return httpServer;

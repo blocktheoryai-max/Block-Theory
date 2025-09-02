@@ -247,7 +247,7 @@ export class DatabaseStorage implements IStorage {
     const tierLevels = { free: 0, basic: 1, pro: 2, elite: 3 };
     const tierLevel = tierLevels[requiredTier as keyof typeof tierLevels] || 0;
     
-    return await db
+    let result = await db
       .select()
       .from(lessons)
       .where(
@@ -260,6 +260,13 @@ export class DatabaseStorage implements IStorage {
         END <= ${tierLevel}`
       )
       .orderBy(lessons.order);
+    
+    // Limit free tier to only first 5 lessons
+    if (requiredTier === 'free') {
+      result = result.slice(0, 5);
+    }
+    
+    return result;
   }
 
   // User progress operations
