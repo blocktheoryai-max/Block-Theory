@@ -8,6 +8,7 @@ import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { LessonSlideshow } from "./lesson-slideshow";
 import { generateSlidesFromContent, generateCategorySpecificSlides } from "@/lib/slideshow-generator";
+import type { Lesson } from "@shared/schema";
 
 interface LessonViewerProps {
   lessonId: string;
@@ -20,7 +21,7 @@ export default function LessonViewer({ lessonId, onClose }: LessonViewerProps) {
   const queryClient = useQueryClient();
   const { toast } = useToast();
 
-  const { data: lesson, isLoading } = useQuery({
+  const { data: lesson, isLoading } = useQuery<Lesson>({
     queryKey: ['/api/lessons', lessonId]
   });
 

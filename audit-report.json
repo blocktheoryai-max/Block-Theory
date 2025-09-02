@@ -1,0 +1,390 @@
+{
+  "timestamp": "2025-09-02T14:40:30.676Z",
+  "totalLessons": 80,
+  "totalVideos": 80,
+  "accessibleVideos": 28,
+  "inaccessibleVideos": [
+    {
+      "url": "https://www.youtube.com/embed/bCb_7x2-W7U",
+      "lesson": "Cryptocurrency Exchanges",
+      "error": "HTTP 404"
+    },
+    {
+      "url": "https://www.youtube.com/embed/7a_tMi8IRzQ",
+      "lesson": "Reading Cryptocurrency Charts",
+      "error": "HTTP 404"
+    },
+    {
+      "url": "https://www.youtube.com/embed/MfAhyV6RdoI",
+      "lesson": "Technical Indicators - RSI & MACD",
+      "error": "HTTP 404"
+    },
+    {
+      "url": "https://www.youtube.com/embed/XM0B6O-XBdI",
+      "lesson": "Risk Management Strategies",
+      "error": "HTTP 404"
+    },
+    {
+      "url": "https://www.youtube.com/embed/bnXNi7Y3xjo",
+      "lesson": "Advanced Chart Patterns",
+      "error": "HTTP 404"
+    },
+    {
+      "url": "https://www.youtube.com/embed/lnGdb4-qAuc",
+      "lesson": "Understanding Bitcoin Halving",
+      "error": "HTTP 404"
+    },
+    {
+      "url": "https://www.youtube.com/embed/9ooN1eN2RjY",
+      "lesson": "Cryptocurrency Taxation",
+      "error": "HTTP 404"
+    },
+    {
+      "url": "https://www.youtube.com/embed/WZ1S5lPqOSA",
+      "lesson": "Portfolio Diversification",
+      "error": "HTTP 404"
+    },
+    {
+      "url": "https://www.youtube.com/embed/YhJNsLQw4NI",
+      "lesson": "Derivatives Trading",
+      "error": "HTTP 404"
+    },
+    {
+      "url": "https://www.youtube.com/embed/f6hrlH7Qs4k",
+      "lesson": "Algorithmic Trading Basics",
+      "error": "HTTP 404"
+    },
+    {
+      "url": "https://www.youtube.com/embed/YhJNsLQw4NI",
+      "lesson": "Derivatives Trading",
+      "error": "HTTP 404"
+    },
+    {
+      "url": "https://www.youtube.com/embed/f6hrlH7Qs4k",
+      "lesson": "Algorithmic Trading Basics",
+      "error": "HTTP 404"
+    },
+    {
+      "url": "https://www.youtube.com/embed/ZQJwnfFBM8M",
+      "lesson": "Cross-Chain Bridges and Interoperability",
+      "error": "HTTP 404"
+    },
+    {
+      "url": "https://www.youtube.com/embed/mCJUhnXQ426",
+      "lesson": "Flash Loans and Advanced DeFi",
+      "error": "HTTP 400"
+    },
+    {
+      "url": "https://www.youtube.com/embed/0oJ-DL8_6j0",
+      "lesson": "GameFi and Play-to-Earn",
+      "error": "HTTP 404"
+    },
+    {
+      "url": "https://www.youtube.com/embed/FfPq_NQ74WE",
+      "lesson": "Multi-Timeframe Analysis",
+      "error": "HTTP 404"
+    },
+    {
+      "url": "https://www.youtube.com/embed/SD7sw0bf22g",
+      "lesson": "Options and Derivatives Trading",
+      "error": "HTTP 404"
+    },
+    {
+      "url": "https://www.youtube.com/embed/PfN6_FqmBzM",
+      "lesson": "Cryptocurrency Taxation",
+      "error": "HTTP 404"
+    },
+    {
+      "url": "https://www.youtube.com/embed/6GMh_BwaDTs",
+      "lesson": "Central Bank Digital Currencies (CBDCs)",
+      "error": "HTTP 404"
+    },
+    {
+      "url": "https://www.youtube.com/embed/k6xLKjH1L-o",
+      "lesson": "Environmental Impact and Green Crypto",
+      "error": "HTTP 404"
+    },
+    {
+      "url": "https://www.youtube.com/embed/BgFXqVpGDQE",
+      "lesson": "Crypto Career Pathways",
+      "error": "HTTP 404"
+    },
+    {
+      "url": "https://www.youtube.com/embed/d3mU79hYxQw",
+      "lesson": "Building a Crypto Portfolio",
+      "error": "HTTP 404"
+    },
+    {
+      "url": "https://www.youtube.com/embed/TDGpxkr3z5U",
+      "lesson": "Advanced Wallet Security",
+      "error": "HTTP 404"
+    },
+    {
+      "url": "https://www.youtube.com/embed/LLiJK_VeAvQ",
+      "lesson": "DeFi Security Auditing",
+      "error": "HTTP 401"
+    },
+    {
+      "url": "https://www.youtube.com/embed/SFt7KxvLc3A",
+      "lesson": "Tokenomics Design",
+      "error": "HTTP 404"
+    },
+    {
+      "url": "https://www.youtube.com/embed/rj8Vp2MKB4M",
+      "lesson": "Real World Asset Tokenization",
+      "error": "HTTP 404"
+    },
+    {
+      "url": "https://www.youtube.com/embed/LlS7nJ_fBtY",
+      "lesson": "Artificial Intelligence in Crypto",
+      "error": "HTTP 404"
+    },
+    {
+      "url": "https://www.youtube.com/embed/f6hrlH7Qs4k",
+      "lesson": "Algorithmic Trading Basics",
+      "error": "HTTP 404"
+    },
+    {
+      "url": "https://www.youtube.com/embed/1MYquyRSiPg",
+      "lesson": "Global Crypto Regulation",
+      "error": "HTTP 404"
+    },
+    {
+      "url": "https://www.youtube.com/embed/8tLRzr7fV_Q",
+      "lesson": "Crypto Market Making",
+      "error": "HTTP 404"
+    },
+    {
+      "url": "https://www.youtube.com/embed/Uf7r8S-bNpc",
+      "lesson": "Crypto Venture Capital",
+      "error": "HTTP 404"
+    },
+    {
+      "url": "https://www.youtube.com/embed/PfN6_FqmBzM",
+      "lesson": "Cryptocurrency Taxation",
+      "error": "HTTP 404"
+    },
+    {
+      "url": "https://www.youtube.com/embed/y5kh_JgCRgE",
+      "lesson": "Decentralized Science (DeSci)",
+      "error": "HTTP 404"
+    },
+    {
+      "url": "https://www.youtube.com/embed/3gElHgL4Q-o",
+      "lesson": "Crypto Social Impact",
+      "error": "HTTP 404"
+    },
+    {
+      "url": "https://www.youtube.com/embed/3vdH6yBqvCo",
+      "lesson": "Advanced Crypto Analytics",
+      "error": "HTTP 404"
+    },
+    {
+      "url": "https://www.youtube.com/embed/w_3_3lDNOW8",
+      "lesson": "Crypto Macroeconomics",
+      "error": "HTTP 404"
+    },
+    {
+      "url": "https://www.youtube.com/embed/rHhRbyp6yJ4",
+      "lesson": "Building Crypto Infrastructure",
+      "error": "HTTP 404"
+    },
+    {
+      "url": "https://www.youtube.com/embed/YIzKo5GfWME",
+      "lesson": "Future of Finance",
+      "error": "HTTP 404"
+    },
+    {
+      "url": "https://www.youtube.com/embed/rHhRbyp6yJ4",
+      "lesson": "Building Crypto Infrastructure",
+      "error": "HTTP 404"
+    },
+    {
+      "url": "https://www.youtube.com/embed/YIzKo5GfWME",
+      "lesson": "Future of Finance",
+      "error": "HTTP 404"
+    },
+    {
+      "url": "https://www.youtube.com/embed/lJJ2YAzxTvQ",
+      "lesson": "Crypto Research Methodology",
+      "error": "HTTP 404"
+    },
+    {
+      "url": "https://www.youtube.com/embed/Uf7r8S-bNpc",
+      "lesson": "Crypto Venture Capital",
+      "error": "HTTP 404"
+    },
+    {
+      "url": "https://www.youtube.com/embed/hzWkqUIpfqE",
+      "lesson": "Blockchain Interoperability",
+      "error": "HTTP 404"
+    },
+    {
+      "url": "https://www.youtube.com/embed/bFO5zKWQSso",
+      "lesson": "DeFi Innovation and Experimentation",
+      "error": "HTTP 404"
+    },
+    {
+      "url": "https://www.youtube.com/embed/2_Hk_wk4lv0",
+      "lesson": "Crypto Forensics and Investigation",
+      "error": "HTTP 404"
+    },
+    {
+      "url": "https://www.youtube.com/embed/VlTjyNdKJpI",
+      "lesson": "Algorithmic Trading Psychology",
+      "error": "HTTP 404"
+    },
+    {
+      "url": "https://www.youtube.com/embed/lJJ2YAzxTvQ",
+      "lesson": "Crypto Research Methodology",
+      "error": "HTTP 404"
+    },
+    {
+      "url": "https://www.youtube.com/embed/DNEG4gHNHMM",
+      "lesson": "Incident Response and Recovery",
+      "error": "HTTP 404"
+    },
+    {
+      "url": "https://www.youtube.com/embed/6vV6gg7bJqs",
+      "lesson": "Insurance and Risk Transfer",
+      "error": "HTTP 404"
+    },
+    {
+      "url": "https://www.youtube.com/embed/8tLRzr7fV_Q",
+      "lesson": "Crypto Market Making",
+      "error": "HTTP 404"
+    },
+    {
+      "url": "https://www.youtube.com/embed/SD7sw0bf22g",
+      "lesson": "Options and Derivatives Trading",
+      "error": "HTTP 404"
+    },
+    {
+      "url": "https://www.youtube.com/embed/YIzKo5GfWME",
+      "lesson": "Future of Finance",
+      "error": "HTTP 404"
+    }
+  ],
+  "duplicateUrls": 14,
+  "missingVideoUrls": 0,
+  "successRate": "35.0%",
+  "duplicates": [
+    {
+      "url": "https://www.youtube.com/embed/M3EFi_POhps",
+      "count": 2,
+      "lessons": [
+        "Altcoin Analysis Framework",
+        "Staking and Proof of Stake"
+      ]
+    },
+    {
+      "url": "https://www.youtube.com/embed/YhJNsLQw4NI",
+      "count": 2,
+      "lessons": [
+        "Derivatives Trading",
+        "Tokenomics Deep Dive"
+      ]
+    },
+    {
+      "url": "https://www.youtube.com/embed/7pWxCklcNsU",
+      "count": 2,
+      "lessons": [
+        "Layer 2 Solutions",
+        "Cross-Chain Protocols"
+      ]
+    },
+    {
+      "url": "https://www.youtube.com/embed/ClnnLI1SClA",
+      "count": 4,
+      "lessons": [
+        "Yield Farming Strategies",
+        "MEV and Arbitrage",
+        "Privacy Coins Analysis",
+        "Yield Farming Strategies"
+      ]
+    },
+    {
+      "url": "https://www.youtube.com/embed/f6hrlH7Qs4k",
+      "count": 3,
+      "lessons": [
+        "Algorithmic Trading Basics",
+        "Building a Crypto Trading Business",
+        "Building a Crypto Fund"
+      ]
+    },
+    {
+      "url": "https://www.youtube.com/embed/KHm0uUPqmVE",
+      "count": 2,
+      "lessons": [
+        "Decentralized Autonomous Organizations (DAOs)",
+        "Blockchain Governance Systems"
+      ]
+    },
+    {
+      "url": "https://www.youtube.com/embed/PfN6_FqmBzM",
+      "count": 2,
+      "lessons": [
+        "Cryptocurrency Taxation",
+        "Crypto Tax Optimization"
+      ]
+    },
+    {
+      "url": "https://www.youtube.com/embed/rHhRbyp6yJ4",
+      "count": 2,
+      "lessons": [
+        "Building Crypto Infrastructure",
+        "Crypto Leadership and Vision"
+      ]
+    },
+    {
+      "url": "https://www.youtube.com/embed/YIzKo5GfWME",
+      "count": 3,
+      "lessons": [
+        "Future of Finance",
+        "Crypto Mastery Integration",
+        "Crypto Mastery Capstone"
+      ]
+    },
+    {
+      "url": "https://www.youtube.com/embed/VYWc9dFqROI",
+      "count": 3,
+      "lessons": [
+        "What is Cryptocurrency?",
+        "Teaching and Mentoring in Crypto",
+        "Crypto Community and Networking"
+      ]
+    },
+    {
+      "url": "https://www.youtube.com/embed/Uf7r8S-bNpc",
+      "count": 2,
+      "lessons": [
+        "Crypto Venture Capital",
+        "Industry Transformation Leadership"
+      ]
+    },
+    {
+      "url": "https://www.youtube.com/embed/lJJ2YAzxTvQ",
+      "count": 2,
+      "lessons": [
+        "Crypto Research Methodology",
+        "Crypto Research and Analysis"
+      ]
+    },
+    {
+      "url": "https://www.youtube.com/embed/8tLRzr7fV_Q",
+      "count": 2,
+      "lessons": [
+        "Crypto Market Making",
+        "Market Microstructure"
+      ]
+    },
+    {
+      "url": "https://www.youtube.com/embed/SD7sw0bf22g",
+      "count": 2,
+      "lessons": [
+        "Options and Derivatives Trading",
+        "Crypto Derivatives Markets"
+      ]
+    }
+  ]
+}
