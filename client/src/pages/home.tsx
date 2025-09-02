@@ -61,24 +61,6 @@ export default function Home() {
           keywords={SEO_PRESETS.home.keywords}
           canonical="/"
         />
-        {/* Header */}
-        <header className="bg-white dark:bg-gray-900 shadow-sm">
-          <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-            <div className="flex items-center space-x-2">
-              <TrendingUp className="h-8 w-8 text-blue-600" />
-              <h1 className="text-2xl font-bold text-gray-900 dark:text-white">TradeTutor</h1>
-            </div>
-            <div className="flex items-center space-x-4">
-              <Link href="/pricing">
-                <Button variant="outline">Pricing</Button>
-              </Link>
-              <Button onClick={() => window.location.href = "/api/login"}>
-                Sign In
-              </Button>
-            </div>
-          </div>
-        </header>
-
         {/* Hero Section */}
         <section className="py-20">
           <div className="container mx-auto px-4 text-center">

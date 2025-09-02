@@ -69,8 +69,6 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-background">
-      <ChainHeader />
-      
       {/* Learning Priority Hero Section */}
       <section className="blockchain-gradient-subtle py-16">
         <div className="container mx-auto px-4">

@@ -137,8 +137,6 @@ export default function Pricing() {
     <>
       <SEOHead {...SEO_PRESETS.pricing} canonical="/pricing" />
       <div className="min-h-screen bg-background">
-        <ChainHeader />
-      
       {/* Hero Section */}
       <section className="blockchain-gradient-subtle py-16">
         <div className="container mx-auto px-4">
