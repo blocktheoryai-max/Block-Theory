@@ -20,7 +20,8 @@ import {
   Brain,
   LineChart,
   ChevronDown,
-  Zap
+  Zap,
+  Presentation
 } from "lucide-react";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -39,6 +40,7 @@ export default function Navigation() {
 
   // Advanced tools dropdown
   const advancedTools = [
+    { path: "/slideshow-generator", label: translate("nav.slideshow", "Slideshow Generator"), icon: Presentation },
     { path: "/ai-assistant", label: translate("nav.ai", "AI Assistant"), icon: Brain },
     { path: "/whale-tracker", label: translate("nav.whale", "Whale Tracker"), icon: Fish },
     { path: "/whitepaper-analyzer", label: translate("nav.whitepaper", "AI Analyzer"), icon: FileText },

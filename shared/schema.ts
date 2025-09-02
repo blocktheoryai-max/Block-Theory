@@ -157,6 +157,10 @@ export type QuizQuestion = typeof quizQuestions.$inferSelect;
 export type InsertQuizQuestion = typeof quizQuestions.$inferInsert;
 export type KnowledgeCheck = typeof knowledgeChecks.$inferSelect;
 export type InsertKnowledgeCheck = typeof knowledgeChecks.$inferInsert;
+export type Slideshow = typeof slideshows.$inferSelect;
+export type InsertSlideshow = typeof slideshows.$inferInsert;
+export type SlideshowProgress = typeof slideshowProgress.$inferSelect;
+export type InsertSlideshowProgress = typeof slideshowProgress.$inferInsert;
 
 export const nftAssets = pgTable("nft_assets", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
@@ -463,6 +467,40 @@ export const insertCryptoPriceSchema = createInsertSchema(cryptoPrices).omit({
   updatedAt: true,
 });
 
+// Interactive Slideshow Generator System
+export const slideshows = pgTable("slideshows", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").references(() => users.id).notNull(),
+  title: text("title").notNull(),
+  description: text("description"),
+  category: text("category").notNull(), // "Fundamentals", "Technical Analysis", "DeFi", "NFTs", "Trading Psychology"
+  difficulty: text("difficulty").notNull(), // "Beginner", "Intermediate", "Expert"
+  slides: jsonb("slides").notNull(), // Array of slide objects
+  totalSlides: integer("total_slides").default(0),
+  estimatedDuration: integer("estimated_duration").default(10), // in minutes
+  tags: text("tags").array().default([]),
+  isPublic: boolean("is_public").default(false),
+  isPremium: boolean("is_premium").default(false),
+  requiredTier: text("required_tier").default("free"), // "free", "basic", "pro", "elite"
+  views: integer("views").default(0),
+  likes: integer("likes").default(0),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+export const slideshowProgress = pgTable("slideshow_progress", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").references(() => users.id).notNull(),
+  slideshowId: varchar("slideshow_id").references(() => slideshows.id).notNull(),
+  currentSlide: integer("current_slide").default(0),
+  completed: boolean("completed").default(false),
+  completedSlides: jsonb("completed_slides").default([]), // Array of completed slide IDs
+  totalTimeSpent: integer("total_time_spent").default(0), // in seconds
+  lastViewedAt: timestamp("last_viewed_at").defaultNow(),
+  completedAt: timestamp("completed_at"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
 // Whitepaper Analysis System
 export const whitepapers = pgTable("whitepapers", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
@@ -532,6 +570,18 @@ export const insertWhitepaperAnalysisSchema = createInsertSchema(whitepaperAnaly
 });
 
 export const insertUserWhitepaperProgressSchema = createInsertSchema(userWhitepaperProgress).omit({
+  id: true,
+  createdAt: true,
+  completedAt: true,
+});
+
+export const insertSlideshowSchema = createInsertSchema(slideshows).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const insertSlideshowProgressSchema = createInsertSchema(slideshowProgress).omit({
   id: true,
   createdAt: true,
   completedAt: true,

@@ -20,6 +20,8 @@ import {
   tradingConnections,
   achievements,
   premiumContent,
+  slideshows,
+  slideshowProgress,
 } from "@shared/schema";
 import type {
   User,
@@ -56,6 +58,10 @@ import type {
   InsertTradingSignal,
   TradingConnection,
   InsertTradingConnection,
+  Slideshow,
+  InsertSlideshow,
+  SlideshowProgress,
+  InsertSlideshowProgress,
 } from "@shared/schema";
 
 export interface IStorage {
@@ -154,6 +160,23 @@ export interface IStorage {
   // New monetization feature operations
   getAchievements(): Promise<any[]>;
   getPremiumContent(): Promise<any[]>;
+
+  // Slideshow operations
+  getAllSlideshows(): Promise<Slideshow[]>;
+  getSlideshow(id: string): Promise<Slideshow | undefined>;
+  getUserSlideshows(userId: string): Promise<Slideshow[]>;
+  createSlideshow(slideshow: InsertSlideshow): Promise<Slideshow>;
+  updateSlideshow(id: string, updates: Partial<Slideshow>): Promise<void>;
+  deleteSlideshow(id: string): Promise<void>;
+  incrementSlideshowViews(id: string): Promise<void>;
+  getSlideshowsByCategory(category: string): Promise<Slideshow[]>;
+  getPublicSlideshows(): Promise<Slideshow[]>;
+
+  // Slideshow progress operations
+  getSlideshowProgress(userId: string, slideshowId: string): Promise<SlideshowProgress | undefined>;
+  getUserSlideshowProgress(userId: string): Promise<SlideshowProgress[]>;
+  createSlideshowProgress(progress: InsertSlideshowProgress): Promise<SlideshowProgress>;
+  updateSlideshowProgress(id: string, updates: Partial<SlideshowProgress>): Promise<void>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -567,5 +590,69 @@ export class DatabaseStorage implements IStorage {
       .update(users)
       .set({ streak, lastActivityDate: new Date(), updatedAt: new Date() })
       .where(eq(users.id, userId));
+  }
+
+  // Slideshow operations
+  async getAllSlideshows(): Promise<Slideshow[]> {
+    return await db.select().from(slideshows).orderBy(desc(slideshows.createdAt));
+  }
+
+  async getSlideshow(id: string): Promise<Slideshow | undefined> {
+    const [slideshow] = await db.select().from(slideshows).where(eq(slideshows.id, id));
+    return slideshow;
+  }
+
+  async getUserSlideshows(userId: string): Promise<Slideshow[]> {
+    return await db.select().from(slideshows).where(eq(slideshows.userId, userId)).orderBy(desc(slideshows.createdAt));
+  }
+
+  async createSlideshow(slideshowData: InsertSlideshow): Promise<Slideshow> {
+    const [slideshow] = await db.insert(slideshows).values(slideshowData).returning();
+    return slideshow;
+  }
+
+  async updateSlideshow(id: string, updates: Partial<Slideshow>): Promise<void> {
+    await db.update(slideshows).set({ ...updates, updatedAt: new Date() }).where(eq(slideshows.id, id));
+  }
+
+  async deleteSlideshow(id: string): Promise<void> {
+    await db.delete(slideshows).where(eq(slideshows.id, id));
+  }
+
+  async incrementSlideshowViews(id: string): Promise<void> {
+    await db.update(slideshows).set({ 
+      views: sql`${slideshows.views} + 1`,
+      updatedAt: new Date()
+    }).where(eq(slideshows.id, id));
+  }
+
+  async getSlideshowsByCategory(category: string): Promise<Slideshow[]> {
+    return await db.select().from(slideshows).where(eq(slideshows.category, category)).orderBy(desc(slideshows.createdAt));
+  }
+
+  async getPublicSlideshows(): Promise<Slideshow[]> {
+    return await db.select().from(slideshows).where(eq(slideshows.isPublic, true)).orderBy(desc(slideshows.createdAt));
+  }
+
+  // Slideshow progress operations
+  async getSlideshowProgress(userId: string, slideshowId: string): Promise<SlideshowProgress | undefined> {
+    const [progress] = await db
+      .select()
+      .from(slideshowProgress)
+      .where(and(eq(slideshowProgress.userId, userId), eq(slideshowProgress.slideshowId, slideshowId)));
+    return progress;
+  }
+
+  async getUserSlideshowProgress(userId: string): Promise<SlideshowProgress[]> {
+    return await db.select().from(slideshowProgress).where(eq(slideshowProgress.userId, userId));
+  }
+
+  async createSlideshowProgress(progressData: InsertSlideshowProgress): Promise<SlideshowProgress> {
+    const [progress] = await db.insert(slideshowProgress).values(progressData).returning();
+    return progress;
+  }
+
+  async updateSlideshowProgress(id: string, updates: Partial<SlideshowProgress>): Promise<void> {
+    await db.update(slideshowProgress).set(updates).where(eq(slideshowProgress.id, id));
   }
 }

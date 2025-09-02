@@ -19,6 +19,7 @@ import Checkout from "@/pages/checkout";
 import NftMarketplace from "@/pages/nft-marketplace";
 import ChatRooms from "@/pages/chat-rooms";
 import AiAssistant from "@/pages/ai-assistant";
+import SlideshowGeneratorPage from "@/pages/slideshow-generator";
 import AdminLogin from "@/pages/admin-login";
 import AdminDashboard from "@/pages/admin-dashboard";
 import PrivacyPolicy from "@/pages/privacy-policy";
@@ -52,6 +53,7 @@ function Router() {
         <Route path="/nft-marketplace" component={NftMarketplace} />
         <Route path="/chat-rooms" component={ChatRooms} />
         <Route path="/ai-assistant" component={AiAssistant} />
+        <Route path="/slideshow-generator" component={SlideshowGeneratorPage} />
         <Route path="/admin/login" component={AdminLogin} />
         <Route path="/admin/dashboard" component={AdminDashboard} />
         <Route path="/privacy-policy" component={PrivacyPolicy} />

@@ -4,7 +4,7 @@ import { storage } from "./storage";
 import { setupAuth, isAuthenticated, requiresSubscription } from "./replitAuth";
 import { emailService } from "./emailService";
 import { adminAuth } from "./adminAuth";
-import { insertTradeSchema, insertForumPostSchema } from "@shared/schema";
+import { insertTradeSchema, insertForumPostSchema, insertSlideshowSchema, insertSlideshowProgressSchema } from "@shared/schema";
 import { liveDataService } from "./liveDataService";
 import { 
   apiLimiter, 
@@ -509,6 +509,130 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json(updatedProgress);
     } catch (error) {
       res.status(500).json({ error: "Failed to update progress" });
+    }
+  });
+
+  // Slideshow endpoints
+  app.get("/api/slideshows", async (req: any, res) => {
+    try {
+      let slideshows;
+      const { category, public: isPublic, userId } = req.query;
+      
+      if (userId) {
+        slideshows = await storage.getUserSlideshows(userId);
+      } else if (category) {
+        slideshows = await storage.getSlideshowsByCategory(category);
+      } else if (isPublic === 'true') {
+        slideshows = await storage.getPublicSlideshows();
+      } else {
+        slideshows = await storage.getAllSlideshows();
+      }
+      
+      res.json(slideshows);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch slideshows" });
+    }
+  });
+
+  app.get("/api/slideshows/:id", async (req, res) => {
+    try {
+      const slideshow = await storage.getSlideshow(req.params.id);
+      if (!slideshow) {
+        return res.status(404).json({ error: "Slideshow not found" });
+      }
+      
+      // Increment view count
+      await storage.incrementSlideshowViews(req.params.id);
+      
+      res.json(slideshow);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch slideshow" });
+    }
+  });
+
+  app.post("/api/slideshows", async (req: any, res) => {
+    try {
+      // For demo purposes, use a demo user ID if not authenticated
+      let userId = "demo-user-id";
+      if (req.isAuthenticated && req.isAuthenticated()) {
+        userId = req.user.claims.sub;
+      }
+
+      const slideshowData = insertSlideshowSchema.parse({
+        ...req.body,
+        userId,
+        totalSlides: req.body.slides?.length || 0
+      });
+      
+      const slideshow = await storage.createSlideshow(slideshowData);
+      res.status(201).json(slideshow);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to create slideshow" });
+    }
+  });
+
+  app.put("/api/slideshows/:id", async (req: any, res) => {
+    try {
+      const updates = {
+        ...req.body,
+        totalSlides: req.body.slides?.length || 0
+      };
+      
+      await storage.updateSlideshow(req.params.id, updates);
+      
+      const updatedSlideshow = await storage.getSlideshow(req.params.id);
+      res.json(updatedSlideshow);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to update slideshow" });
+    }
+  });
+
+  app.delete("/api/slideshows/:id", async (req, res) => {
+    try {
+      await storage.deleteSlideshow(req.params.id);
+      res.status(204).send();
+    } catch (error) {
+      res.status(500).json({ error: "Failed to delete slideshow" });
+    }
+  });
+
+  // Slideshow progress endpoints
+  app.get("/api/slideshow-progress/:userId", async (req, res) => {
+    try {
+      const progress = await storage.getUserSlideshowProgress(req.params.userId);
+      res.json(progress);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch slideshow progress" });
+    }
+  });
+
+  app.get("/api/slideshow-progress/:userId/:slideshowId", async (req, res) => {
+    try {
+      const { userId, slideshowId } = req.params;
+      const progress = await storage.getSlideshowProgress(userId, slideshowId);
+      res.json(progress);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch slideshow progress" });
+    }
+  });
+
+  app.post("/api/slideshow-progress", async (req, res) => {
+    try {
+      const progressData = insertSlideshowProgressSchema.parse(req.body);
+      const progress = await storage.createSlideshowProgress(progressData);
+      res.status(201).json(progress);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to create slideshow progress" });
+    }
+  });
+
+  app.put("/api/slideshow-progress/:id", async (req, res) => {
+    try {
+      const updates = req.body;
+      await storage.updateSlideshowProgress(req.params.id, updates);
+      res.status(204).send();
+    } catch (error) {
+      res.status(500).json({ error: "Failed to update slideshow progress" });
     }
   });
 
