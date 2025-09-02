@@ -25,8 +25,8 @@ Block Theory is a comprehensive cryptocurrency trading education platform, envis
 ## Pricing Update (January 30, 2025)
 - **Free Tier**: Limited to 5 lessons (down from 50) to drive conversions
 - **Basic Tier**: $24.99/month - Full 100+ lessons, weekly reports, simulator
-- **Pro Tier**: $59.99/month - Live sessions, AI signals, priority support
-- **Elite Tier**: $149.99/month - 1-on-1 mentoring, institutional data
+- **Pro Tier**: $49.99/month - Live sessions, AI signals, portfolio optimizer, priority support
+- **Elite Tier**: REMOVED - Features not implemented
 
 ## Educational Content Quality Audit (January 26, 2025)
 ✅ **CONTENT INTEGRITY VERIFIED** - Comprehensive audit and enhancement completed

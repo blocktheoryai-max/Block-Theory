@@ -60,7 +60,7 @@ export default function Pricing() {
     },
     {
       name: "Pro",
-      price: "$59.99",
+      price: "$49.99",
       period: "month",
       description: "Everything in Basic plus live sessions and premium tools",
       features: [
@@ -70,31 +70,10 @@ export default function Pricing() {
         "Advanced analytics dashboard",
         "AI-powered portfolio optimizer",
         "Priority support (4hr response)",
-        "Early access to new features",
-        "Exclusive Discord channels"
+        "Early access to new features"
       ],
       limitations: [],
       buttonText: "Upgrade to Pro",
-      buttonVariant: "default" as const,
-      popular: false
-    },
-    {
-      name: "Elite",
-      price: "$149.99",
-      period: "month",
-      description: "Ultimate trading education with AI-powered insights",
-      features: [
-        "Everything in Pro",
-        "1-on-1 mentoring sessions (monthly)",
-        "Automated AI trading strategies",
-        "Advanced portfolio optimization",
-        "Institutional-grade market data",
-        "VIP Discord channels",
-        "Priority support (2hr response)",
-        "All future features included"
-      ],
-      limitations: [],
-      buttonText: "Go Elite",
       buttonVariant: "default" as const,
       popular: false
     }
@@ -260,7 +239,6 @@ export default function Pricing() {
                   <th className="text-center p-4">Free</th>
                   <th className="text-center p-4 bg-primary/10">Basic</th>
                   <th className="text-center p-4">Pro</th>
-                  <th className="text-center p-4">Elite</th>
                 </tr>
               </thead>
               <tbody>
@@ -269,20 +247,17 @@ export default function Pricing() {
                   <td className="text-center p-4 text-muted-foreground">5</td>
                   <td className="text-center p-4 bg-primary/10 font-medium">100+</td>
                   <td className="text-center p-4 font-medium">100+</td>
-                  <td className="text-center p-4 font-medium">100+</td>
                 </tr>
                 <tr className="border-b hover:bg-muted/50">
-                  <td className="p-4 font-medium">Trading Simulator</td>
-                  <td className="text-center p-4 text-muted-foreground">Basic</td>
-                  <td className="text-center p-4 bg-primary/10 font-medium">Advanced</td>
-                  <td className="text-center p-4 font-medium">Advanced</td>
-                  <td className="text-center p-4 font-medium">Advanced</td>
+                  <td className="p-4 font-medium">Trading Simulator Portfolio</td>
+                  <td className="text-center p-4 text-muted-foreground">$1K</td>
+                  <td className="text-center p-4 bg-primary/10 font-medium">$10K</td>
+                  <td className="text-center p-4 font-medium">$10K</td>
                 </tr>
                 <tr className="border-b hover:bg-muted/50">
                   <td className="p-4 font-medium">Weekly Market Reports</td>
                   <td className="text-center p-4 text-muted-foreground">-</td>
                   <td className="text-center p-4 bg-primary/10">✓</td>
-                  <td className="text-center p-4 text-green-600">✓</td>
                   <td className="text-center p-4 text-green-600">✓</td>
                 </tr>
                 <tr className="border-b hover:bg-muted/50">
@@ -290,34 +265,29 @@ export default function Pricing() {
                   <td className="text-center p-4 text-muted-foreground">-</td>
                   <td className="text-center p-4 bg-primary/10 text-muted-foreground">-</td>
                   <td className="text-center p-4 font-medium text-blue-600">3x Weekly</td>
-                  <td className="text-center p-4 font-medium text-purple-600">Unlimited</td>
                 </tr>
                 <tr className="border-b hover:bg-muted/50">
                   <td className="p-4 font-medium">AI Trading Signals</td>
                   <td className="text-center p-4 text-muted-foreground">-</td>
                   <td className="text-center p-4 bg-primary/10 text-muted-foreground">-</td>
                   <td className="text-center p-4 font-medium text-blue-600">Daily</td>
-                  <td className="text-center p-4 font-medium text-purple-600">Real-time</td>
+                </tr>
+                <tr className="border-b hover:bg-muted/50">
+                  <td className="p-4 font-medium">AI Portfolio Optimizer</td>
+                  <td className="text-center p-4 text-muted-foreground">-</td>
+                  <td className="text-center p-4 bg-primary/10 text-muted-foreground">-</td>
+                  <td className="text-center p-4 text-green-600">✓</td>
                 </tr>
                 <tr className="border-b hover:bg-muted/50">
                   <td className="p-4 font-medium">Support Response Time</td>
                   <td className="text-center p-4 text-muted-foreground">-</td>
                   <td className="text-center p-4 bg-primary/10">48 hours</td>
                   <td className="text-center p-4 font-medium">4 hours</td>
-                  <td className="text-center p-4 font-medium text-purple-600">2 hours</td>
-                </tr>
-                <tr className="border-b hover:bg-muted/50">
-                  <td className="p-4 font-medium">1-on-1 Mentoring</td>
-                  <td className="text-center p-4 text-muted-foreground">-</td>
-                  <td className="text-center p-4 bg-primary/10 text-muted-foreground">-</td>
-                  <td className="text-center p-4 text-muted-foreground">-</td>
-                  <td className="text-center p-4 font-medium text-purple-600">Monthly</td>
                 </tr>
                 <tr className="hover:bg-muted/50">
                   <td className="p-4 font-medium">Early Access Features</td>
                   <td className="text-center p-4 text-muted-foreground">-</td>
                   <td className="text-center p-4 bg-primary/10 text-muted-foreground">-</td>
-                  <td className="text-center p-4 text-green-600">✓</td>
                   <td className="text-center p-4 text-green-600">✓</td>
                 </tr>
               </tbody>
