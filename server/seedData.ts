@@ -137,7 +137,7 @@ export async function seedDatabase() {
         learningObjectives: ["Define cryptocurrency", "Understand digital currency benefits", "Identify use cases"],
         isLocked: false,
         isPremium: false,
-        videoUrl: "https://www.youtube.com/embed/VYWc9dFqROI",
+        videoUrl: "https://www.youtube.com/embed/EH6vE97qIP4",
         hasVideo: true,
         hasQuiz: true,
         hasSimulation: false,
@@ -359,7 +359,7 @@ export async function seedDatabase() {
         learningObjectives: ["Compare exchange types", "Select appropriate exchanges", "Implement security practices"],
         isLocked: false,
         isPremium: false,
-        videoUrl: "https://www.youtube.com/embed/bCb_7x2-W7U",
+        videoUrl: "https://www.youtube.com/embed/KHBi3n0hUSU",
         tags: ["exchanges", "trading", "security"]
       },
       
@@ -405,7 +405,7 @@ export async function seedDatabase() {
         learningObjectives: ["Read candlestick charts", "Analyze volume patterns", "Identify support and resistance"],
         isLocked: false,
         isPremium: false,
-        videoUrl: "https://www.youtube.com/embed/7a_tMi8IRzQ",
+        videoUrl: "https://www.youtube.com/embed/w7HDA8gUbpQ",
         hasQuiz: true,
         hasSimulation: true,
         tags: ["charts", "technical-analysis", "trading"]
@@ -446,7 +446,7 @@ export async function seedDatabase() {
         learningObjectives: ["Use RSI indicator effectively", "Interpret MACD signals", "Combine multiple indicators"],
         isLocked: false,
         isPremium: false,
-        videoUrl: "https://www.youtube.com/embed/MfAhyV6RdoI",
+        videoUrl: "https://www.youtube.com/embed/zGDTt9Q3vyM",
         tags: ["indicators", "rsi", "macd"]
       },
       {
@@ -478,7 +478,7 @@ export async function seedDatabase() {
         learningObjectives: ["Calculate position sizes", "Set appropriate stop losses", "Manage portfolio risk"],
         isLocked: false,
         isPremium: false,
-        videoUrl: "https://www.youtube.com/embed/XM0B6O-XBdI",
+        videoUrl: "https://www.youtube.com/embed/GLVrOlHLJ1U",
         tags: ["risk-management", "position-sizing", "stops"]
       },
       {
@@ -535,7 +535,7 @@ export async function seedDatabase() {
         learningObjectives: ["Identify complex patterns", "Time entries and exits", "Combine with volume analysis"],
         isLocked: false,
         isPremium: true,
-        videoUrl: "https://www.youtube.com/embed/bnXNi7Y3xjo",
+        videoUrl: "https://www.youtube.com/embed/sMnBl0g3Ev4",
         tags: ["patterns", "advanced", "technical-analysis"]
       },
       {
@@ -858,7 +858,7 @@ export async function seedDatabase() {
         learningObjectives: ["Understand halving mechanics", "Analyze historical impacts", "Predict future effects"],
         isLocked: false,
         isPremium: false,
-        videoUrl: "https://www.youtube.com/embed/lnGdb4-qAuc",
+        videoUrl: "https://www.youtube.com/embed/_eGNSuTBc60",
         tags: ["bitcoin", "halving", "scarcity"]
       },
       {
@@ -882,7 +882,7 @@ export async function seedDatabase() {
         learningObjectives: ["Identify taxable events", "Keep proper records", "Understand reporting requirements"],
         isLocked: false,
         isPremium: false,
-        videoUrl: "https://www.youtube.com/embed/9ooN1eN2RjY",
+        videoUrl: "https://www.youtube.com/embed/ojcOUtUwIe4",
         tags: ["taxation", "compliance", "reporting"]
       },
       {
@@ -1024,7 +1024,7 @@ export async function seedDatabase() {
         hasVideo: true,
         hasQuiz: true,
         hasSimulation: true,
-        videoUrl: "https://www.youtube.com/embed/WZ1S5lPqOSA",
+        videoUrl: "https://www.youtube.com/embed/l0vD_FBWk0g",
         tags: ["portfolio", "diversification", "risk-management", "institutional", "BlackRock"]
       },
       
@@ -1154,7 +1154,7 @@ export async function seedDatabase() {
         learningObjectives: ["Execute advanced farming strategies", "Manage impermanent loss", "Optimize gas costs"],
         isLocked: false,
         isPremium: true,
-        videoUrl: "https://www.youtube.com/embed/ClnnLI1SClA",
+        videoUrl: "https://www.youtube.com/embed/zGDTt9Q3vyM",
         tags: ["yield-farming", "defi", "liquidity"]
       },
       {
@@ -1178,7 +1178,7 @@ export async function seedDatabase() {
         learningObjectives: ["Trade derivatives safely", "Manage leverage", "Hedge positions effectively"],
         isLocked: false,
         isPremium: true,
-        videoUrl: "https://www.youtube.com/embed/YhJNsLQw4NI",
+        videoUrl: "https://www.youtube.com/embed/iWpQpPbo7rM",
         tags: ["derivatives", "leverage", "futures"]
       },
       {
@@ -1202,7 +1202,7 @@ export async function seedDatabase() {
         learningObjectives: ["Build trading algorithms", "Backtest strategies", "Implement automation"],
         isLocked: false,
         isPremium: true,
-        videoUrl: "https://www.youtube.com/embed/f6hrlH7Qs4k",
+        videoUrl: "https://www.youtube.com/embed/vPJ8oQ99r9c",
         tags: ["algorithmic", "automation", "bots"]
       },
       {
@@ -1226,7 +1226,7 @@ export async function seedDatabase() {
         learningObjectives: ["Evaluate token economics", "Predict price impacts", "Assess long-term sustainability"],
         isLocked: false,
         isPremium: true,
-        videoUrl: "https://www.youtube.com/embed/YhJNsLQw4NI",
+        videoUrl: "https://www.youtube.com/embed/7EXcHqLg7BI",
         tags: ["tokenomics", "economics", "valuation"]
       },
       
@@ -1300,7 +1300,7 @@ export async function seedDatabase() {
         learningObjectives: ["Identify MEV opportunities", "Execute arbitrage trades", "Understand flashloan strategies"],
         isLocked: false,
         isPremium: true,
-        videoUrl: "https://www.youtube.com/embed/ClnnLI1SClA",
+        videoUrl: "https://www.youtube.com/embed/ipwxYa-F1uY",
         tags: ["mev", "arbitrage", "flashloans"]
       },
       {
@@ -1788,7 +1788,7 @@ export async function seedDatabase() {
         learningObjectives: ["Conduct stress tests", "Model extreme scenarios", "Build resilient portfolios"],
         isLocked: false,
         isPremium: true,
-        videoUrl: "https://www.youtube.com/embed/ClnnLI1SClA",
+        videoUrl: "https://www.youtube.com/embed/VlTjyNdKJpI",
         tags: ["stress-testing", "risk", "simulation"]
       },
       {
@@ -1812,7 +1812,7 @@ export async function seedDatabase() {
         learningObjectives: ["Build trading teams", "Raise capital", "Scale operations professionally"],
         isLocked: false,
         isPremium: true,
-        videoUrl: "https://www.youtube.com/embed/f6hrlH7Qs4k",
+        videoUrl: "https://www.youtube.com/embed/uNqMBBbb6UI",
         tags: ["business", "scaling", "entrepreneurship"]
       }
       ]).returning();
@@ -1873,7 +1873,7 @@ export async function seedDatabase() {
         learningObjectives: ["Use bridges safely", "Understand bridge risks", "Navigate multi-chain DeFi"],
         isLocked: false,
         isPremium: true,
-        videoUrl: "https://www.youtube.com/embed/ZQJwnfFBM8M",
+        videoUrl: "https://www.youtube.com/embed/k9HYC0EJU6E",
         tags: ["bridges", "interoperability", "multi-chain"]
       },
       {
@@ -1894,11 +1894,11 @@ export async function seedDatabase() {
         format: "video",
         order: 53,
         requiredTier: "pro",
-        prerequisites: ["DeFi Fundamentals", "Liquidity Pools"],
+        prerequisites: ["DeFi Fundamentals", "Yield Farming Strategies"],
         learningObjectives: ["Optimize yield farming", "Manage impermanent loss", "Evaluate farm risks"],
         isLocked: false,
         isPremium: true,
-        videoUrl: "https://www.youtube.com/embed/ClnnLI1SClA",
+        videoUrl: "https://www.youtube.com/embed/l44z35vabvA",
         tags: ["yield-farming", "defi", "optimization"]
       },
       {
@@ -1944,11 +1944,11 @@ export async function seedDatabase() {
         format: "video",
         order: 55,
         requiredTier: "elite",
-        prerequisites: ["Yield Farming Strategies", "MEV"],
+        prerequisites: ["Yield Farming Strategies", "MEV and Front-Running"],
         learningObjectives: ["Execute flash loan strategies", "Identify opportunities", "Manage flash loan risks"],
         isLocked: false,
         isPremium: true,
-        videoUrl: "https://www.youtube.com/embed/mCJUhnXQ426",
+        videoUrl: "https://www.youtube.com/embed/ObGYNQLG3us",
         tags: ["flash-loans", "arbitrage", "advanced-defi"]
       },
       {
@@ -1994,11 +1994,11 @@ export async function seedDatabase() {
         format: "video",
         order: 57,
         requiredTier: "basic",
-        prerequisites: ["NFT Market Analysis", "Decentralized Autonomous Organizations"],
+        prerequisites: ["NFT Market Analysis", "Decentralized Autonomous Organizations (DAOs)"],
         learningObjectives: ["Evaluate GameFi projects", "Understand P2E economics", "Participate in gaming DAOs"],
         isLocked: false,
         isPremium: false,
-        videoUrl: "https://www.youtube.com/embed/0oJ-DL8_6j0",
+        videoUrl: "https://www.youtube.com/embed/_Ycy0Dy-B1c",
         tags: ["gamefi", "play-to-earn", "metaverse"]
       },
       {
@@ -2023,7 +2023,7 @@ export async function seedDatabase() {
         learningObjectives: ["Analyze multiple timeframes", "Align trend directions", "Time entries precisely"],
         isLocked: false,
         isPremium: true,
-        videoUrl: "https://www.youtube.com/embed/FfPq_NQ74WE",
+        videoUrl: "https://www.youtube.com/embed/lPD9fx8fK1k",
         tags: ["timeframes", "technical-analysis", "timing"]
       },
       {
@@ -2048,7 +2048,7 @@ export async function seedDatabase() {
         learningObjectives: ["Trade crypto options", "Use derivatives for hedging", "Manage leverage effectively"],
         isLocked: false,
         isPremium: true,
-        videoUrl: "https://www.youtube.com/embed/SD7sw0bf22g",
+        videoUrl: "https://www.youtube.com/embed/DsSzQfejwMk",
         tags: ["options", "derivatives", "leverage"]
       },
       {
@@ -2069,11 +2069,11 @@ export async function seedDatabase() {
         format: "video",
         order: 60,
         requiredTier: "basic",
-        prerequisites: ["Portfolio Management", "DeFi Fundamentals"],
+        prerequisites: ["Portfolio Diversification", "DeFi Fundamentals"],
         learningObjectives: ["Understand tax obligations", "Maintain proper records", "Plan tax-efficient strategies"],
         isLocked: false,
         isPremium: false,
-        videoUrl: "https://www.youtube.com/embed/PfN6_FqmBzM",
+        videoUrl: "https://www.youtube.com/embed/CJCKTixMb70",
         tags: ["taxation", "compliance", "records"]
       },
       {
@@ -2094,11 +2094,11 @@ export async function seedDatabase() {
         format: "video",
         order: 61,
         requiredTier: "pro",
-        prerequisites: ["Regulatory Landscape", "Monetary Policy and Crypto"],
+        prerequisites: ["Regulatory Landscape", "Economics of Cryptocurrency"],
         learningObjectives: ["Understand CBDC technology", "Analyze policy implications", "Assess market impact"],
         isLocked: false,
         isPremium: true,
-        videoUrl: "https://www.youtube.com/embed/6GMh_BwaDTs",
+        videoUrl: "https://www.youtube.com/embed/W06Le8fw0vU",
         tags: ["cbdc", "regulation", "monetary-policy"]
       },
       {
@@ -2119,11 +2119,11 @@ export async function seedDatabase() {
         format: "video",
         order: 62,
         requiredTier: "basic",
-        prerequisites: ["Blockchain Fundamentals", "Proof of Stake vs Proof of Work"],
+        prerequisites: ["Blockchain Technology Explained", "Staking and Proof of Stake"],
         learningObjectives: ["Assess environmental impact", "Identify green projects", "Understand sustainability trends"],
         isLocked: false,
         isPremium: false,
-        videoUrl: "https://www.youtube.com/embed/k6xLKjH1L-o",
+        videoUrl: "https://www.youtube.com/embed/uNqMBBbb6UI",
         tags: ["environment", "sustainability", "green-crypto"]
       },
       {
@@ -2173,7 +2173,7 @@ export async function seedDatabase() {
         learningObjectives: ["Explore career options", "Understand skill requirements", "Plan career development"],
         isLocked: false,
         isPremium: false,
-        videoUrl: "https://www.youtube.com/embed/BgFXqVpGDQE",
+        videoUrl: "https://www.youtube.com/embed/SSo_EIwHSd4",
         tags: ["career", "opportunities", "professional"]
       },
       {
@@ -2194,11 +2194,11 @@ export async function seedDatabase() {
         format: "video",
         order: 65,
         requiredTier: "basic",
-        prerequisites: ["Portfolio Management", "Risk Management Strategies"],
+        prerequisites: ["Portfolio Diversification", "Risk Management Strategies"],
         learningObjectives: ["Design portfolio allocation", "Implement rebalancing", "Manage long-term investments"],
         isLocked: false,
         isPremium: false,
-        videoUrl: "https://www.youtube.com/embed/d3mU79hYxQw",
+        videoUrl: "https://www.youtube.com/embed/DsSzQfejwMk",
         tags: ["portfolio", "allocation", "investment"]
       },
       {
@@ -2219,11 +2219,11 @@ export async function seedDatabase() {
         format: "video",
         order: 66,
         requiredTier: "elite",
-        prerequisites: ["Security Best Practices", "Smart Contract Security"],
+        prerequisites: ["Wallet Security", "Smart Contract Fundamentals"],
         learningObjectives: ["Implement multi-sig wallets", "Use hardware security", "Plan recovery strategies"],
         isLocked: false,
         isPremium: true,
-        videoUrl: "https://www.youtube.com/embed/TDGpxkr3z5U",
+        videoUrl: "https://www.youtube.com/embed/-cZPoqnRZq4",
         tags: ["security", "wallets", "multisig"]
       },
       {
@@ -2364,14 +2364,14 @@ export async function seedDatabase() {
         format: "video",
         order: 67,
         requiredTier: "elite",
-        prerequisites: ["Smart Contract Security", "Flash Loans and Advanced DeFi"],
+        prerequisites: ["Smart Contract Fundamentals", "Flash Loans and Advanced DeFi"],
         learningObjectives: ["Execute professional smart contract audits", "Identify critical DeFi vulnerabilities", "Perform economic security assessments", "Implement comprehensive audit methodologies"],
         isLocked: false,
         isPremium: true,
         hasVideo: true,
         hasQuiz: true,
         hasSimulation: true,
-        videoUrl: "https://www.youtube.com/embed/LLiJK_VeAvQ",
+        videoUrl: "https://www.youtube.com/embed/GLVrOlHLJ1U",
         tags: ["security", "auditing", "defi", "smart-contracts", "professional"]
       },
       {
@@ -2392,11 +2392,11 @@ export async function seedDatabase() {
         format: "video",
         order: 68,
         requiredTier: "elite",
-        prerequisites: ["Decentralized Autonomous Organizations", "Behavioral Finance in Crypto"],
+        prerequisites: ["Decentralized Autonomous Organizations (DAOs)", "Behavioral Finance in Crypto"],
         learningObjectives: ["Design token economies", "Align incentives", "Evaluate tokenomics"],
         isLocked: false,
         isPremium: true,
-        videoUrl: "https://www.youtube.com/embed/SFt7KxvLc3A",
+        videoUrl: "https://www.youtube.com/embed/ObGYNQLG3us",
         tags: ["tokenomics", "design", "economics"]
       },
       {
@@ -2417,11 +2417,11 @@ export async function seedDatabase() {
         format: "video",
         order: 69,
         requiredTier: "pro",
-        prerequisites: ["DeFi Innovation", "Regulatory Landscape"],
+        prerequisites: ["DeFi Innovation and Experimentation", "Regulatory Landscape"],
         learningObjectives: ["Understand RWA tokenization", "Evaluate tokenized assets", "Assess regulatory implications"],
         isLocked: false,
         isPremium: true,
-        videoUrl: "https://www.youtube.com/embed/rj8Vp2MKB4M",
+        videoUrl: "https://www.youtube.com/embed/sMnBl0g3Ev4",
         tags: ["rwa", "tokenization", "traditional-assets"]
       },
       {
@@ -2442,11 +2442,11 @@ export async function seedDatabase() {
         format: "video",
         order: 70,
         requiredTier: "elite",
-        prerequisites: ["Algorithmic Trading Psychology", "Market Microstructure"],
+        prerequisites: ["Algorithmic Trading Basics", "Advanced Chart Patterns"],
         learningObjectives: ["Apply AI to trading", "Build predictive models", "Integrate ML systems"],
         isLocked: false,
         isPremium: true,
-        videoUrl: "https://www.youtube.com/embed/LlS7nJ_fBtY",
+        videoUrl: "https://www.youtube.com/embed/vPJ8oQ99r9c",
         tags: ["ai", "machine-learning", "prediction"]
       },
       {
@@ -2471,7 +2471,7 @@ export async function seedDatabase() {
         learningObjectives: ["Structure investment fund", "Raise institutional capital", "Operate fund professionally"],
         isLocked: false,
         isPremium: true,
-        videoUrl: "https://www.youtube.com/embed/f6hrlH7Qs4k",
+        videoUrl: "https://www.youtube.com/embed/-cZPoqnRZq4",
         tags: ["fund", "institutional", "operations"]
       },
       {
@@ -2496,7 +2496,7 @@ export async function seedDatabase() {
         learningObjectives: ["Navigate global regulations", "Ensure compliance", "Plan international operations"],
         isLocked: false,
         isPremium: true,
-        videoUrl: "https://www.youtube.com/embed/1MYquyRSiPg",
+        videoUrl: "https://www.youtube.com/embed/iWpQpPbo7rM",
         tags: ["regulation", "global", "compliance"]
       },
       {
@@ -2521,7 +2521,7 @@ export async function seedDatabase() {
         learningObjectives: ["Provide market liquidity", "Manage trading inventory", "Optimize market making"],
         isLocked: false,
         isPremium: true,
-        videoUrl: "https://www.youtube.com/embed/8tLRzr7fV_Q",
+        videoUrl: "https://www.youtube.com/embed/7EXcHqLg7BI",
         tags: ["market-making", "liquidity", "trading"]
       },
       {
@@ -2542,11 +2542,11 @@ export async function seedDatabase() {
         format: "video",
         order: 74,
         requiredTier: "elite",
-        prerequisites: ["Building a Crypto Fund", "Crypto Research and Analysis"],
+        prerequisites: ["Building a Crypto Fund", "DeFi Security Auditing"],
         learningObjectives: ["Evaluate crypto startups", "Structure VC investments", "Add value to portfolio"],
         isLocked: false,
         isPremium: true,
-        videoUrl: "https://www.youtube.com/embed/Uf7r8S-bNpc",
+        videoUrl: "https://www.youtube.com/embed/_Ycy0Dy-B1c",
         tags: ["venture-capital", "investment", "startups"]
       },
       {
@@ -2567,7 +2567,7 @@ export async function seedDatabase() {
         format: "video",
         order: 75,
         requiredTier: "pro",
-        prerequisites: ["Proof of Stake vs Proof of Work", "Environmental Impact and Green Crypto"],
+        prerequisites: ["Staking and Proof of Stake", "Environmental Impact and Green Crypto"],
         learningObjectives: ["Set up mining operations", "Optimize staking returns", "Understand consensus mechanisms"],
         isLocked: false,
         isPremium: true,
@@ -2632,7 +2632,7 @@ export async function seedDatabase() {
         learningObjectives: ["Optimize tax liability", "Plan tax-efficient strategies", "Ensure legal compliance"],
         isLocked: false,
         isPremium: true,
-        videoUrl: "https://www.youtube.com/embed/PfN6_FqmBzM",
+        videoUrl: "https://www.youtube.com/embed/ojcOUtUwIe4",
         tags: ["tax-optimization", "planning", "compliance"]
       },
       {
@@ -2657,7 +2657,7 @@ export async function seedDatabase() {
         learningObjectives: ["Understand DeSci ecosystem", "Evaluate research projects", "Participate in scientific DAOs"],
         isLocked: false,
         isPremium: false,
-        videoUrl: "https://www.youtube.com/embed/y5kh_JgCRgE",
+        videoUrl: "https://www.youtube.com/embed/w7HDA8gUbpQ",
         tags: ["desci", "research", "science"]
       },
       {
@@ -2728,7 +2728,7 @@ export async function seedDatabase() {
         format: "video",
         order: 81,
         requiredTier: "elite",
-        prerequisites: ["Monetary Policy and Crypto", "Global Crypto Regulation"],
+        prerequisites: ["Economics of Cryptocurrency", "Global Crypto Regulation"],
         learningObjectives: ["Analyze macro trends", "Position for macro events", "Understand global dynamics"],
         isLocked: false,
         isPremium: true,
@@ -2778,11 +2778,11 @@ export async function seedDatabase() {
         format: "video",
         order: 83,
         requiredTier: "elite",
-        prerequisites: ["DeFi Innovation", "Blockchain Interoperability"],
+        prerequisites: ["DeFi Innovation and Experimentation", "Blockchain Interoperability"],
         learningObjectives: ["Envision future finance", "Identify emerging trends", "Position for the future"],
         isLocked: false,
         isPremium: true,
-        videoUrl: "https://www.youtube.com/embed/YIzKo5GfWME",
+        videoUrl: "https://www.youtube.com/embed/X_QKZzd68ro",
         tags: ["future", "innovation", "vision"]
       },
       {
@@ -2832,7 +2832,7 @@ export async function seedDatabase() {
         learningObjectives: ["Integrate all knowledge", "Develop personal strategy", "Master continuous learning"],
         isLocked: false,
         isPremium: true,
-        videoUrl: "https://www.youtube.com/embed/YIzKo5GfWME",
+        videoUrl: "https://www.youtube.com/embed/rOVz7dOrGyY",
         tags: ["mastery", "integration", "synthesis"]
       },
       {
@@ -2853,7 +2853,7 @@ export async function seedDatabase() {
         format: "video",
         order: 86,
         requiredTier: "elite",
-        prerequisites: ["Crypto Community and Networking", "Crypto Mastery Integration"],
+        prerequisites: ["Decentralized Autonomous Organizations (DAOs)", "Crypto Mastery Integration"],
         learningObjectives: ["Teach effectively", "Mentor newcomers", "Build learning communities"],
         isLocked: false,
         isPremium: true,
@@ -2907,7 +2907,7 @@ export async function seedDatabase() {
         learningObjectives: ["Lead industry transformation", "Manage organizational change", "Bridge traditional and crypto"],
         isLocked: false,
         isPremium: true,
-        videoUrl: "https://www.youtube.com/embed/Uf7r8S-bNpc",
+        videoUrl: "https://www.youtube.com/embed/lPD9fx8fK1k",
         tags: ["transformation", "change-management", "adoption"]
       },
       {
@@ -2928,7 +2928,7 @@ export async function seedDatabase() {
         format: "video",
         order: 89,
         requiredTier: "elite",
-        prerequisites: ["Security Best Practices", "Advanced Cryptography"],
+        prerequisites: ["Wallet Security", "Zero-Knowledge Proofs"],
         learningObjectives: ["Understand quantum threats", "Evaluate timeline risks", "Prepare for quantum transition"],
         isLocked: false,
         isPremium: true,
@@ -3003,7 +3003,7 @@ export async function seedDatabase() {
         format: "video",
         order: 92,
         requiredTier: "elite",
-        prerequisites: ["Blockchain Fundamentals", "Privacy Coins and Anonymity"],
+        prerequisites: ["Blockchain Technology Explained", "Privacy Coins Analysis"],
         learningObjectives: ["Trace crypto transactions", "Conduct blockchain analysis", "Investigation techniques"],
         isLocked: false,
         isPremium: true,
@@ -3028,7 +3028,7 @@ export async function seedDatabase() {
         format: "video",
         order: 93,
         requiredTier: "pro",
-        prerequisites: ["Trading Psychology", "Behavioral Finance in Crypto"],
+        prerequisites: ["Psychology of Trading", "Behavioral Finance in Crypto"],
         learningObjectives: ["Develop systematic mindset", "Manage algorithm anxiety", "Maintain trading discipline"],
         isLocked: false,
         isPremium: true,
@@ -3078,7 +3078,7 @@ export async function seedDatabase() {
         format: "video",
         order: 95,
         requiredTier: "basic",
-        prerequisites: ["Fundamental Analysis", "Cryptocurrency Taxation"],
+        prerequisites: ["Technical Analysis Fundamentals", "Cryptocurrency Taxation"],
         learningObjectives: ["Research crypto projects", "Evaluate investment potential", "Write investment thesis"],
         isLocked: false,
         isPremium: false,
@@ -3128,7 +3128,7 @@ export async function seedDatabase() {
         format: "video",
         order: 97,
         requiredTier: "pro",
-        prerequisites: ["Risk Management Strategies", "Institutional Crypto"],
+        prerequisites: ["Risk Management Strategies", "Institutional Crypto Adoption"],
         learningObjectives: ["Evaluate insurance options", "Transfer crypto risks", "Assess coverage needs"],
         isLocked: false,
         isPremium: true,
@@ -3157,7 +3157,7 @@ export async function seedDatabase() {
         learningObjectives: ["Understand market mechanics", "Optimize order execution", "Analyze liquidity patterns"],
         isLocked: false,
         isPremium: true,
-        videoUrl: "https://www.youtube.com/embed/8tLRzr7fV_Q",
+        videoUrl: "https://www.youtube.com/embed/W06Le8fw0vU",
         tags: ["microstructure", "liquidity", "orderbook"]
       },
       {
@@ -3182,7 +3182,7 @@ export async function seedDatabase() {
         learningObjectives: ["Trade exotic derivatives", "Manage complex positions", "Arbitrage market inefficiencies"],
         isLocked: false,
         isPremium: true,
-        videoUrl: "https://www.youtube.com/embed/SD7sw0bf22g",
+        videoUrl: "https://www.youtube.com/embed/_eGNSuTBc60",
         tags: ["derivatives", "options", "volatility"]
       },
       {
@@ -3207,7 +3207,7 @@ export async function seedDatabase() {
         learningObjectives: ["Demonstrate complete mastery", "Synthesize all knowledge", "Plan future development"],
         isLocked: false,
         isPremium: true,
-        videoUrl: "https://www.youtube.com/embed/YIzKo5GfWME",
+        videoUrl: "https://www.youtube.com/embed/NNQLJcJEzv0",
         tags: ["capstone", "mastery", "synthesis"]
       }
       ]).returning();
