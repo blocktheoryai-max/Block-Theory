@@ -35,6 +35,7 @@ import { Link } from "wouter";
 import Navigation from "@/components/Navigation";
 import { SEOHead, SEO_PRESETS } from "@/components/SEOHead";
 import { AiLearningPath } from "@/components/ai-learning-path";
+import { CompetitiveLessonView } from "@/components/CompetitiveLessonView";
 
 interface Lesson {
   id: string;
@@ -159,6 +160,7 @@ export default function Learn() {
   if (selectedLesson) {
     return (
       <>
+        <SEOHead {...SEO_PRESETS.learn} canonical="/learn" />
         <Navigation />
         <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800 text-white">
           <div className="container mx-auto px-4 py-8">
@@ -171,163 +173,13 @@ export default function Learn() {
               Back to Lessons
             </Button>
 
-            <Card className="bg-slate-800/50 border-slate-700 backdrop-blur-sm">
-              <CardHeader>
-                <div className="flex items-start justify-between">
-                  <div>
-                    <CardTitle className="text-2xl text-white mb-2">{selectedLesson.title}</CardTitle>
-                    <CardDescription className="text-gray-300 text-lg">
-                      {selectedLesson.description}
-                    </CardDescription>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <Badge className={getLevelColor(selectedLesson.level)}>
-                      {selectedLesson.level}
-                    </Badge>
-                    <Badge variant="outline" className="text-blue-400 border-blue-400">
-                      {selectedLesson.duration} min
-                    </Badge>
-                  </div>
-                </div>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                {/* Learning Objectives */}
-                <div>
-                  <h3 className="text-lg font-semibold text-white mb-3 flex items-center">
-                    <Target className="w-5 h-5 mr-2 text-blue-400" />
-                    Learning Objectives
-                  </h3>
-                  <ul className="space-y-2">
-                    {(selectedLesson.learningObjectives || []).map((objective, index) => (
-                      <li key={index} className="flex items-start text-gray-300">
-                        <CheckCircle className="w-4 h-4 mr-2 mt-1 text-green-400 flex-shrink-0" />
-                        {objective}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                {/* Video Player */}
-                <div className="mb-8">
-                  <div className="bg-slate-800/50 rounded-lg p-6 border border-slate-600">
-                    {selectedLesson.videoUrl ? (
-                      <div className="aspect-video bg-slate-900 rounded-lg overflow-hidden">
-                        <iframe
-                          src={selectedLesson.videoUrl}
-                          title={selectedLesson.title}
-                          className="w-full h-full"
-                          frameBorder="0"
-                          allowFullScreen
-                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        />
-                      </div>
-                    ) : (
-                      <div className="aspect-video bg-slate-900 rounded-lg flex items-center justify-center relative overflow-hidden">
-                        {/* Video placeholder with play button */}
-                        <div className="absolute inset-0 bg-gradient-to-br from-blue-900/50 to-purple-900/50"></div>
-                        <div className="relative z-10 text-center">
-                          <div className="w-20 h-20 bg-white/90 rounded-full flex items-center justify-center mb-4 mx-auto hover:bg-white transition-colors cursor-pointer">
-                            <Play className="w-8 h-8 text-slate-900 ml-1" />
-                          </div>
-                          <h3 className="text-xl font-semibold text-white mb-2">{selectedLesson.title}</h3>
-                          <p className="text-gray-300 text-sm">
-                            {selectedLesson.duration} minute video lesson
-                          </p>
-                          <div className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg inline-block text-sm">
-                            Coming Soon - Video Content
-                          </div>
-                        </div>
-                        
-                        {/* Video controls overlay */}
-                        <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between text-white text-sm">
-                          <div className="flex items-center space-x-2">
-                            <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
-                            <span>HD Quality</span>
-                          </div>
-                          <div className="flex items-center space-x-2">
-                            <span>0:00 / {selectedLesson.duration}:00</span>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </div>
-
-                {/* Lesson Content */}
-                <div className="prose prose-invert max-w-none">
-                  <div className="bg-slate-700/30 rounded-lg p-6 border border-slate-600">
-                    <h3 className="text-lg font-semibold text-white mb-4 flex items-center">
-                      <BookOpen className="w-5 h-5 mr-2 text-blue-400" />
-                      Lesson Notes & Resources
-                    </h3>
-                    <div 
-                      className="text-gray-200 leading-relaxed lesson-content"
-                      dangerouslySetInnerHTML={{ __html: selectedLesson.content }}
-                    />
-                  </div>
-                </div>
-
-                {/* Interactive Elements */}
-                {selectedLesson.hasQuiz && (
-                  <div className="mt-8">
-                    <h3 className="text-lg font-semibold text-white mb-4 flex items-center">
-                      <Brain className="w-5 h-5 mr-2 text-purple-400" />
-                      Interactive Quiz
-                    </h3>
-                    <div className="bg-slate-700/30 rounded-lg p-6 border border-slate-600">
-                      <div className="flex items-center justify-center py-8">
-                        <div className="text-center">
-                          <Brain className="w-12 h-12 text-purple-400 mx-auto mb-4" />
-                          <p className="text-gray-300 mb-4">Test your understanding with interactive questions</p>
-                          <Button className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700">
-                            Start Quiz
-                          </Button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                {selectedLesson.hasSimulation && (
-                  <div className="mt-8">
-                    <h3 className="text-lg font-semibold text-white mb-4 flex items-center">
-                      <Zap className="w-5 h-5 mr-2 text-yellow-400" />
-                      Hands-On Simulation
-                    </h3>
-                    <div className="bg-slate-700/30 rounded-lg p-6 border border-slate-600">
-                      <div className="flex items-center justify-center py-8">
-                        <div className="text-center">
-                          <Zap className="w-12 h-12 text-yellow-400 mx-auto mb-4" />
-                          <p className="text-gray-300 mb-4">Practice concepts with real-world scenarios</p>
-                          <Button className="bg-gradient-to-r from-yellow-600 to-orange-600 hover:from-yellow-700 hover:to-orange-700">
-                            Launch Simulation
-                          </Button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                {/* Action Buttons */}
-                <div className="flex items-center justify-between pt-6 border-t border-slate-700">
-                  <div className="flex items-center space-x-2">
-                    {(selectedLesson.tags || []).map((tag) => (
-                      <Badge key={tag} variant="outline" className="text-xs">
-                        {tag}
-                      </Badge>
-                    ))}
-                  </div>
-                  <Button 
-                    onClick={() => markComplete.mutate(selectedLesson.id)}
-                    disabled={markComplete.isPending}
-                    className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
-                  >
-                    <CheckCircle className="w-4 h-4 mr-2" />
-                    Mark Complete
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
+            <CompetitiveLessonView 
+              lessonId={selectedLesson.id}
+              lessonTitle={selectedLesson.title}
+              category={selectedLesson.category}
+              difficulty={selectedLesson.level}
+              onClose={() => setSelectedLesson(null)}
+            />
           </div>
         </div>
       </>
@@ -338,7 +190,6 @@ export default function Learn() {
     <>
       <SEOHead {...SEO_PRESETS.learn} canonical="/learn" />
       <Navigation />
-      <EducationalDisclaimer />
       <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800 text-white">
         <div className="container mx-auto px-4 py-8">
           {/* Header with animated elements */}
