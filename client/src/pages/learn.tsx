@@ -33,6 +33,7 @@ import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
 import { Link } from "wouter";
 import Navigation from "@/components/Navigation";
+import MobileBottomNav from "@/components/MobileBottomNav";
 import { SEOHead, SEO_PRESETS } from "@/components/SEOHead";
 import { AiLearningPath } from "@/components/ai-learning-path";
 import { CompetitiveLessonView } from "@/components/CompetitiveLessonView";
@@ -189,7 +190,9 @@ export default function Learn() {
   return (
     <>
       <SEOHead {...SEO_PRESETS.learn} canonical="/learn" />
-      <Navigation />
+      <div className="hidden md:block">
+        <Navigation />
+      </div>
       <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800 text-white">
         <div className="container mx-auto px-4 py-8">
           {/* Header with animated elements */}
@@ -386,6 +389,7 @@ export default function Learn() {
           )}
         </div>
       </div>
+      <MobileBottomNav />
     </>
   );
 }

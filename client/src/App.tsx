@@ -28,8 +28,10 @@ import CookiePolicy from "@/pages/cookie-policy";
 import NotFound from "@/pages/not-found";
 import Rewards from "@/pages/Rewards";
 import Competitions from "@/pages/Competitions";
+import CopyTrading from "@/pages/copy-trading";
 import { useAuth } from "@/hooks/useAuth";
 import Navigation from "@/components/Navigation";
+import MobileBottomNav from "@/components/MobileBottomNav";
 import LaunchEnhancementBanner from "@/components/launch-enhancement-banner";
 
 function Router() {
@@ -38,7 +40,9 @@ function Router() {
   return (
     <div className="min-h-screen bg-background">
       <LaunchEnhancementBanner />
-      <Navigation />
+      <div className="hidden md:block">
+        <Navigation />
+      </div>
       <Switch>
         <Route path="/" component={Dashboard} />
         <Route path="/home" component={Home} />
@@ -58,6 +62,8 @@ function Router() {
         <Route path="/slideshow-generator" component={SlideshowGeneratorPage} />
         <Route path="/rewards" component={Rewards} />
         <Route path="/competitions" component={Competitions} />
+        <Route path="/copy-trading" component={CopyTrading} />
+        <Route path="/portfolio" component={Simulate} />
         <Route path="/admin/login" component={AdminLogin} />
         <Route path="/admin/dashboard" component={AdminDashboard} />
         <Route path="/privacy-policy" component={PrivacyPolicy} />
@@ -65,6 +71,7 @@ function Router() {
         <Route path="/cookie-policy" component={CookiePolicy} />
         <Route component={NotFound} />
       </Switch>
+      <MobileBottomNav />
     </div>
   );
 }

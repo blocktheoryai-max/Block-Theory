@@ -40,6 +40,25 @@ export default function Pricing() {
       popular: false
     },
     {
+      name: "Starter",
+      price: "$9.99",
+      period: "month",
+      description: "Perfect for beginners exploring crypto education",
+      features: [
+        "20 foundation lessons",
+        "Basic trading simulator ($5K portfolio)",
+        "Community forum access",
+        "Weekly market updates",
+        "Basic portfolio tracking",
+        "Mobile app access",
+        "Copy trading (view-only mode)"
+      ],
+      limitations: [],
+      buttonText: "Start Starter Plan",
+      buttonVariant: "outline" as const,
+      popular: false
+    },
+    {
       name: "Basic",
       price: "$24.99",
       period: "month",

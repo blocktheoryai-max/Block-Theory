@@ -31,10 +31,31 @@ export async function seedDatabase() {
 
         },
         {
+          tier: "starter",
+          name: "Starter",
+          priceMonthly: "9.99",
+          priceYearly: "99.99",
+          features: [
+            "Access to 20 foundation lessons",
+            "Basic trading simulator ($5K virtual)",
+            "Community forum access",
+            "Weekly market updates",
+            "Basic portfolio tracking",
+            "Mobile app features",
+            "Copy trading (view only)"
+          ],
+          hasSimulator: true,
+          hasCommunity: true,
+          hasAnalytics: false,
+          hasLiveTrading: false,
+          hasSignals: false,
+          maxLessons: 20
+        },
+        {
           tier: "basic",
           name: "Basic",
-          priceMonthly: "19.99",
-          priceYearly: "199.99",
+          priceMonthly: "24.99",
+          priceYearly: "249.99",
           features: [
             "Complete lesson library (50+ lessons)",
             "Advanced trading simulator ($10K virtual)",
