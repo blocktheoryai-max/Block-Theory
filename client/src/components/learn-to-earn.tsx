@@ -48,10 +48,10 @@ export function LearnToEarn() {
 
   useEffect(() => {
     if (rewardsData) {
-      setTotalEarned(rewardsData.totalEarned || 0);
-      setCurrentStreak(rewardsData.streak || 0);
-      setNextReward(rewardsData.nextReward || 1);
-      setUserTier(Math.min(3, Math.floor(rewardsData.totalEarned / 50)));
+      setTotalEarned((rewardsData as any).totalEarned || 0);
+      setCurrentStreak((rewardsData as any).streak || 0);
+      setNextReward((rewardsData as any).nextReward || 1);
+      setUserTier(Math.min(3, Math.floor(((rewardsData as any).totalEarned || 0) / 50)));
     }
   }, [rewardsData]);
 
@@ -261,13 +261,13 @@ export function LearnToEarn() {
           </Card>
 
           {/* Sponsored Content */}
-          {opportunities?.sponsored && (
+          {(opportunities as any)?.sponsored && (
             <Card className="bg-gradient-to-r from-red-900/20 to-pink-900/20 border-red-500/30 ring-2 ring-red-500/50">
               <CardContent className="p-4 flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <Zap className="w-8 h-8 text-red-400 animate-pulse" />
                   <div>
-                    <h4 className="font-semibold">Featured: Learn About {opportunities.sponsored.project}</h4>
+                    <h4 className="font-semibold">Featured: Learn About {(opportunities as any).sponsored.project}</h4>
                     <p className="text-sm text-gray-400">
                       Complete special course for bonus rewards
                     </p>
