@@ -264,7 +264,7 @@ export default function Community() {
               Crypto Community Hub
             </h1>
             <p className="text-xl text-gray-300">
-              Real-time market insights, community discussions, and live blockchain activity
+              Real-time market insights and live blockchain activity
             </p>
           </div>
 
@@ -326,47 +326,9 @@ export default function Community() {
             </Card>
           </div>
 
-          {/* Live Discussion Threads */}
-          <Card className="bg-gradient-to-br from-green-600 to-emerald-700 text-white border-0 mb-8">
-            <CardHeader className="pb-3">
-              <div className="flex items-center justify-between">
-                <CardTitle className="flex items-center space-x-2">
-                  <Activity className="h-5 w-5 animate-pulse" />
-                  <span>Live Discussions</span>
-                </CardTitle>
-                <Badge variant="secondary" className="bg-green-500/20 text-green-100">
-                  LIVE
-                </Badge>
-              </div>
-              <CardDescription className="text-green-100">
-                Join real-time conversations happening right now
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              {liveThreads.map((thread, index) => (
-                <div key={thread.id} className="flex items-center justify-between p-3 bg-white/10 rounded-lg backdrop-blur-sm">
-                  <div className="flex-1">
-                    <div className="flex items-center space-x-2 mb-1">
-                      <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                      <span className="font-medium text-sm">{thread.user}</span>
-                      <span className="text-green-200 text-xs">{thread.activity}</span>
-                    </div>
-                    <p className="text-sm text-green-100 truncate">{thread.topic}</p>
-                    <div className="flex items-center space-x-4 mt-1">
-                      <span className="text-xs text-green-300">{thread.participants} participants</span>
-                      <span className="text-xs text-green-300">{thread.timestamp}</span>
-                    </div>
-                  </div>
-                  <Button variant="ghost" size="sm" className="text-green-100 hover:bg-white/20">
-                    Join
-                  </Button>
-                </div>
-              ))}
-            </CardContent>
-          </Card>
 
           <Tabs value={selectedTab} onValueChange={setSelectedTab} className="space-y-6">
-            <TabsList className="grid w-full grid-cols-4 bg-slate-800/50 border-slate-700">
+            <TabsList className="grid w-full grid-cols-3 bg-slate-800/50 border-slate-700">
               <TabsTrigger value="feed" className="data-[state=active]:bg-blue-600">
                 Live Feed
               </TabsTrigger>
@@ -375,9 +337,6 @@ export default function Community() {
               </TabsTrigger>
               <TabsTrigger value="blockchain" className="data-[state=active]:bg-blue-600">
                 Live Blockchain
-              </TabsTrigger>
-              <TabsTrigger value="discussions" className="data-[state=active]:bg-blue-600">
-                Discussions
               </TabsTrigger>
             </TabsList>
 
@@ -491,129 +450,6 @@ export default function Community() {
               </Card>
             </TabsContent>
 
-            <TabsContent value="discussions" className="space-y-6">
-              <div className="flex justify-between items-center">
-                <h2 className="text-2xl font-bold text-white">Community Discussions</h2>
-                {isAuthenticated && (
-                  <Button 
-                    onClick={() => setShowNewPostForm(true)}
-                    className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
-                  >
-                    <MessageSquare className="w-4 h-4 mr-2" />
-                    New Post
-                  </Button>
-                )}
-              </div>
-
-              {showNewPostForm && (
-                <Card className="bg-slate-800/50 border-slate-700 backdrop-blur-sm">
-                  <CardHeader>
-                    <CardTitle className="text-white">Create New Post</CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <Input
-                      placeholder="Post title"
-                      value={newPostTitle}
-                      onChange={(e) => setNewPostTitle(e.target.value)}
-                      className="bg-slate-700/50 border-slate-600 text-white"
-                    />
-                    <Textarea
-                      placeholder="Share your thoughts..."
-                      value={newPostContent}
-                      onChange={(e) => setNewPostContent(e.target.value)}
-                      className="bg-slate-700/50 border-slate-600 text-white min-h-[100px]"
-                    />
-                    <div className="flex justify-between">
-                      <Button 
-                        variant="outline" 
-                        onClick={() => setShowNewPostForm(false)}
-                        className="border-slate-600 text-gray-300"
-                      >
-                        Cancel
-                      </Button>
-                      <Button 
-                        onClick={() => createPost.mutate({
-                          title: newPostTitle,
-                          content: newPostContent,
-                          category: newPostCategory
-                        })}
-                        disabled={!newPostTitle || !newPostContent || createPost.isPending}
-                        className="bg-gradient-to-r from-blue-600 to-purple-600"
-                      >
-                        <Send className="w-4 h-4 mr-2" />
-                        Post
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              )}
-
-              <div className="space-y-4">
-                {isLoading ? (
-                  <div className="text-center py-8">
-                    <div className="animate-spin w-8 h-8 border-4 border-primary border-t-transparent rounded-full mx-auto"></div>
-                    <p className="text-gray-400 mt-2">Loading discussions...</p>
-                  </div>
-                ) : (
-                  safePosts.map((post) => (
-                    <Card key={post.id} className="bg-slate-800/50 border-slate-700 backdrop-blur-sm hover:bg-slate-800/70 transition-colors">
-                      <CardContent className="p-6">
-                        <div className="flex items-start justify-between mb-4">
-                          <div className="flex items-center space-x-3">
-                            <Avatar className="w-10 h-10">
-                              <AvatarFallback className="bg-gradient-to-r from-blue-500 to-purple-500 text-white">
-                                {(post.author?.name || 'A')[0]}
-                              </AvatarFallback>
-                            </Avatar>
-                            <div>
-                              <div className="flex items-center space-x-2">
-                                <span className="font-semibold text-white">{post.author?.name || 'Anonymous'}</span>
-                                <Badge variant="outline" className="text-xs">
-                                  {post.author?.tier || 'Member'}
-                                </Badge>
-                              </div>
-                              <div className="text-xs text-gray-400">{post.timestamp}</div>
-                            </div>
-                          </div>
-                          {post.isPinned && (
-                            <Badge className="bg-yellow-900/50 text-yellow-400">
-                              Pinned
-                            </Badge>
-                          )}
-                        </div>
-                        
-                        <h3 className="text-lg font-semibold text-white mb-2">{post.title}</h3>
-                        <p className="text-gray-300 mb-4">{post.content}</p>
-                        
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center space-x-4 text-sm text-gray-400">
-                            <div className="flex items-center space-x-1">
-                              <ThumbsUp className="w-4 h-4" />
-                              <span>{post.likes}</span>
-                            </div>
-                            <div className="flex items-center space-x-1">
-                              <MessageSquare className="w-4 h-4" />
-                              <span>{post.replies}</span>
-                            </div>
-                            <div className="flex items-center space-x-1">
-                              <Eye className="w-4 h-4" />
-                              <span>{post.views}</span>
-                            </div>
-                          </div>
-                          <div className="flex items-center space-x-1">
-                            {(post.tags || []).map((tag) => (
-                              <Badge key={tag} variant="outline" className="text-xs">
-                                {tag}
-                              </Badge>
-                            ))}
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))
-                )}
-              </div>
-            </TabsContent>
           </Tabs>
         </div>
       </div>
