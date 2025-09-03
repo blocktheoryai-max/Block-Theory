@@ -12,6 +12,17 @@ import {
 } from "lucide-react";
 import { triggerCelebration } from "@/lib/confetti";
 
+interface Lesson {
+  id: string;
+  title: string;
+  description: string;
+  content: string;
+  duration: number;
+  learningObjectives: string[];
+  videoUrl?: string;
+  hasVideo?: boolean;
+}
+
 interface SimpleLessonViewerProps {
   lessonId: string;
   lessonTitle: string;
@@ -32,7 +43,7 @@ export function SimpleLessonViewer({
   const [progress, setProgress] = useState(0);
 
   // Fetch actual lesson data
-  const { data: lesson, isLoading } = useQuery({
+  const { data: lesson, isLoading } = useQuery<Lesson>({
     queryKey: ['/api/lessons', lessonId]
   });
 
@@ -52,7 +63,7 @@ export function SimpleLessonViewer({
   const handleContentComplete = () => {
     setContentRead(true);
     if (videoWatched) {
-      triggerCelebration('success');
+      triggerCelebration('achievement');
       setTimeout(() => {
         onClose();
       }, 2000);
