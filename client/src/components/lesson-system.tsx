@@ -347,15 +347,7 @@ export default function LessonSystem() {
   });
 
   const startLesson = (lesson: Lesson) => {
-    if (lesson.isLocked) {
-      toast({
-        title: "Lesson Locked",
-        description: "Complete prerequisite lessons to unlock this content.",
-        variant: "destructive",
-      });
-      return;
-    }
-
+    // FOR DEVELOPMENT: Allow access to all lessons
     toast({
       title: "Lesson Started!",
       description: `Starting "${lesson.title}" - ${lesson.duration} minutes`,

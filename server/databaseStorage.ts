@@ -244,29 +244,8 @@ export class DatabaseStorage implements IStorage {
   }
 
   async getLessonsByTier(requiredTier: string): Promise<Lesson[]> {
-    const tierLevels = { free: 0, basic: 1, pro: 2, elite: 3 };
-    const tierLevel = tierLevels[requiredTier as keyof typeof tierLevels] || 0;
-    
-    let result = await db
-      .select()
-      .from(lessons)
-      .where(
-        sql`CASE 
-          WHEN ${lessons.requiredTier} = 'free' THEN 0
-          WHEN ${lessons.requiredTier} = 'basic' THEN 1
-          WHEN ${lessons.requiredTier} = 'pro' THEN 2
-          WHEN ${lessons.requiredTier} = 'elite' THEN 3
-          ELSE 0
-        END <= ${tierLevel}`
-      )
-      .orderBy(lessons.order);
-    
-    // Limit free tier to only first 5 lessons
-    if (requiredTier === 'free') {
-      result = result.slice(0, 5);
-    }
-    
-    return result;
+    // FOR DEVELOPMENT: Return all lessons regardless of tier
+    return await db.select().from(lessons).orderBy(lessons.order);
   }
 
   // User progress operations
