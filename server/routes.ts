@@ -1,4 +1,4 @@
-import express, { type Express } from "express";
+import express, { type Express, type Response, type NextFunction } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { setupAuth, isAuthenticated, requiresSubscription } from "./replitAuth";
@@ -60,7 +60,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
 
       // Create session (you might want to use JWT or proper session management)
-      req.session.adminUser = user;
+      (req.session as any).adminUser = user;
 
       res.json({
         message: 'Login successful',
@@ -78,7 +78,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post('/api/admin/change-password', authLimiter, validateOrigin, async (req, res) => {
+  // Admin session validation middleware
+  const requireAdminAuth = (req: any, res: Response, next: NextFunction) => {
+    if (!(req.session as any)?.adminUser) {
+      return res.status(401).json({ message: 'Admin authentication required' });
+    }
+    next();
+  };
+
+  app.post('/api/admin/change-password', authLimiter, validateOrigin, requireAdminAuth, async (req, res) => {
     try {
       const { username, currentPassword, newPassword } = req.body;
 
@@ -102,7 +110,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.get('/api/admin/stats', async (req, res) => {
+  app.get('/api/admin/stats', requireAdminAuth, async (req, res) => {
     try {
       // Basic admin stats
       const allUsers = await storage.getAllUsers();
@@ -114,7 +122,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
         totalLessons: allLessons.length,
         totalPlans: allPlans.length,
         usersByTier: allUsers.reduce((acc, user) => {
-          acc[user.subscriptionTier] = (acc[user.subscriptionTier] || 0) + 1;
+          const tier = user.subscriptionTier || 'free';
+          acc[tier] = (acc[tier] || 0) + 1;
           return acc;
         }, {} as Record<string, number>)
       };
@@ -466,8 +475,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
         userTier = user?.subscriptionTier || 'free';
       }
       
-      // For demo purposes, show all lessons regardless of tier to showcase full curriculum
-      const lessons = await storage.getAllLessons();
+      // In production, properly filter lessons by user tier
+      const isProduction = process.env.NODE_ENV === 'production';
+      const lessons = isProduction 
+        ? await storage.getLessonsByTier(userTier)
+        : await storage.getAllLessons(); // Show all in development for demo
       res.json(lessons);
     } catch (error) {
       res.status(500).json({ error: "Failed to fetch lessons" });
@@ -1881,9 +1893,9 @@ Provide optimization in JSON format with:
       
       // Get user tier to determine priority
       const user = await storage.getUser(userId);
-      const priority = user?.tier === 'elite' ? 'urgent' : 
-                      user?.tier === 'pro' ? 'high' : 
-                      user?.tier === 'basic' ? 'medium' : 'low';
+      const priority = user?.subscriptionTier === 'elite' ? 'urgent' : 
+                      user?.subscriptionTier === 'pro' ? 'high' : 
+                      user?.subscriptionTier === 'basic' ? 'medium' : 'low';
       
       const ticket = {
         id: crypto.randomUUID(),
@@ -1940,14 +1952,14 @@ Provide optimization in JSON format with:
       // Send to all Basic+ subscribers
       const basicAndAboveUsers = await storage.getAllUsers();
       const eligibleUsers = basicAndAboveUsers.filter(u => 
-        u.tier === 'basic' || u.tier === 'pro' || u.tier === 'elite'
+        u.subscriptionTier === 'basic' || u.subscriptionTier === 'pro' || u.subscriptionTier === 'elite'
       );
       
       let sentCount = 0;
       for (const user of eligibleUsers) {
         const success = await emailService.sendWeeklyMarketReport(
           user.email, 
-          user.name, 
+          user.firstName || user.username, 
           reportContent
         );
         if (success) sentCount++;
@@ -1998,7 +2010,7 @@ Provide optimization in JSON format with:
       
       // Send alerts to Pro+ users
       const proUsers = await storage.getAllUsers();
-      const eligibleUsers = proUsers.filter(u => u.tier === 'pro' || u.tier === 'elite');
+      const eligibleUsers = proUsers.filter(u => u.subscriptionTier === 'pro' || u.subscriptionTier === 'elite');
       
       for (const signal of signals.signals || []) {
         // Add percentage calculation
@@ -2065,7 +2077,7 @@ Provide optimization in JSON format with:
         if (!user) return false;
         
         // Pro and Elite get early access
-        if (flag.enabledForTiers.includes(user.tier || 'free')) {
+        if (flag.enabledForTiers.includes(user.subscriptionTier || 'free')) {
           return true;
         }
         
@@ -2075,7 +2087,7 @@ Provide optimization in JSON format with:
       
       res.json({ 
         flags: userFlags,
-        userTier: user?.tier || 'free'
+        userTier: user?.subscriptionTier || 'free'
       });
     } catch (error) {
       console.error('Feature flags error:', error);
@@ -2147,7 +2159,7 @@ Provide optimization in JSON format with:
       }
       
       // Check if user has required tier
-      if (user.tier !== 'pro' && user.tier !== 'elite') {
+      if (user.subscriptionTier !== 'pro' && user.subscriptionTier !== 'elite') {
         return res.status(403).json({ 
           error: 'Pro or Elite subscription required for live sessions',
           upgradeUrl: '/pricing'

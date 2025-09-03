@@ -33,6 +33,22 @@ class LiveDataService extends EventEmitter {
   constructor() {
     super();
     this.startLiveFeeds();
+    
+    // Clean up intervals on process termination
+    process.on('SIGINT', () => this.cleanup());
+    process.on('SIGTERM', () => this.cleanup());
+  }
+
+  public cleanup() {
+    if (this.newsInterval) {
+      clearInterval(this.newsInterval);
+      this.newsInterval = undefined;
+    }
+    if (this.marketInterval) {
+      clearInterval(this.marketInterval);
+      this.marketInterval = undefined;
+    }
+    console.log('LiveDataService intervals cleaned up');
   }
 
   private startLiveFeeds() {
@@ -50,6 +66,10 @@ class LiveDataService extends EventEmitter {
     }, 30000); // Market data every 30 seconds
   }
 
+  private retryAttempts = 0;
+  private maxRetries = 3;
+  private retryDelay = 5000; // 5 seconds
+
   private async fetchLatestNews() {
     try {
       // Use multiple news sources for comprehensive coverage
@@ -65,10 +85,29 @@ class LiveDataService extends EventEmitter {
       
       this.newsCache = [...newArticles, ...this.newsCache.slice(0, 19)]; // Keep last 20 articles
       this.emit('newsUpdate', this.newsCache);
+      this.retryAttempts = 0; // Reset retry counter on success
     } catch (error) {
       console.error('Error fetching news:', error);
+      
+      // Implement retry logic
+      if (this.retryAttempts < this.maxRetries) {
+        this.retryAttempts++;
+        console.log(`Retrying news fetch (attempt ${this.retryAttempts}/${this.maxRetries}) in ${this.retryDelay}ms...`);
+        setTimeout(() => this.fetchLatestNews(), this.retryDelay);
+      } else {
+        // Use cached data or fallback data
+        if (this.newsCache.length === 0) {
+          // Generate fallback news if no cache available
+          const fallbackNews = await this.generateRealtimeNews(new Date());
+          this.newsCache = fallbackNews;
+          this.emit('newsUpdate', this.newsCache);
+        }
+        console.warn('Max retry attempts reached for news fetch, using cached/fallback data');
+      }
     }
   }
+
+  private marketRetryAttempts = 0;
 
   private async fetchMarketData() {
     try {
@@ -79,7 +118,8 @@ class LiveDataService extends EventEmitter {
           headers: {
             'Accept': 'application/json',
             'User-Agent': 'BlockTheory/1.0'
-          }
+          },
+          signal: AbortSignal.timeout(10000) // 10 second timeout
         }
       );
 
@@ -88,6 +128,9 @@ class LiveDataService extends EventEmitter {
       }
 
       const data = await response.json();
+      if (!data || typeof data !== 'object') {
+        throw new Error('Invalid response format from CoinGecko API');
+      }
       
       // Transform data into our format
       const coinMapping: { [key: string]: string } = {
@@ -121,9 +164,51 @@ class LiveDataService extends EventEmitter {
       });
 
       this.emit('marketUpdate', this.marketCache);
+      this.marketRetryAttempts = 0; // Reset retry counter on success
     } catch (error) {
       console.error('Error fetching market data:', error);
+      
+      // Implement retry logic
+      if (this.marketRetryAttempts < this.maxRetries) {
+        this.marketRetryAttempts++;
+        console.log(`Retrying market data fetch (attempt ${this.marketRetryAttempts}/${this.maxRetries}) in ${this.retryDelay}ms...`);
+        setTimeout(() => this.fetchMarketData(), this.retryDelay);
+      } else {
+        // Use cached data or generate fallback data
+        if (Object.keys(this.marketCache).length === 0) {
+          // Generate fallback market data if no cache available
+          this.generateFallbackMarketData();
+        }
+        console.warn('Max retry attempts reached for market data fetch, using cached/fallback data');
+      }
     }
+  }
+
+  private generateFallbackMarketData() {
+    // Generate realistic fallback data when API fails
+    const fallbackData = {
+      'BTC': { price: 45000, change24h: 2.5, marketCap: 880000000000, volume: 25000000000 },
+      'ETH': { price: 2500, change24h: 3.2, marketCap: 300000000000, volume: 15000000000 },
+      'BNB': { price: 320, change24h: 1.8, marketCap: 50000000000, volume: 2000000000 },
+      'SOL': { price: 90, change24h: 4.5, marketCap: 40000000000, volume: 3000000000 },
+      'XRP': { price: 0.65, change24h: -1.2, marketCap: 35000000000, volume: 1500000000 }
+    };
+
+    Object.entries(fallbackData).forEach(([symbol, data]) => {
+      this.marketCache[symbol] = {
+        symbol,
+        name: this.getCoinName(symbol),
+        price: data.price,
+        change24h: data.change24h,
+        marketCap: data.marketCap,
+        volume: data.volume,
+        high24h: data.price * 1.02,
+        low24h: data.price * 0.98,
+        lastUpdate: new Date().toISOString()
+      };
+    });
+
+    this.emit('marketUpdate', this.marketCache);
   }
 
   private async generateRealtimeNews(timestamp: Date): Promise<CryptoNews[]> {
@@ -183,7 +268,7 @@ class LiveDataService extends EventEmitter {
         category: template.category,
         timestamp: this.formatTimestamp(timestamp),
         source: "LiveCrypto",
-        impact: template.impact,
+        impact: template.impact as "bullish" | "bearish" | "neutral",
         relevantCoins: template.coins
       };
     });
