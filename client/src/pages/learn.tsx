@@ -36,7 +36,7 @@ import Navigation from "@/components/Navigation";
 import MobileBottomNav from "@/components/MobileBottomNav";
 import { SEOHead, SEO_PRESETS } from "@/components/SEOHead";
 import { AiLearningPath } from "@/components/ai-learning-path";
-import { CompetitiveLessonView } from "@/components/CompetitiveLessonView";
+import { SimpleLessonViewer } from "@/components/SimpleLessonViewer";
 
 interface Lesson {
   id: string;
@@ -174,7 +174,7 @@ export default function Learn() {
               Back to Lessons
             </Button>
 
-            <CompetitiveLessonView 
+            <SimpleLessonViewer 
               lessonId={selectedLesson.id}
               lessonTitle={selectedLesson.title}
               category={selectedLesson.category}
