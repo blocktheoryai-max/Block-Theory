@@ -5,11 +5,12 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { 
   DollarSign, TrendingUp, Award, Zap, Target, Trophy, 
-  CheckCircle2, Lock, Gift, Flame, Star, BookOpen
+  CheckCircle2, Lock, Gift, Flame, Star, BookOpen, Clock, AlertCircle
 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { triggerFireworks } from "@/lib/confetti";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 interface RewardTier {
   level: string;
@@ -31,16 +32,18 @@ export function LearnToEarn() {
   const [nextReward, setNextReward] = useState(1);
   const [userTier, setUserTier] = useState(0);
 
-  // Fetch user rewards data
+  // Fetch user rewards data - disabled for coming soon
   const { data: rewardsData, isLoading } = useQuery({
     queryKey: ["/api/rewards/summary"],
     refetchInterval: 30000, // Refresh every 30 seconds
+    enabled: false, // Disabled until launch
   });
 
-  // Fetch available earn opportunities
+  // Fetch available earn opportunities - disabled for coming soon
   const { data: opportunities } = useQuery({
     queryKey: ["/api/rewards/opportunities"],
     refetchInterval: 60000, // Refresh every minute
+    enabled: false, // Disabled until launch
   });
 
   useEffect(() => {
@@ -81,23 +84,31 @@ export function LearnToEarn() {
               <DollarSign className="w-6 h-6 text-green-400" />
               Learn to Earn Dashboard
             </span>
-            <Badge className={`${currentTier.color} text-white px-3 py-1`}>
-              <TierIcon className="w-4 h-4 mr-1" />
-              {currentTier.level} Tier
+            <Badge className="bg-yellow-600 text-white px-3 py-1 animate-pulse">
+              <Clock className="w-4 h-4 mr-1" />
+              Coming Soon
             </Badge>
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {/* Total Earnings */}
+          {/* Coming Soon Alert */}
+          <Alert className="border-yellow-500/50 bg-yellow-900/20">
+            <AlertCircle className="h-4 w-4" />
+            <AlertDescription className="text-yellow-200">
+              <strong>Learn-to-Earn Launching Soon!</strong> Get ready to earn real rewards for completing lessons, achieving high scores, and participating in our community. Early adopters will receive exclusive bonuses!
+            </AlertDescription>
+          </Alert>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 opacity-60">
+            {/* Total Earnings Preview */}
             <Card className="bg-black/50 border-green-500/30">
               <CardContent className="p-4">
-                <p className="text-sm text-gray-400 mb-1">Total Earned</p>
+                <p className="text-sm text-gray-400 mb-1">Your Future Earnings</p>
                 <p className="text-3xl font-bold text-green-400">
-                  ${totalEarned.toFixed(2)}
+                  $0.00
                 </p>
                 <p className="text-xs text-gray-500 mt-1">
-                  {currentTier.multiplier}x multiplier active
+                  Complete lessons to earn
                 </p>
               </CardContent>
             </Card>

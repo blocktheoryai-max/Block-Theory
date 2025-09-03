@@ -10,7 +10,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import {
   BookOpen, CheckCircle2, XCircle, ChevronRight, ChevronLeft,
   Brain, Code, Zap, Trophy, Target, AlertCircle, Lightbulb,
-  Play, Lock, Star, Activity, DollarSign, TrendingUp
+  Play, Lock, Star, Activity, DollarSign, TrendingUp, ArrowRight
 } from "lucide-react";
 import { triggerCelebration } from "@/lib/confetti";
 // Code highlighting will use native pre/code elements with styled formatting
@@ -53,14 +53,23 @@ const INTERACTIVE_LESSONS: Record<string, LessonSection[]> = {
       type: "content",
       title: "What is Cryptocurrency?",
       content: {
-        text: `Cryptocurrency is a digital or virtual currency secured by cryptography, making it nearly impossible to counterfeit. Unlike traditional currencies controlled by central banks, cryptocurrencies operate on decentralized networks based on blockchain technology.
+        text: `Welcome to the world of cryptocurrency! Let's start with the basics.
 
-Key Characteristics:
-• **Decentralized**: No single authority controls the network
-• **Immutable**: Transactions cannot be altered once confirmed
-• **Transparent**: All transactions are visible on the blockchain
-• **Pseudonymous**: Users are identified by addresses, not names
-• **Borderless**: Can be sent anywhere in the world instantly`,
+Imagine you want to send money to a friend in another country. With traditional banking, this could take days and cost a lot in fees. Banks need to verify everything, and they're closed on weekends. Plus, someone in the middle (the bank) controls your money.
+
+Cryptocurrency changes all of this. It's like digital cash that you can send directly to anyone, anywhere in the world, at any time - without needing a bank in the middle. But unlike regular digital payments (like Venmo or PayPal), no company controls it.
+
+Here's what makes cryptocurrency special:
+
+**It's Decentralized** - Instead of one bank controlling everything, thousands of computers around the world work together to run the system. It's like having a group project where everyone has a copy of the same notebook, so no one person can cheat.
+
+**It's Secure** - Every transaction is locked using advanced math (cryptography). It's like having an unbreakable digital lock that only you have the key to.
+
+**It's Transparent** - While your name stays private, all transactions are recorded in a public ledger that anyone can verify. Think of it as a receipt book that everyone can read, but with usernames instead of real names.
+
+**It Works 24/7** - Unlike banks that close at 5 PM and on weekends, cryptocurrency never sleeps. You can send or receive money at 3 AM on Christmas if you want!
+
+**It's Global** - Sending crypto to someone in Japan is as easy as sending it to your neighbor. No exchange rates, no international fees, no waiting.`,
         
         keyPoints: [
           "Bitcoin was the first cryptocurrency, created in 2009 by Satoshi Nakamoto",
@@ -82,12 +91,12 @@ Key Characteristics:
       type: "checkpoint",
       title: "Knowledge Check: Crypto Basics",
       content: {
-        question: "What makes cryptocurrency transactions secure and unchangeable?",
+        question: "Based on what you just learned, what makes cryptocurrency different from sending money through a bank?",
         options: [
-          "Government regulation",
-          "Cryptographic hashing and blockchain technology",
-          "Bank verification",
-          "Internet security protocols"
+          "A bank or company controls the transaction and can reverse it",
+          "Thousands of computers verify each transaction using advanced cryptography, making it secure and permanent",
+          "The government guarantees all cryptocurrency transactions",
+          "Regular internet security like passwords protect the transactions"
         ],
         correctAnswer: 1,
         explanation: "Cryptographic hashing creates unique fingerprints for each transaction, while blockchain technology chains these together in an immutable ledger.",
@@ -99,16 +108,29 @@ Key Characteristics:
       type: "content",
       title: "Understanding Blockchain Technology",
       content: {
-        text: `A blockchain is a distributed ledger that records all transactions across a network of computers. Each 'block' contains multiple transactions, and every block is linked to the previous one, forming a 'chain'.
+        text: `Now let's understand the technology behind cryptocurrency - the blockchain.
 
-How it Works:
-1. **Transaction Initiation**: User initiates a transaction
-2. **Broadcasting**: Transaction is broadcast to all nodes
-3. **Validation**: Network nodes validate the transaction
-4. **Block Creation**: Valid transactions are bundled into a block
-5. **Mining/Consensus**: Miners solve complex puzzles to add the block
-6. **Distribution**: New block is distributed to all nodes
-7. **Confirmation**: Transaction is complete and permanent`,
+Think of a blockchain like a notebook that everyone in class shares. When someone writes something in it, everyone gets a copy of that page. Once something is written, it can never be erased - only new pages can be added.
+
+Here's a simple way to understand how blockchain works:
+
+Imagine you want to send $10 worth of Bitcoin to your friend Sarah:
+
+**Step 1: You Announce It** - You tell the network "I'm sending $10 to Sarah." This message goes to thousands of computers around the world.
+
+**Step 2: Computers Check It** - These computers check: "Does this person actually have $10 to send?" They look at the history of all transactions to verify this.
+
+**Step 3: It Goes in Line** - Your transaction joins other pending transactions, like people waiting in line at a store.
+
+**Step 4: Transactions Get Bundled** - About every 10 minutes, all waiting transactions get grouped together into a 'block' - like putting all the receipts from that time period into one envelope.
+
+**Step 5: Securing the Block** - Special computers called 'miners' compete to solve a complex puzzle to seal this envelope. The first one to solve it gets a reward (this is how new Bitcoin is created!).
+
+**Step 6: Everyone Gets a Copy** - Once sealed, this block is added to the chain of all previous blocks (hence 'blockchain'), and every computer updates their copy.
+
+**Step 7: Sarah Gets Her Money** - The transaction is now permanent. Sarah can see the $10 in her wallet, and everyone can verify this transaction happened.
+
+The beauty is that no single person or company controls this process - it's all automated and verified by thousands of independent computers!`,
         
         interactive: {
           type: "blockchain-simulator",
@@ -136,24 +158,40 @@ How it Works:
       type: "content",
       title: "Crypto Wallets Explained",
       content: {
-        text: `A cryptocurrency wallet is a digital tool that allows you to store, send, and receive cryptocurrencies. Wallets don't actually store crypto – they store the private keys that give you access to your crypto on the blockchain.
+        text: `Let's talk about cryptocurrency wallets - your gateway to the crypto world.
 
-Types of Wallets:
-• **Hot Wallets**: Connected to the internet (convenient but less secure)
-  - Mobile wallets (apps on your phone)
-  - Desktop wallets (software on computer)
-  - Web wallets (accessed through browser)
+First, here's something that might surprise you: a crypto wallet doesn't actually hold your cryptocurrency! Instead, think of it like this:
 
-• **Cold Wallets**: Offline storage (most secure)
-  - Hardware wallets (physical devices like Ledger)
-  - Paper wallets (printed keys)
+Your cryptocurrency lives on the blockchain (that shared notebook we talked about). Your wallet is like a special key that proves which entries in that notebook belong to you. Without this key, you can't access your crypto - even though it's recorded as yours on the blockchain.
 
-Security Best Practices:
-✓ Never share your private keys or seed phrase
-✓ Use hardware wallets for large amounts
-✓ Enable 2FA on exchange accounts
-✓ Keep backup of seed phrases in secure location
-✓ Verify wallet addresses before sending`,
+**Understanding Your Wallet Keys:**
+
+Every wallet has two important parts:
+- **Public Key (Wallet Address)**: This is like your email address - you can share it with anyone who wants to send you crypto
+- **Private Key**: This is like your email password - NEVER share this with anyone! Anyone who has it can take all your crypto
+
+**Types of Wallets - From Convenient to Super Secure:**
+
+**Hot Wallets (Always Online)** - Like keeping cash in your pocket:
+- **Phone Apps** (like Coinbase Wallet, Trust Wallet) - Super convenient for daily use, but since your phone is online, there's some risk
+- **Computer Programs** (like Exodus, Atomic Wallet) - Good for trading, but vulnerable if your computer gets hacked
+- **Website Wallets** (like exchange wallets) - Most convenient but least secure, as the website controls your keys
+
+**Cold Wallets (Offline Storage)** - Like keeping cash in a safe:
+- **Hardware Wallets** (like Ledger, Trezor) - Physical devices that look like USB drives. They keep your keys offline, making them nearly impossible to hack. Perfect for large amounts!
+- **Paper Wallets** - Your keys printed on paper. Free but risky if the paper gets damaged or lost
+
+**Golden Rules for Wallet Security:**
+
+1. **Your Seed Phrase is Everything** - When you create a wallet, you'll get 12-24 random words. These words can restore your entire wallet if you lose access. Write them down (never digitally!) and store them somewhere safe.
+
+2. **Never Share Your Private Keys** - If someone asks for your private key or seed phrase, it's a scam. No legitimate service will ever ask for these.
+
+3. **Double-Check Addresses** - Crypto transactions can't be reversed! Always verify you're sending to the right address.
+
+4. **Use the Right Wallet for the Right Purpose** - Keep small amounts in hot wallets for convenience, large amounts in cold wallets for security.
+
+5. **Test with Small Amounts First** - When using a new wallet or sending to a new address, always test with a tiny amount first.`,
         
         warning: "⚠️ If you lose your private keys, you lose access to your crypto forever. There's no 'forgot password' option!"
       }
@@ -553,13 +591,25 @@ export function InteractiveLessonViewer({ lessonId, lessonTitle, onComplete }: I
                 </RadioGroup>
 
                 {!showFeedback && (
-                  <Button 
-                    onClick={handleCheckpointSubmit}
-                    disabled={selectedAnswer === null}
-                    className="mt-4 w-full bg-purple-600 hover:bg-purple-700"
-                  >
-                    Submit Answer
-                  </Button>
+                  <div className="flex gap-2 mt-4">
+                    <Button 
+                      onClick={handleCheckpointSubmit}
+                      disabled={selectedAnswer === null}
+                      className="flex-1 bg-purple-600 hover:bg-purple-700"
+                    >
+                      Submit Answer
+                    </Button>
+                    <Button 
+                      onClick={() => {
+                        setSectionProgress({ ...sectionProgress, [currentSection.id]: true });
+                        nextSection();
+                      }}
+                      variant="outline"
+                      className="flex items-center gap-2"
+                    >
+                      Skip <ArrowRight className="w-4 h-4" />
+                    </Button>
+                  </div>
                 )}
 
                 {showFeedback && (
@@ -602,22 +652,28 @@ export function InteractiveLessonViewer({ lessonId, lessonTitle, onComplete }: I
                 )}
 
                 <div className="space-y-3">
-                  <textarea
-                    value={exerciseAttempt}
-                    onChange={(e) => setExerciseAttempt(e.target.value)}
-                    placeholder="Enter your solution..."
-                    className="w-full h-32 p-3 bg-slate-800 border border-slate-700 rounded-lg text-white"
-                    disabled={showFeedback && isCorrect}
-                  />
+                  <Alert className="border-blue-500/50 bg-blue-900/20">
+                    <AlertCircle className="h-4 w-4" />
+                    <AlertDescription>
+                      <strong>Solution:</strong> {currentSection.content.solution}
+                      <p className="mt-2 text-sm">{currentSection.content.explanation}</p>
+                    </AlertDescription>
+                  </Alert>
                   
                   <div className="flex gap-2">
                     {!showFeedback && (
                       <>
                         <Button 
-                          onClick={handleExerciseSubmit}
+                          onClick={() => {
+                            setSectionProgress({ ...sectionProgress, [currentSection.id]: true });
+                            setTotalScore(totalScore + 20);
+                            triggerCelebration('achievement');
+                            setShowFeedback(true);
+                            setIsCorrect(true);
+                          }}
                           className="flex-1 bg-green-600 hover:bg-green-700"
                         >
-                          Submit Solution
+                          I Understand This Exercise
                         </Button>
                         <Button 
                           onClick={() => setShowHint(!showHint)}

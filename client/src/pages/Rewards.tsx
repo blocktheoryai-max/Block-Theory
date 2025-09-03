@@ -4,12 +4,13 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { 
   Trophy, Gift, Award, Target, Zap, TrendingUp, 
-  Star, DollarSign, Users, BookOpen
+  Star, DollarSign, Users, BookOpen, Clock, AlertCircle
 } from "lucide-react";
 import { LearnToEarn } from "@/components/learn-to-earn";
 import { TradingCompetition } from "@/components/trading-competition";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 export default function Rewards() {
   const [activeTab, setActiveTab] = useState("earn");
@@ -27,13 +28,17 @@ export default function Rewards() {
                   Rewards Center
                 </h1>
                 <p className="text-base md:text-lg text-gray-300 mb-4">
-                  Learn, compete, and earn real crypto rewards while mastering trading
+                  Learn, compete, and earn rewards while mastering trading
                 </p>
                 <div className="grid grid-cols-2 md:flex gap-2 md:gap-4">
-                  <Card className="bg-black/50 border-green-500/50">
+                  <Card className="bg-black/50 border-green-500/50 relative">
                     <CardContent className="p-2 md:p-3">
+                      <Badge className="absolute -top-2 -right-2 bg-yellow-600 text-xs px-2 py-0.5">
+                        <Clock className="w-3 h-3 mr-1" />
+                        Soon
+                      </Badge>
                       <p className="text-xs md:text-sm text-gray-400">Total Rewards</p>
-                      <p className="text-lg md:text-2xl font-bold text-green-400">$2,847</p>
+                      <p className="text-lg md:text-2xl font-bold text-green-400 opacity-50">$0</p>
                     </CardContent>
                   </Card>
                   <Card className="bg-black/50 border-blue-500/50">
@@ -70,7 +75,10 @@ export default function Rewards() {
           <Card className="bg-gradient-to-br from-green-900/20 to-emerald-900/20 border-green-500/30">
             <CardContent className="p-4 text-center">
               <DollarSign className="w-8 h-8 mx-auto mb-2 text-green-400" />
-              <p className="text-2xl font-bold text-green-400">$127.50</p>
+              <Badge className="bg-yellow-600 text-xs px-2 py-0.5 mb-1">
+                Coming Soon
+              </Badge>
+              <p className="text-2xl font-bold text-green-400 opacity-50">$0.00</p>
               <p className="text-sm text-gray-400">This Month</p>
             </CardContent>
           </Card>
