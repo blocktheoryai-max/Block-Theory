@@ -1,0 +1,42 @@
+{
+  "name": "Block Theory - Crypto Education Platform",
+  "short_name": "Block Theory",
+  "description": "Learn crypto trading and earn real USDC rewards",
+  "theme_color": "#9333ea",
+  "background_color": "#0f0a1f",
+  "display": "standalone",
+  "orientation": "portrait",
+  "scope": "/",
+  "start_url": "/",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["education", "finance", "cryptocurrency"],
+  "shortcuts": [
+    {
+      "name": "Rewards",
+      "short_name": "Rewards",
+      "description": "View your earnings and rewards",
+      "url": "/rewards",
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Competitions",
+      "short_name": "Compete",
+      "description": "Join trading competitions",
+      "url": "/competitions",
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+    }
+  ]
+}

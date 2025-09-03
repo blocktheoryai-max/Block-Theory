@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import {
@@ -6,6 +7,13 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import { 
   TrendingUp, 
   BookOpen, 
@@ -24,7 +32,9 @@ import {
   Presentation,
   Trophy,
   Wallet,
-  Gift
+  Gift,
+  Menu,
+  X
 } from "lucide-react";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -33,6 +43,7 @@ import { Badge } from "@/components/ui/badge";
 
 export default function Navigation() {
   const [location] = useLocation();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { translate } = useLanguage();
 
   // Core navigation items
@@ -214,15 +225,128 @@ export default function Navigation() {
           </div>
 
           <div className="flex items-center space-x-2">
-            <div className="hidden md:block">
+            <div className="hidden lg:block">
               <WalletConnect />
             </div>
-            <LanguageSwitcher />
-            <div className="md:hidden">
-              <Button variant="outline" size="sm">
-                {translate("nav.menu", "Menu")}
-              </Button>
+            <div className="hidden md:block">
+              <LanguageSwitcher />
             </div>
+            
+            {/* Mobile Menu */}
+            <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
+              <SheetTrigger asChild className="md:hidden">
+                <Button variant="ghost" size="icon">
+                  <Menu className="h-5 w-5" />
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="right" className="w-[300px] sm:w-[400px]">
+                <SheetHeader>
+                  <SheetTitle className="flex items-center gap-2">
+                    <TrendingUp className="h-6 w-6 text-primary" />
+                    Block Theory
+                  </SheetTitle>
+                </SheetHeader>
+                
+                <div className="mt-6 space-y-2">
+                  {/* Mobile Wallet Connect */}
+                  <div className="mb-4 pb-4 border-b">
+                    <WalletConnect showBalance={false} />
+                  </div>
+                  
+                  {/* Mobile Navigation Items */}
+                  {coreNavItems.map((item) => {
+                    const Icon = item.icon;
+                    const isActive = location === item.path;
+                    return (
+                      <Link key={item.path} href={item.path}>
+                        <Button
+                          variant={isActive ? "default" : "ghost"}
+                          className="w-full justify-start"
+                          onClick={() => setMobileMenuOpen(false)}
+                        >
+                          <Icon className="h-4 w-4 mr-2" />
+                          {item.label}
+                          {item.badge && (
+                            <Badge className="ml-auto" variant="default">
+                              {item.badge}
+                            </Badge>
+                          )}
+                        </Button>
+                      </Link>
+                    );
+                  })}
+                  
+                  {/* Mobile Advanced Tools */}
+                  <div className="pt-4 border-t">
+                    <p className="text-sm font-semibold mb-2 text-muted-foreground">Tools</p>
+                    {advancedTools.map((item) => {
+                      const Icon = item.icon;
+                      return (
+                        <Link key={item.path} href={item.path}>
+                          <Button
+                            variant="ghost"
+                            className="w-full justify-start"
+                            onClick={() => setMobileMenuOpen(false)}
+                          >
+                            <Icon className="h-4 w-4 mr-2" />
+                            {item.label}
+                            {item.badge && (
+                              <Badge className="ml-auto" variant="destructive">
+                                {item.badge}
+                              </Badge>
+                            )}
+                          </Button>
+                        </Link>
+                      );
+                    })}
+                  </div>
+                  
+                  {/* Mobile Social */}
+                  <div className="pt-4 border-t">
+                    <p className="text-sm font-semibold mb-2 text-muted-foreground">Social</p>
+                    {marketplaceItems.map((item) => {
+                      const Icon = item.icon;
+                      return (
+                        <Link key={item.path} href={item.path}>
+                          <Button
+                            variant="ghost"
+                            className="w-full justify-start"
+                            onClick={() => setMobileMenuOpen(false)}
+                          >
+                            <Icon className="h-4 w-4 mr-2" />
+                            {item.label}
+                          </Button>
+                        </Link>
+                      );
+                    })}
+                  </div>
+                  
+                  {/* Mobile Final Items */}
+                  <div className="pt-4 border-t">
+                    {finalNavItems.map((item) => {
+                      const Icon = item.icon;
+                      return (
+                        <Link key={item.path} href={item.path}>
+                          <Button
+                            variant="ghost"
+                            className="w-full justify-start"
+                            onClick={() => setMobileMenuOpen(false)}
+                          >
+                            <Icon className="h-4 w-4 mr-2" />
+                            {item.label}
+                          </Button>
+                        </Link>
+                      );
+                    })}
+                  </div>
+                  
+                  {/* Language Switcher for Mobile */}
+                  <div className="pt-4 border-t">
+                    <LanguageSwitcher />
+                  </div>
+                </div>
+              </SheetContent>
+            </Sheet>
           </div>
         </div>
       </div>

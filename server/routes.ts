@@ -2280,6 +2280,125 @@ Provide optimization in JSON format with:
     }
   });
 
+  // AI Learning Path endpoints
+  app.get("/api/learning-path", async (req: any, res) => {
+    try {
+      const userId = req.user?.id || "demo-user";
+      
+      // Mock learning path data
+      res.json({
+        id: "path-1",
+        userId,
+        title: "Become a Profitable Trader",
+        description: "Master technical analysis, risk management, and trading psychology",
+        goal: "trader",
+        difficulty: "intermediate",
+        lessons: [
+          "crypto-fundamentals",
+          "blockchain-basics",
+          "wallet-security",
+          "technical-analysis-intro",
+          "candlestick-patterns",
+          "support-resistance",
+          "risk-management",
+          "position-sizing",
+          "trading-psychology",
+          "advanced-patterns"
+        ],
+        completedLessons: ["crypto-fundamentals", "blockchain-basics"],
+        progress: 20,
+        estimatedHours: 80,
+        aiGenerated: true,
+        aiRecommendations: {
+          nextLesson: "wallet-security",
+          dailyGoal: "Complete 2 lessons per day",
+          focusAreas: ["Risk management", "Technical analysis"],
+          practiceRecommendation: "Start paper trading after lesson 5"
+        }
+      });
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch learning path" });
+    }
+  });
+
+  app.post("/api/learning-path/generate", async (req: any, res) => {
+    try {
+      const { goal, goalTitle, difficulty, estimatedHours } = req.body;
+      const userId = req.user?.id || "demo-user";
+      
+      // Simulate AI generation with OpenAI (mock for now)
+      // In production, this would call OpenAI API to generate personalized curriculum
+      
+      const lessonMap: any = {
+        trader: [
+          "market-fundamentals",
+          "order-types-execution",
+          "chart-reading-basics",
+          "trend-identification",
+          "momentum-indicators",
+          "volume-analysis",
+          "risk-reward-ratios",
+          "stop-loss-strategies",
+          "portfolio-diversification",
+          "backtesting-strategies",
+          "live-trading-practice",
+          "advanced-indicators"
+        ],
+        defi: [
+          "defi-introduction",
+          "smart-contracts-101",
+          "decentralized-exchanges",
+          "liquidity-pools",
+          "yield-farming",
+          "impermanent-loss",
+          "lending-borrowing",
+          "flash-loans",
+          "governance-tokens",
+          "protocol-analysis"
+        ],
+        nfts: [
+          "nft-basics",
+          "marketplace-navigation",
+          "collection-analysis",
+          "rarity-tools",
+          "floor-price-strategies",
+          "minting-strategies",
+          "community-evaluation",
+          "flipping-techniques"
+        ]
+      };
+      
+      const generatedPath = {
+        id: `path-${Date.now()}`,
+        userId,
+        title: goalTitle,
+        description: `AI-optimized curriculum for ${goalTitle.toLowerCase()}`,
+        goal,
+        difficulty,
+        lessons: lessonMap[goal] || lessonMap.trader,
+        completedLessons: [],
+        progress: 0,
+        estimatedHours,
+        aiGenerated: true,
+        aiRecommendations: {
+          nextLesson: lessonMap[goal]?.[0] || "crypto-fundamentals",
+          dailyGoal: difficulty === "beginner" ? "1 lesson per day" : "2-3 lessons per day",
+          focusAreas: [
+            difficulty === "beginner" ? "Fundamentals" : "Advanced strategies",
+            "Practice exercises",
+            "Real-world applications"
+          ],
+          practiceRecommendation: "Join simulator after completing basics"
+        },
+        createdAt: new Date()
+      };
+      
+      res.json(generatedPath);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to generate learning path" });
+    }
+  });
+
   // Competition endpoints
   app.get("/api/competitions", async (req, res) => {
     try {

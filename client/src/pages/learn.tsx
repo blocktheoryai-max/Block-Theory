@@ -34,6 +34,7 @@ import { apiRequest } from "@/lib/queryClient";
 import { Link } from "wouter";
 import Navigation from "@/components/Navigation";
 import { SEOHead, SEO_PRESETS } from "@/components/SEOHead";
+import { AiLearningPath } from "@/components/ai-learning-path";
 
 interface Lesson {
   id: string;
@@ -370,6 +371,11 @@ export default function Learn() {
                 <Progress value={completionPercentage} className="h-3 bg-slate-700" />
               </CardContent>
             </Card>
+          </div>
+
+          {/* AI Learning Path Section */}
+          <div className="mb-8">
+            <AiLearningPath />
           </div>
 
           {/* Category Stats */}

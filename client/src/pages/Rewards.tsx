@@ -19,33 +19,33 @@ export default function Rewards() {
       <div className="mb-8">
         {/* Hero Section */}
         <Card className="bg-gradient-to-r from-purple-900/50 to-pink-900/50 border-purple-500/50 mb-6">
-          <CardContent className="p-8">
-            <div className="flex items-center justify-between">
+          <CardContent className="p-4 md:p-8">
+            <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
               <div>
-                <h1 className="text-4xl font-bold mb-2 flex items-center gap-3">
-                  <Gift className="w-10 h-10 text-yellow-500" />
+                <h1 className="text-2xl md:text-4xl font-bold mb-2 flex items-center gap-2 md:gap-3">
+                  <Gift className="w-8 h-8 md:w-10 md:h-10 text-yellow-500" />
                   Rewards Center
                 </h1>
-                <p className="text-lg text-gray-300 mb-4">
+                <p className="text-base md:text-lg text-gray-300 mb-4">
                   Learn, compete, and earn real crypto rewards while mastering trading
                 </p>
-                <div className="flex gap-4">
+                <div className="grid grid-cols-2 md:flex gap-2 md:gap-4">
                   <Card className="bg-black/50 border-green-500/50">
-                    <CardContent className="p-3">
-                      <p className="text-sm text-gray-400">Total Rewards</p>
-                      <p className="text-2xl font-bold text-green-400">$2,847</p>
+                    <CardContent className="p-2 md:p-3">
+                      <p className="text-xs md:text-sm text-gray-400">Total Rewards</p>
+                      <p className="text-lg md:text-2xl font-bold text-green-400">$2,847</p>
                     </CardContent>
                   </Card>
                   <Card className="bg-black/50 border-blue-500/50">
-                    <CardContent className="p-3">
-                      <p className="text-sm text-gray-400">Global Rank</p>
-                      <p className="text-2xl font-bold text-blue-400">#247</p>
+                    <CardContent className="p-2 md:p-3">
+                      <p className="text-xs md:text-sm text-gray-400">Global Rank</p>
+                      <p className="text-lg md:text-2xl font-bold text-blue-400">#247</p>
                     </CardContent>
                   </Card>
-                  <Card className="bg-black/50 border-purple-500/50">
-                    <CardContent className="p-3">
-                      <p className="text-sm text-gray-400">Achievements</p>
-                      <p className="text-2xl font-bold text-purple-400">42</p>
+                  <Card className="bg-black/50 border-purple-500/50 col-span-2 md:col-span-1">
+                    <CardContent className="p-2 md:p-3">
+                      <p className="text-xs md:text-sm text-gray-400">Achievements</p>
+                      <p className="text-lg md:text-2xl font-bold text-purple-400">42</p>
                     </CardContent>
                   </Card>
                 </div>
@@ -99,22 +99,22 @@ export default function Rewards() {
 
         {/* Main Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
-          <TabsList className="grid grid-cols-4 w-full">
-            <TabsTrigger value="earn" className="flex items-center gap-2">
+          <TabsList className="grid grid-cols-2 md:grid-cols-4 w-full">
+            <TabsTrigger value="earn" className="flex flex-col md:flex-row items-center gap-1 md:gap-2 text-xs md:text-sm">
               <Gift className="w-4 h-4" />
-              Learn to Earn
+              <span>Earn</span>
             </TabsTrigger>
-            <TabsTrigger value="competitions" className="flex items-center gap-2">
+            <TabsTrigger value="competitions" className="flex flex-col md:flex-row items-center gap-1 md:gap-2 text-xs md:text-sm">
               <Trophy className="w-4 h-4" />
-              Competitions
+              <span>Compete</span>
             </TabsTrigger>
-            <TabsTrigger value="achievements" className="flex items-center gap-2">
+            <TabsTrigger value="achievements" className="flex flex-col md:flex-row items-center gap-1 md:gap-2 text-xs md:text-sm">
               <Award className="w-4 h-4" />
-              Achievements
+              <span>Achieve</span>
             </TabsTrigger>
-            <TabsTrigger value="leaderboard" className="flex items-center gap-2">
+            <TabsTrigger value="leaderboard" className="flex flex-col md:flex-row items-center gap-1 md:gap-2 text-xs md:text-sm">
               <TrendingUp className="w-4 h-4" />
-              Leaderboard
+              <span>Leaders</span>
             </TabsTrigger>
           </TabsList>
 
