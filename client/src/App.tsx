@@ -26,6 +26,8 @@ import PrivacyPolicy from "@/pages/privacy-policy";
 import TermsOfService from "@/pages/terms-of-service";
 import CookiePolicy from "@/pages/cookie-policy";
 import NotFound from "@/pages/not-found";
+import Rewards from "@/pages/Rewards";
+import Competitions from "@/pages/Competitions";
 import { useAuth } from "@/hooks/useAuth";
 import Navigation from "@/components/Navigation";
 import LaunchEnhancementBanner from "@/components/launch-enhancement-banner";
@@ -54,6 +56,8 @@ function Router() {
         <Route path="/chat-rooms" component={ChatRooms} />
         <Route path="/ai-assistant" component={AiAssistant} />
         <Route path="/slideshow-generator" component={SlideshowGeneratorPage} />
+        <Route path="/rewards" component={Rewards} />
+        <Route path="/competitions" component={Competitions} />
         <Route path="/admin/login" component={AdminLogin} />
         <Route path="/admin/dashboard" component={AdminDashboard} />
         <Route path="/privacy-policy" component={PrivacyPolicy} />

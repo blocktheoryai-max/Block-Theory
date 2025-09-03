@@ -2177,6 +2177,179 @@ Provide optimization in JSON format with:
     }
   });
 
+  // ================ COMPETITIVE WEB3 FEATURES ================
+  
+  // Rewards API endpoints
+  app.get("/api/rewards/summary", async (req: any, res) => {
+    try {
+      const userId = req.user?.id || "demo-user";
+      // Mock data for rewards summary
+      res.json({
+        totalEarned: 2847.50,
+        pendingRewards: 127.50,
+        claimedRewards: 2720.00,
+        streak: 42,
+        nextReward: 5.00,
+        tier: "Diamond",
+        multiplier: 3.0
+      });
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch rewards summary" });
+    }
+  });
+
+  app.get("/api/rewards/opportunities", async (req, res) => {
+    try {
+      res.json({
+        daily: { amount: 1.00, available: true },
+        lessons: { amount: 0.50, perLesson: true },
+        quizPerfect: { amount: 2.00, bonus: true },
+        referral: { amount: 5.00, unlimited: true },
+        sponsored: {
+          project: "Polygon",
+          amount: 10.00,
+          deadline: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
+        }
+      });
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch opportunities" });
+    }
+  });
+
+  app.get("/api/rewards/balance", async (req, res) => {
+    try {
+      const wallet = req.query.wallet as string;
+      res.json({
+        claimedBalance: "2720.00",
+        pendingRewards: "127.50",
+        walletAddress: wallet
+      });
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch balance" });
+    }
+  });
+
+  app.post("/api/rewards/claim", async (req: any, res) => {
+    try {
+      const { walletAddress } = req.body;
+      const userId = req.user?.id || "demo-user";
+      
+      // Simulate claiming rewards
+      const claimAmount = 127.50;
+      
+      res.json({
+        success: true,
+        amount: claimAmount,
+        transactionHash: `0x${Math.random().toString(16).substr(2, 64)}`,
+        walletAddress
+      });
+    } catch (error) {
+      res.status(500).json({ message: "Failed to claim rewards" });
+    }
+  });
+
+  app.post("/api/rewards/daily-claim", async (req: any, res) => {
+    try {
+      const userId = req.user?.id || "demo-user";
+      
+      res.json({
+        success: true,
+        amount: 1.00,
+        newStreak: 43,
+        nextReward: 1.10
+      });
+    } catch (error) {
+      res.status(500).json({ message: "Failed to claim daily reward" });
+    }
+  });
+
+  // Wallet integration
+  app.post("/api/wallet/connect", async (req: any, res) => {
+    try {
+      const { walletAddress } = req.body;
+      const userId = req.user?.id || "demo-user";
+      
+      // Save wallet address to user profile
+      res.json({
+        success: true,
+        walletAddress,
+        message: "Wallet connected successfully"
+      });
+    } catch (error) {
+      res.status(500).json({ message: "Failed to connect wallet" });
+    }
+  });
+
+  // Competition endpoints
+  app.get("/api/competitions", async (req, res) => {
+    try {
+      res.json([
+        {
+          id: "weekly-1",
+          title: "Weekly Trading Competition",
+          type: "weekly",
+          status: "active",
+          prizePool: 500,
+          participants: 247,
+          startDate: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000),
+          endDate: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000)
+        },
+        {
+          id: "daily-1",
+          title: "Daily Sprint",
+          type: "daily",
+          status: "upcoming",
+          prizePool: 100,
+          participants: 0,
+          startDate: new Date(Date.now() + 4 * 60 * 60 * 1000),
+          endDate: new Date(Date.now() + 28 * 60 * 60 * 1000)
+        },
+        {
+          id: "sponsored-1",
+          title: "Binance Sponsored Challenge",
+          type: "sponsored",
+          status: "upcoming",
+          prizePool: 1000,
+          participants: 0,
+          startDate: new Date(Date.now() + 24 * 60 * 60 * 1000),
+          endDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
+        }
+      ]);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch competitions" });
+    }
+  });
+
+  app.get("/api/competitions/leaderboard/:competitionId", async (req, res) => {
+    try {
+      res.json([
+        { rank: 1, username: "CryptoKing", pnl: 2847.50, pnlPercentage: 28.48, trades: 47, winRate: 72.3 },
+        { rank: 2, username: "MoonTrader", pnl: 2234.20, pnlPercentage: 22.34, trades: 35, winRate: 68.5 },
+        { rank: 3, username: "DiamondHands", pnl: 1876.90, pnlPercentage: 18.77, trades: 42, winRate: 64.2 },
+        { rank: 4, username: "You", pnl: 1543.30, pnlPercentage: 15.43, trades: 28, winRate: 60.7, isCurrentUser: true },
+        { rank: 5, username: "WhaleWatcher", pnl: 1234.50, pnlPercentage: 12.35, trades: 31, winRate: 58.1 }
+      ]);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch leaderboard" });
+    }
+  });
+
+  app.post("/api/competitions/:id/join", async (req: any, res) => {
+    try {
+      const competitionId = req.params.id;
+      const userId = req.user?.id || "demo-user";
+      
+      res.json({
+        success: true,
+        competitionId,
+        message: "Successfully joined competition",
+        startingBalance: 10000
+      });
+    } catch (error) {
+      res.status(500).json({ message: "Failed to join competition" });
+    }
+  });
+
   const httpServer = createServer(app);
 
   return httpServer;

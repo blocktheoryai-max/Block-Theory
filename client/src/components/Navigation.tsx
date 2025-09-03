@@ -21,10 +21,15 @@ import {
   LineChart,
   ChevronDown,
   Zap,
-  Presentation
+  Presentation,
+  Trophy,
+  Wallet,
+  Gift
 } from "lucide-react";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { WalletConnect } from "@/components/wallet-connect";
+import { Badge } from "@/components/ui/badge";
 
 export default function Navigation() {
   const [location] = useLocation();
@@ -34,12 +39,14 @@ export default function Navigation() {
   const coreNavItems = [
     { path: "/", label: translate("nav.home", "Home"), icon: TrendingUp },
     { path: "/learn", label: translate("nav.learn", "Learn"), icon: BookOpen },
+    { path: "/rewards", label: translate("nav.rewards", "Rewards"), icon: Gift, badge: "NEW" },
     { path: "/simulate", label: translate("nav.simulate", "Simulate"), icon: BarChart3 },
     { path: "/analyze", label: translate("nav.analyze", "Analyze"), icon: Activity },
   ];
 
   // Advanced tools dropdown
   const advancedTools = [
+    { path: "/competitions", label: translate("nav.competitions", "Trading Competitions"), icon: Trophy, badge: "HOT" },
     { path: "/slideshow-generator", label: translate("nav.slideshow", "Slideshow Generator"), icon: Presentation },
     { path: "/ai-assistant", label: translate("nav.ai", "AI Assistant"), icon: Brain },
     { path: "/whale-tracker", label: translate("nav.whale", "Whale Tracker"), icon: Fish },
@@ -85,6 +92,17 @@ export default function Navigation() {
                   >
                     <Icon className="h-4 w-4" />
                     {item.label}
+                    {item.badge && (
+                      <Badge 
+                        className={`ml-1 text-xs px-1.5 py-0 h-5 ${
+                          item.badge === 'NEW' 
+                            ? 'bg-green-600 text-white' 
+                            : 'bg-red-600 text-white animate-pulse'
+                        }`}
+                      >
+                        {item.badge}
+                      </Badge>
+                    )}
                   </Button>
                 </Link>
               );
@@ -113,6 +131,17 @@ export default function Navigation() {
                         <div className="flex items-center gap-2 w-full" data-testid={`nav-${item.path.replace('/', '').replace('-', '_')}`}>
                           <Icon className="h-4 w-4" />
                           {item.label}
+                          {item.badge && (
+                            <Badge 
+                              className={`ml-auto text-xs px-1.5 py-0 h-5 ${
+                                item.badge === 'HOT' 
+                                  ? 'bg-red-600 text-white animate-pulse'
+                                  : 'bg-green-600 text-white'
+                              }`}
+                            >
+                              {item.badge}
+                            </Badge>
+                          )}
                         </div>
                       </Link>
                     </DropdownMenuItem>
@@ -144,6 +173,17 @@ export default function Navigation() {
                         <div className="flex items-center gap-2 w-full" data-testid={`nav-${item.path.replace('/', '').replace('-', '_')}`}>
                           <Icon className="h-4 w-4" />
                           {item.label}
+                          {item.badge && (
+                            <Badge 
+                              className={`ml-auto text-xs px-1.5 py-0 h-5 ${
+                                item.badge === 'HOT' 
+                                  ? 'bg-red-600 text-white animate-pulse'
+                                  : 'bg-green-600 text-white'
+                              }`}
+                            >
+                              {item.badge}
+                            </Badge>
+                          )}
                         </div>
                       </Link>
                     </DropdownMenuItem>
@@ -174,6 +214,9 @@ export default function Navigation() {
           </div>
 
           <div className="flex items-center space-x-2">
+            <div className="hidden md:block">
+              <WalletConnect />
+            </div>
             <LanguageSwitcher />
             <div className="md:hidden">
               <Button variant="outline" size="sm">

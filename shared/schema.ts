@@ -27,6 +27,16 @@ export const users = pgTable("users", {
   trialEndDate: timestamp("trial_end_date"),
   referralCode: text("referral_code"),
   referredBy: text("referred_by"),
+  // Web3 and rewards fields
+  walletAddress: text("wallet_address"),
+  totalEarnings: decimal("total_earnings", { precision: 20, scale: 8 }).default("0"),
+  pendingRewards: decimal("pending_rewards", { precision: 20, scale: 8 }).default("0"),
+  claimedRewards: decimal("claimed_rewards", { precision: 20, scale: 8 }).default("0"),
+  nftCertificates: integer("nft_certificates").default(0),
+  competitionWins: integer("competition_wins").default(0),
+  affiliateEarnings: decimal("affiliate_earnings", { precision: 20, scale: 8 }).default("0"),
+  learningStreak: integer("learning_streak").default(0),
+  aiLearningPath: jsonb("ai_learning_path"),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
@@ -118,6 +128,110 @@ export const trades = pgTable("trades", {
   price: decimal("price", { precision: 10, scale: 2 }).notNull(),
   totalValue: decimal("total_value", { precision: 10, scale: 2 }).notNull(),
   executedAt: timestamp("executed_at").defaultNow(),
+});
+
+// Learn-to-Earn rewards tracking
+export const rewards = pgTable("rewards", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").references(() => users.id).notNull(),
+  lessonId: varchar("lesson_id").references(() => lessons.id),
+  type: text("type").notNull(), // "lesson_completion", "quiz_perfect", "streak_bonus", "referral", "competition"
+  amount: decimal("amount", { precision: 20, scale: 8 }).notNull(),
+  token: text("token").default("USDC"),
+  status: text("status").default("pending"), // "pending", "claimed", "expired"
+  transactionHash: text("transaction_hash"),
+  claimedAt: timestamp("claimed_at"),
+  expiresAt: timestamp("expires_at"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Trading competitions
+export const competitions = pgTable("competitions", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  title: text("title").notNull(),
+  description: text("description"),
+  type: text("type").notNull(), // "daily", "weekly", "monthly", "sponsored"
+  startDate: timestamp("start_date").notNull(),
+  endDate: timestamp("end_date").notNull(),
+  prizePool: decimal("prize_pool", { precision: 20, scale: 8 }).notNull(),
+  prizeToken: text("prize_token").default("USDC"),
+  sponsorId: text("sponsor_id"),
+  minParticipants: integer("min_participants").default(10),
+  maxParticipants: integer("max_participants"),
+  entryFee: decimal("entry_fee", { precision: 20, scale: 8 }).default("0"),
+  rules: jsonb("rules"),
+  status: text("status").default("upcoming"), // "upcoming", "active", "completed", "cancelled"
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Competition participants
+export const competitionParticipants = pgTable("competition_participants", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  competitionId: varchar("competition_id").references(() => competitions.id).notNull(),
+  userId: varchar("user_id").references(() => users.id).notNull(),
+  portfolioValue: decimal("portfolio_value", { precision: 20, scale: 8 }).default("10000"),
+  finalValue: decimal("final_value", { precision: 20, scale: 8 }),
+  rank: integer("rank"),
+  pnl: decimal("pnl", { precision: 20, scale: 8 }),
+  pnlPercentage: decimal("pnl_percentage", { precision: 10, scale: 2 }),
+  trades: integer("trades").default(0),
+  winRate: decimal("win_rate", { precision: 10, scale: 2 }),
+  prizeClaimed: boolean("prize_claimed").default(false),
+  prizeAmount: decimal("prize_amount", { precision: 20, scale: 8 }),
+  joinedAt: timestamp("joined_at").defaultNow(),
+});
+
+// NFT certificates
+export const nftCertificates = pgTable("nft_certificates", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").references(() => users.id).notNull(),
+  lessonId: varchar("lesson_id").references(() => lessons.id),
+  competitionId: varchar("competition_id").references(() => competitions.id),
+  type: text("type").notNull(), // "course_completion", "achievement", "competition_winner", "skill_badge"
+  title: text("title").notNull(),
+  description: text("description"),
+  metadata: jsonb("metadata"), // NFT metadata (image URL, attributes, etc.)
+  tokenId: text("token_id"),
+  contractAddress: text("contract_address"),
+  chainId: integer("chain_id").default(137), // Polygon by default
+  mintTransactionHash: text("mint_transaction_hash"),
+  ipfsHash: text("ipfs_hash"),
+  rarity: text("rarity").default("common"), // "common", "rare", "epic", "legendary"
+  mintedAt: timestamp("minted_at"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Referral tracking
+export const referrals = pgTable("referrals", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  referrerId: varchar("referrer_id").references(() => users.id).notNull(),
+  referredUserId: varchar("referred_user_id").references(() => users.id).notNull(),
+  status: text("status").default("pending"), // "pending", "active", "rewarded"
+  rewardAmount: decimal("reward_amount", { precision: 20, scale: 8 }).default("5"),
+  rewardToken: text("reward_token").default("USDC"),
+  referredUserTier: text("referred_user_tier"),
+  conversionDate: timestamp("conversion_date"),
+  rewardPaidAt: timestamp("reward_paid_at"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// AI-powered learning paths
+export const learningPaths = pgTable("learning_paths", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").references(() => users.id).notNull(),
+  title: text("title").notNull(),
+  description: text("description"),
+  goal: text("goal"), // "become_trader", "understand_defi", "master_nfts", etc.
+  difficulty: text("difficulty").default("beginner"),
+  lessons: text("lessons").array().default([]), // Array of lesson IDs
+  completedLessons: text("completed_lessons").array().default([]),
+  progress: integer("progress").default(0),
+  estimatedHours: integer("estimated_hours"),
+  aiGenerated: boolean("ai_generated").default(true),
+  aiRecommendations: jsonb("ai_recommendations"),
+  completedAt: timestamp("completed_at"),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
 });
 
 export const forumPosts = pgTable("forum_posts", {
