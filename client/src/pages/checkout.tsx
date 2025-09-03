@@ -1,20 +1,29 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "wouter";
 import { useStripe, useElements, PaymentElement, Elements } from '@stripe/react-stripe-js';
-import { loadStripe } from '@stripe/stripe-js';
+import type { Stripe, StripeElements } from '@stripe/stripe-js';
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, CreditCard, Shield, Clock } from "lucide-react";
+import { ArrowLeft, CreditCard, Shield, Clock, AlertCircle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
 import { isUnauthorizedError } from "@/lib/authUtils";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
-if (!import.meta.env.VITE_STRIPE_PUBLIC_KEY) {
-  throw new Error('Missing required Stripe key: VITE_STRIPE_PUBLIC_KEY');
-}
-const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
+// Lazy load Stripe to prevent errors when key is not configured
+let stripePromise: Promise<Stripe | null> | null = null;
+const getStripe = async () => {
+  if (!import.meta.env.VITE_STRIPE_PUBLIC_KEY) {
+    return null;
+  }
+  if (!stripePromise) {
+    const { loadStripe } = await import('@stripe/stripe-js');
+    stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
+  }
+  return stripePromise;
+};
 
 interface CheckoutFormProps {
   planId: string;
@@ -139,6 +148,8 @@ export default function Checkout() {
   const [, setLocation] = useLocation();
   const { toast } = useToast();
   const [clientSecret, setClientSecret] = useState("");
+  const [stripeInstance, setStripeInstance] = useState<Stripe | null>(null);
+  const [stripeError, setStripeError] = useState(false);
   const [paymentDetails, setPaymentDetails] = useState<{
     planName: string;
     amount: number;
@@ -147,6 +158,15 @@ export default function Checkout() {
   } | null>(null);
 
   useEffect(() => {
+    // Load Stripe asynchronously
+    getStripe().then(stripe => {
+      if (!stripe) {
+        setStripeError(true);
+        return;
+      }
+      setStripeInstance(stripe);
+    });
+
     // Get checkout details from URL params or localStorage
     const urlParams = new URLSearchParams(window.location.search);
     const planId = urlParams.get('planId');
@@ -195,7 +215,33 @@ export default function Checkout() {
       });
   }, []);
 
-  if (!clientSecret || !paymentDetails) {
+  if (stripeError || !import.meta.env.VITE_STRIPE_PUBLIC_KEY) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 py-12">
+        <div className="container mx-auto px-4 max-w-md">
+          <div className="mb-6">
+            <Button 
+              variant="ghost" 
+              onClick={() => setLocation("/pricing")}
+              className="mb-4"
+            >
+              <ArrowLeft className="h-4 w-4 mr-2" />
+              Back to Pricing
+            </Button>
+          </div>
+          
+          <Alert>
+            <AlertCircle className="h-4 w-4" />
+            <AlertDescription>
+              Payment processing is not configured. Please contact support to complete your subscription.
+            </AlertDescription>
+          </Alert>
+        </div>
+      </div>
+    );
+  }
+
+  if (!clientSecret || !paymentDetails || !stripeInstance) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 flex items-center justify-center">
         <div className="animate-spin w-8 h-8 border-4 border-primary border-t-transparent rounded-full" aria-label="Loading"/>
@@ -234,7 +280,7 @@ export default function Checkout() {
           </CardHeader>
           <CardContent>
             <Elements 
-              stripe={stripePromise} 
+              stripe={stripeInstance} 
               options={{ 
                 clientSecret,
                 appearance: {
