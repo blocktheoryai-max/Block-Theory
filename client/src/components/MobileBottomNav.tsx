@@ -33,12 +33,12 @@ export default function MobileBottomNav() {
           const active = isActive(item.path);
           return (
             <Link key={item.path} href={item.path}>
-              <a className={`flex flex-col items-center justify-center px-3 py-2 ${
+              <div className={`flex flex-col items-center justify-center px-3 py-2 cursor-pointer ${
                 active ? 'text-purple-500' : 'text-gray-400'
               }`}>
                 <Icon className={`w-5 h-5 mb-1 ${active ? 'scale-110' : ''} transition-all`} />
                 <span className="text-xs">{item.label}</span>
-              </a>
+              </div>
             </Link>
           );
         })}
