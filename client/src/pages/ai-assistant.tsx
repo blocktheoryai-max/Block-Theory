@@ -21,7 +21,8 @@ import {
   DollarSign,
   ArrowUpRight,
   ArrowDownRight,
-  Info
+  Info,
+  Activity
 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
@@ -560,9 +561,9 @@ export default function AiAssistant() {
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="short_term">Short Term (< 1 year)</SelectItem>
+                      <SelectItem value="short_term">Short Term (&lt; 1 year)</SelectItem>
                       <SelectItem value="medium_term">Medium Term (1-3 years)</SelectItem>
-                      <SelectItem value="long_term">Long Term (> 3 years)</SelectItem>
+                      <SelectItem value="long_term">Long Term (&gt; 3 years)</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
