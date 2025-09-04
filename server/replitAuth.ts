@@ -61,12 +61,10 @@ async function upsertUser(claims: any) {
   
   const userData = {
     id: claims["sub"],
-    email: claims["email"] || "",
+    email: claims["email"] || null,
     firstName: claims["first_name"],
     lastName: claims["last_name"],
     profileImageUrl: claims["profile_image_url"],
-    username: claims["preferred_username"] || `user_${claims["sub"]}`,
-    password: "oauth_user", // OAuth users don't use password authentication
     // Set default subscription info
     subscriptionTier: "free",
     subscriptionStatus: "active",

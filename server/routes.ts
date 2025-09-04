@@ -23,7 +23,7 @@ if (!process.env.STRIPE_SECRET_KEY) {
   throw new Error('Missing required Stripe secret: STRIPE_SECRET_KEY');
 }
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
-  apiVersion: "2025-07-30.basil",
+  apiVersion: "2025-08-27.basil",
 });
 
 if (!process.env.OPENAI_API_KEY) {
@@ -66,7 +66,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
         message: 'Login successful',
         user: {
           id: user.id,
-          username: user.username,
           email: user.email,
           firstName: user.firstName,
           lastName: user.lastName
@@ -400,7 +399,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         const user = await storage.getUser(userId);
         if (user?.email) {
           const planName = await storage.getSubscriptionPlan(paymentIntent.metadata.planId);
-          const userName = user.firstName || user.username;
+          const userName = user.firstName || 'User';
           await emailService.sendSubscriptionConfirmationEmail(
             user.email, 
             userName, 
@@ -443,7 +442,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         
         // Send trial started email
         if (user.email) {
-          const userName = user.firstName || user.username;
+          const userName = user.firstName || 'User';
           await emailService.sendTrialStartedEmail(user.email, userName, trialEndDate);
         }
         
@@ -1959,7 +1958,7 @@ Provide optimization in JSON format with:
       for (const user of eligibleUsers) {
         const success = await emailService.sendWeeklyMarketReport(
           user.email, 
-          user.firstName || user.username, 
+          user.firstName || 'User', 
           reportContent
         );
         if (success) sentCount++;
