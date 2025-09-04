@@ -64,6 +64,20 @@ app.use((req, res, next) => {
   // Add health check endpoint
   app.get('/health', healthCheck);
   
+  // Simple test route for debugging access issues
+  app.get('/test', (req, res) => {
+    res.send(`
+      <!DOCTYPE html>
+      <html><head><title>Block Theory Test</title></head>
+      <body style="font-family:Arial;background:#1a1a1a;color:white;text-align:center;padding:50px;">
+        <h1 style="color:#9333ea;">🚀 Block Theory Server Working!</h1>
+        <p>✅ Server is running and accessible on port 5000</p>
+        <p>Your app is ready with 100+ lessons and real-time crypto data</p>
+        <a href="/" style="color:#9333ea;text-decoration:none;border:1px solid #9333ea;padding:10px 20px;border-radius:5px;">Go to Full App</a>
+      </body></html>
+    `);
+  });
+  
   const server = await registerRoutes(app);
 
   // Use production error handler

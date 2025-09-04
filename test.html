@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Block Theory Test</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            background: #1a1a1a; 
+            color: white; 
+            text-align: center; 
+            padding: 50px; 
+        }
+        .logo { color: #9333ea; font-size: 2em; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <div class="logo">🚀 Block Theory</div>
+    <h1>Test Page Working!</h1>
+    <p>Server is running on port 5000</p>
+    <p>If you can see this, the server is accessible.</p>
+    <script>
+        fetch('/api/lessons')
+            .then(r => r.json())
+            .then(data => {
+                document.body.innerHTML += '<p>✅ API Working - ' + data.length + ' lessons loaded</p>';
+            })
+            .catch(e => {
+                document.body.innerHTML += '<p>❌ API Error: ' + e.message + '</p>';
+            });
+    </script>
+</body>
+</html>
