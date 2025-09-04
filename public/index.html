@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Block Theory - Direct Access</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            background: #1a1a1a; 
+            color: white; 
+            text-align: center; 
+            padding: 50px;
+            margin: 0;
+        }
+        .logo { color: #9333ea; font-size: 3em; margin-bottom: 20px; }
+        .btn { 
+            display: inline-block;
+            background: #9333ea; 
+            color: white; 
+            padding: 15px 30px; 
+            text-decoration: none; 
+            border-radius: 8px; 
+            margin: 10px;
+            font-weight: bold;
+        }
+        .status { color: #4ade80; margin: 20px 0; }
+    </style>
+</head>
+<body>
+    <div class="logo">🚀 Block Theory</div>
+    <h1>Crypto Education Platform</h1>
+    <div class="status">✅ Server Running Successfully</div>
+    <p>Your complete crypto education platform is ready with:</p>
+    <ul style="text-align: left; display: inline-block;">
+        <li>100+ Professional Crypto Lessons</li>
+        <li>Real-time Market Data Integration</li>
+        <li>Mobile-First PWA Design</li>
+        <li>User Authentication System</li>
+        <li>Copy Trading Features</li>
+        <li>NFT Marketplace Integration</li>
+    </ul>
+    <br><br>
+    <a href="/learn" class="btn">Start Learning</a>
+    <a href="/api/lessons" class="btn">View API Data</a>
+    <a href="/test" class="btn">Server Test</a>
+    
+    <script>
+        // Test API connectivity
+        fetch('/api/market-data')
+            .then(r => r.json())
+            .then(data => {
+                const coins = Object.keys(data).length;
+                document.body.innerHTML += `<div style="margin-top:30px;color:#4ade80;">🔗 API Connected: ${coins} cryptocurrencies loaded</div>`;
+            })
+            .catch(e => {
+                document.body.innerHTML += `<div style="margin-top:30px;color:#ef4444;">⚠️ API Issue: ${e.message}</div>`;
+            });
+    </script>
+</body>
+</html>
