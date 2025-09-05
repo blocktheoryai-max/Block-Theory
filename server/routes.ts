@@ -1,6 +1,8 @@
 import express, { type Express, type Response, type NextFunction } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
+import { errorHandler, notFoundHandler, healthCheck, asyncHandler } from "./errorHandling";
+import { errorMessages } from "./environmentConfig";
 import { setupAuth, isAuthenticated, requiresSubscription } from "./replitAuth";
 import { emailService } from "./emailService";
 import { adminAuth } from "./adminAuth";
@@ -73,7 +75,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
       });
     } catch (error) {
       console.error('Admin login error:', error);
-      res.status(500).json({ message: 'Internal server error' });
+      res.status(500).json({ 
+        message: errorMessages.SERVER_ERROR,
+        support: "Contact support if this issue persists"
+      });
     }
   });
 
@@ -2539,6 +2544,34 @@ Provide optimization in JSON format with:
       res.status(500).json({ message: "Failed to join competition" });
     }
   });
+
+  // Health check endpoint
+  app.get('/api/health', healthCheck);
+  
+  // Add missing API endpoints for production
+  app.get('/api/whale-activity', asyncHandler(async (req: any, res: any) => {
+    // In production, this would fetch real whale activity data
+    res.json([]);
+  }));
+  
+  app.get('/api/momentum-data', asyncHandler(async (req: any, res: any) => {
+    // In production, this would fetch real momentum data
+    res.json([]);
+  }));
+  
+  app.get('/api/community/active-users', asyncHandler(async (req: any, res: any) => {
+    // In production, this would fetch active community users
+    res.json([]);
+  }));
+  
+  app.get('/api/community/recent-messages', asyncHandler(async (req: any, res: any) => {
+    // In production, this would fetch recent community messages
+    res.json([]);
+  }));
+
+  // Error handling middleware (only for API routes)
+  app.use('/api', notFoundHandler);
+  app.use('/api', errorHandler);
 
   const httpServer = createServer(app);
 

@@ -10,16 +10,32 @@ export default function CommunitySection() {
     queryKey: ['/api/forum']
   });
 
-  const mockUsers = [
-    { name: "TradeWizard", posts: 342, avatar: "TW", badge: "Expert", icon: Crown },
-    { name: "CryptoSage", posts: 287, avatar: "CS", badge: "Advanced", icon: Medal },
-    { name: "BTCAnalyst", posts: 198, avatar: "BA", badge: "Intermediate", icon: Medal },
+  // Get active community users from API
+  const { data: activeUsers = [] } = useQuery<any[]>({
+    queryKey: ['/api/community/active-users'],
+    staleTime: 5 * 60 * 1000 // 5 minutes
+  });
+
+  // Get recent chat messages from API
+  const { data: recentMessages = [] } = useQuery<any[]>({
+    queryKey: ['/api/community/recent-messages'],
+    refetchInterval: 30000 // Refresh every 30 seconds
+  });
+
+  // Fallback data for when API is unavailable
+  const fallbackUsers = [
+    { name: "Community Expert", posts: 342, avatar: "CE", badge: "Expert", icon: Crown },
+    { name: "Market Analyst", posts: 287, avatar: "MA", badge: "Advanced", icon: Medal },
+    { name: "Crypto Enthusiast", posts: 198, avatar: "CE", badge: "Intermediate", icon: Medal },
   ];
 
-  const mockChatMessages = [
-    { user: "QuickTrader", message: "Anyone watching the ETH charts right now?", time: "2 min ago" },
-    { user: "MarketWatcher", message: "Seeing some bullish divergence on the 1h", time: "1 min ago" },
+  const fallbackMessages = [
+    { user: "Trader", message: "Great educational content on DeFi!", time: "2 min ago" },
+    { user: "Learner", message: "The NFT marketplace tour was very helpful", time: "1 min ago" },
   ];
+
+  const displayUsers = activeUsers.length > 0 ? activeUsers : fallbackUsers;
+  const displayMessages = recentMessages.length > 0 ? recentMessages : fallbackMessages;
 
   const formatTimeAgo = (date: Date) => {
     const now = new Date();
@@ -201,7 +217,7 @@ export default function CommunitySection() {
             <div className="bg-white rounded-2xl shadow-lg p-6">
               <h3 className="text-xl font-semibold text-slate-900 mb-4">Top Contributors</h3>
               <div className="space-y-4">
-                {mockUsers.map((user, index) => {
+                {displayUsers.map((user: any, index: number) => {
                   const IconComponent = user.icon;
                   return (
                     <div key={user.name} className="flex items-center space-x-3">
@@ -227,7 +243,7 @@ export default function CommunitySection() {
             <div className="bg-white rounded-2xl shadow-lg p-6">
               <h3 className="text-xl font-semibold text-slate-900 mb-4">Live Chat</h3>
               <div className="bg-slate-50 rounded-lg p-4 h-48 overflow-y-auto mb-4">
-                {mockChatMessages.map((msg, index) => (
+                {displayMessages.map((msg: any, index: number) => (
                   <div key={index} className="mb-3">
                     <div className="text-sm">
                       <span className="font-semibold text-primary">{msg.user}:</span>

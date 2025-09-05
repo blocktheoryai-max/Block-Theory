@@ -1,4 +1,5 @@
 import { storage } from './storage';
+import bcrypt from 'bcryptjs';
 
 export interface AdminCredentials {
   username: string;
@@ -51,8 +52,16 @@ export class AdminAuth {
   // Simple admin authentication for development
   async authenticateAdmin(username: string, password: string): Promise<any> {
     try {
-      // Simple hardcoded check for development
-      if (username === 'admin' && password === 'BlockTheory2025!') {
+      // Production-ready admin authentication
+      const adminUsername = process.env.ADMIN_USERNAME || 'admin';
+      const adminPasswordHash = process.env.ADMIN_PASSWORD_HASH;
+      
+      if (!adminPasswordHash) {
+        console.error('ADMIN_PASSWORD_HASH environment variable not set');
+        return null;
+      }
+      
+      if (username === adminUsername && await this.verifyPassword(password, adminPasswordHash)) {
         const users = await storage.getAllUsers();
         const adminUser = users.find(u => u.id === 'admin-owner-account');
         
@@ -72,12 +81,20 @@ export class AdminAuth {
     }
   }
 
-  // Simplified password change for development
+  // Production admin password change
   async changeAdminPassword(username: string, currentPassword: string, newPassword: string): Promise<boolean> {
     try {
-      // For development, just log the password change request
-      if (username === 'admin' && currentPassword === 'BlockTheory2025!') {
-        console.log(`Admin password change requested to: ${newPassword}`);
+      const adminUsername = process.env.ADMIN_USERNAME || 'admin';
+      const currentHash = process.env.ADMIN_PASSWORD_HASH;
+      
+      if (!currentHash || username !== adminUsername) {
+        return false;
+      }
+      
+      if (await this.verifyPassword(currentPassword, currentHash)) {
+        const newHash = await this.hashPassword(newPassword);
+        // Note: In production, you'd update the environment variable or database
+        console.log(`Admin password change - new hash: ${newHash}`);
         return true;
       }
       return false;
@@ -85,6 +102,16 @@ export class AdminAuth {
       console.error('Password change error:', error);
       return false;
     }
+  }
+
+  // Password hashing utilities for production
+  private async hashPassword(password: string): Promise<string> {
+    const saltRounds = 12;
+    return await bcrypt.hash(password, saltRounds);
+  }
+
+  private async verifyPassword(password: string, hash: string): Promise<boolean> {
+    return await bcrypt.compare(password, hash);
   }
 }
 

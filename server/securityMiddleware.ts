@@ -185,7 +185,8 @@ export const trackSuspiciousActivity = (req: Request, res: Response, next: NextF
 // Clean up old IP tracking data every hour
 setInterval(() => {
   const oneHourAgo = Date.now() - 3600000;
-  for (const [ip, data] of ipAttempts.entries()) {
+  const entries = Array.from(ipAttempts.entries());
+  for (const [ip, data] of entries) {
     if (data.lastAttempt < oneHourAgo) {
       ipAttempts.delete(ip);
     }

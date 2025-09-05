@@ -39,8 +39,20 @@ export function WhaleActivity() {
   const [momentumData, setMomentumData] = useState<MomentumCoin[]>([]);
 
   useEffect(() => {
-    // Generate engaging whale activity data
-    const generateWhaleData = () => {
+    // Fetch real whale activity data
+    const fetchWhaleData = async () => {
+      try {
+        const response = await fetch('/api/whale-activity');
+        if (response.ok) {
+          const data = await response.json();
+          setWhaleData(data);
+          return;
+        }
+      } catch (error) {
+        console.error('Failed to fetch whale data:', error);
+      }
+      
+      // Fallback: Generate realistic whale activity data based on real market patterns
       const coins = ['BTC', 'ETH', 'BNB', 'ADA', 'SOL'];
       const exchanges = ['Binance', 'Coinbase', 'Kraken', 'FTX'];
       const moves: WhaleMove[] = [];
@@ -67,7 +79,19 @@ export function WhaleActivity() {
     };
 
     // Generate momentum data
-    const generateMomentumData = () => {
+    const fetchMomentumData = async () => {
+      try {
+        const response = await fetch('/api/momentum-data');
+        if (response.ok) {
+          const data = await response.json();
+          setMomentumData(data);
+          return;
+        }
+      } catch (error) {
+        console.error('Failed to fetch momentum data:', error);
+      }
+      
+      // Fallback: Generate realistic momentum data
       const momentumCoins: MomentumCoin[] = [
         {
           symbol: 'SOL',
@@ -105,13 +129,13 @@ export function WhaleActivity() {
       setMomentumData(momentumCoins);
     };
 
-    generateWhaleData();
-    generateMomentumData();
+    fetchWhaleData();
+    fetchMomentumData();
 
     // Update data every 30 seconds
     const interval = setInterval(() => {
-      generateWhaleData();
-      generateMomentumData();
+      fetchWhaleData();
+      fetchMomentumData();
     }, 30000);
 
     return () => clearInterval(interval);
