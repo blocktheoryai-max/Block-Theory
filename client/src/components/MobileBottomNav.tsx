@@ -16,7 +16,7 @@ export default function MobileBottomNav() {
     { path: "/learn", label: "Learn", icon: BookOpen },
     { path: "/copy-trading", label: "Copy", icon: Copy },
     { path: "/portfolio", label: "Portfolio", icon: Wallet },
-    { path: "/rewards", label: "Rewards", icon: Trophy },
+    { path: "/achievements", label: "Rewards", icon: Trophy },
   ];
 
   const isActive = (path: string) => {

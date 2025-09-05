@@ -29,6 +29,7 @@ import NotFound from "@/pages/not-found";
 import Rewards from "@/pages/Rewards";
 import Competitions from "@/pages/Competitions";
 import CopyTrading from "@/pages/copy-trading";
+import Achievements from "@/pages/achievements";
 import { useAuth } from "@/hooks/useAuth";
 import Navigation from "@/components/Navigation";
 import MobileBottomNav from "@/components/MobileBottomNav";
@@ -75,6 +76,7 @@ function Router() {
         <Route path="/rewards" component={Rewards} />
         <Route path="/competitions" component={Competitions} />
         <Route path="/copy-trading" component={CopyTrading} />
+        <Route path="/achievements" component={Achievements} />
         <Route path="/portfolio" component={Simulate} />
         <Route path="/admin/login" component={AdminLogin} />
         <Route path="/admin/dashboard" component={AdminDashboard} />

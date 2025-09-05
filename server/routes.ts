@@ -463,6 +463,74 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({ message: "Failed to start trial" });
     }
   });
+  // Get quiz questions for a lesson
+  app.get("/api/lessons/:lessonId/quiz", async (req, res) => {
+    try {
+      const { lessonId } = req.params;
+      
+      // Sample quiz data - in production, this would come from database
+      const sampleQuizzes: Record<string, any[]> = {
+        "af8dfdab-8dcd-4578-9466-2fee089702d9": [ // "What is Cryptocurrency?" lesson
+          {
+            id: "q1",
+            question: "What is the primary advantage of cryptocurrency over traditional banking?",
+            options: [
+              "It's backed by government guarantees",
+              "Transactions are processed 24/7 without central authority control",
+              "It has no transaction fees",
+              "It's completely anonymous"
+            ],
+            correctAnswer: 1,
+            explanation: "Cryptocurrencies operate on decentralized networks that function 24/7, unlike traditional banks with limited hours and central control.",
+            points: 10
+          },
+          {
+            id: "q2", 
+            question: "According to MIT's Digital Currency Initiative, what problem did Bitcoin solve?",
+            options: [
+              "High transaction fees",
+              "The double-spending problem",
+              "Slow international transfers",
+              "Banking accessibility"
+            ],
+            correctAnswer: 1,
+            explanation: "Bitcoin was the first successful solution to the double-spending problem without requiring a central authority, as noted by MIT researchers.",
+            points: 10
+          }
+        ],
+        // Add more lesson quizzes here
+      };
+      
+      const quizQuestions = sampleQuizzes[lessonId] || [];
+      res.json(quizQuestions);
+    } catch (error) {
+      console.error("Error fetching quiz questions:", error);
+      res.status(500).json({ message: "Failed to fetch quiz questions" });
+    }
+  });
+
+  // Complete lesson progress with quiz score
+  app.post("/api/progress/complete", isAuthenticated, async (req: any, res) => {
+    try {
+      const { lessonId, score, timeSpent } = req.body;
+      const userId = req.user.claims.sub;
+      
+      // In a real app, you'd update user progress in database
+      // For now, we'll simulate the completion
+      
+      res.json({
+        message: "Lesson completed successfully",
+        lessonId,
+        score,
+        timeSpent,
+        rewardEarned: score >= 18 ? 10 : 5 // Bonus USDC for high scores
+      });
+    } catch (error) {
+      console.error("Error completing lesson:", error);
+      res.status(500).json({ message: "Failed to complete lesson" });
+    }
+  });
+
   // Protected lessons (require subscription for premium content)
   app.get("/api/lessons", async (req: any, res) => {
     try {
@@ -1956,12 +2024,14 @@ Provide optimization in JSON format with:
       
       let sentCount = 0;
       for (const user of eligibleUsers) {
-        const success = await emailService.sendWeeklyMarketReport(
-          user.email, 
-          user.firstName || 'User', 
-          reportContent
-        );
-        if (success) sentCount++;
+        if (user.email) {
+          const success = await emailService.sendWeeklyMarketReport(
+            user.email, 
+            user.firstName || 'User', 
+            reportContent
+          );
+          if (success) sentCount++;
+        }
       }
       
       res.json({ 
@@ -2017,7 +2087,9 @@ Provide optimization in JSON format with:
         
         // Send to eligible users
         for (const user of eligibleUsers) {
-          await emailService.sendTradingSignalAlert(user.email, signal);
+          if (user.email) {
+            await emailService.sendTradingSignalAlert(user.email, signal);
+          }
         }
       }
       
