@@ -149,6 +149,11 @@ const ipAttempts = new Map<string, { count: number; lastAttempt: number }>();
 export const trackSuspiciousActivity = (req: Request, res: Response, next: NextFunction) => {
   const clientIP = req.ip || req.connection.remoteAddress || 'unknown';
   
+  // Skip suspicious activity tracking in development
+  if (process.env.NODE_ENV === 'development') {
+    return next();
+  }
+  
   // Skip if IP is already marked as suspicious
   if (suspiciousIPs.has(clientIP)) {
     return res.status(429).json({ 
