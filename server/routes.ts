@@ -634,13 +634,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post("/api/slideshows", async (req: any, res) => {
+  app.post("/api/slideshows", isAuthenticated, async (req: any, res) => {
     try {
-      // For demo purposes, use a demo user ID if not authenticated
-      let userId = "demo-user-id";
-      if (req.isAuthenticated && req.isAuthenticated()) {
-        userId = req.user.claims.sub;
-      }
+      const userId = req.user.claims.sub;
 
       const slideshowData = insertSlideshowSchema.parse({
         ...req.body,
@@ -868,23 +864,27 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post("/api/chat/rooms/:roomId/messages", async (req, res) => {
+  app.post("/api/chat/rooms/:roomId/messages", isAuthenticated, async (req: any, res) => {
     try {
       const { roomId } = req.params;
       const { content, messageType = "text", metadata = null } = req.body;
+      const userId = req.user.claims.sub;
       
       if (!content || content.trim().length === 0) {
         return res.status(400).json({ error: "Message content is required" });
       }
 
+      // Get user info for the message
+      const user = await storage.getUser(userId);
+      const username = user ? `${user.firstName || ''} ${user.lastName || ''}`.trim() || user.email : 'Anonymous';
+
       const message = await storage.createChatMessage({
         roomId,
-        userId: "demo-user",
-        username: "DemoUser",
+        userId,
+        username,
         content: content.trim(),
         messageType,
-        metadata,
-        replyToId: null
+        metadata
       });
 
       res.status(201).json(message);
@@ -2256,9 +2256,9 @@ Provide optimization in JSON format with:
   // ================ COMPETITIVE WEB3 FEATURES ================
   
   // Rewards API endpoints
-  app.get("/api/rewards/summary", async (req: any, res) => {
+  app.get("/api/rewards/summary", isAuthenticated, async (req: any, res) => {
     try {
-      const userId = req.user?.id || "demo-user";
+      const userId = req.user.claims.sub;
       // Mock data for rewards summary
       res.json({
         totalEarned: 2847.50,
@@ -2305,10 +2305,10 @@ Provide optimization in JSON format with:
     }
   });
 
-  app.post("/api/rewards/claim", async (req: any, res) => {
+  app.post("/api/rewards/claim", isAuthenticated, async (req: any, res) => {
     try {
       const { walletAddress } = req.body;
-      const userId = req.user?.id || "demo-user";
+      const userId = req.user.claims.sub;
       
       // Simulate claiming rewards
       const claimAmount = 127.50;
@@ -2324,9 +2324,9 @@ Provide optimization in JSON format with:
     }
   });
 
-  app.post("/api/rewards/daily-claim", async (req: any, res) => {
+  app.post("/api/rewards/daily-claim", isAuthenticated, async (req: any, res) => {
     try {
-      const userId = req.user?.id || "demo-user";
+      const userId = req.user.claims.sub;
       
       res.json({
         success: true,
@@ -2397,10 +2397,10 @@ Provide optimization in JSON format with:
     }
   });
 
-  app.post("/api/learning-path/generate", async (req: any, res) => {
+  app.post("/api/learning-path/generate", isAuthenticated, async (req: any, res) => {
     try {
       const { goal, goalTitle, difficulty, estimatedHours } = req.body;
-      const userId = req.user?.id || "demo-user";
+      const userId = req.user.claims.sub;
       
       // Simulate AI generation with OpenAI (mock for now)
       // In production, this would call OpenAI API to generate personalized curriculum
@@ -2529,10 +2529,10 @@ Provide optimization in JSON format with:
     }
   });
 
-  app.post("/api/competitions/:id/join", async (req: any, res) => {
+  app.post("/api/competitions/:id/join", isAuthenticated, async (req: any, res) => {
     try {
       const competitionId = req.params.id;
-      const userId = req.user?.id || "demo-user";
+      const userId = req.user.claims.sub;
       
       res.json({
         success: true,

@@ -2,6 +2,7 @@ import { GraduationCap, Clock, CheckCircle, PlayCircle, Lock } from "lucide-reac
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useQuery } from "@tanstack/react-query";
+import { useAuth } from "@/hooks/useAuth";
 import { Progress } from "@/components/ui/progress";
 import { useState } from "react";
 import LessonViewer from "./lesson-viewer";
@@ -9,13 +10,15 @@ import LessonSystem from "./lesson-system";
 
 export default function LearnSection() {
   const [selectedLessonId, setSelectedLessonId] = useState<string | null>(null);
+  const { isAuthenticated } = useAuth();
 
   const { data: lessons, isLoading } = useQuery({
     queryKey: ['/api/lessons']
   });
 
   const { data: userProgress } = useQuery({
-    queryKey: ['/api/progress/demo-user'] // Using demo user for now
+    queryKey: ['/api/progress'],
+    enabled: isAuthenticated // Only fetch progress if user is authenticated
   });
 
   const getProgressForLesson = (lessonId: string) => {

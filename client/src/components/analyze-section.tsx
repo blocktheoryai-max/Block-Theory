@@ -2,15 +2,20 @@ import { BarChart3, Trophy, TrendingUp, Clock, GraduationCap, Lightbulb, Star } 
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { useQuery } from "@tanstack/react-query";
+import { useAuth } from "@/hooks/useAuth";
 import PerformanceChart from "./performance-chart";
 
 export default function AnalyzeSection() {
+  const { isAuthenticated } = useAuth();
+  
   const { data: trades } = useQuery({
-    queryKey: ['/api/trades/demo-user']
+    queryKey: ['/api/trades'],
+    enabled: isAuthenticated // Only fetch trades if user is authenticated
   });
 
   const { data: userProgress } = useQuery({
-    queryKey: ['/api/progress/demo-user']
+    queryKey: ['/api/progress'],
+    enabled: isAuthenticated // Only fetch progress if user is authenticated
   });
 
   const calculateWinRate = () => {

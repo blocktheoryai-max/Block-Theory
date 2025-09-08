@@ -5,6 +5,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useAuth } from "@/hooks/useAuth";
 import { useState } from "react";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
@@ -18,6 +19,7 @@ export default function SimulateSection() {
   
   const queryClient = useQueryClient();
   const { toast } = useToast();
+  const { isAuthenticated } = useAuth();
 
   const { data: prices, refetch: refetchPrices } = useQuery({
     queryKey: ['/api/prices'],
@@ -25,11 +27,13 @@ export default function SimulateSection() {
   });
 
   const { data: portfolio } = useQuery({
-    queryKey: ['/api/portfolio/demo-user']
+    queryKey: ['/api/portfolio'],
+    enabled: isAuthenticated // Only fetch portfolio if user is authenticated
   });
 
   const { data: trades } = useQuery({
-    queryKey: ['/api/trades/demo-user']
+    queryKey: ['/api/trades'],
+    enabled: isAuthenticated // Only fetch trades if user is authenticated
   });
 
   const updatePricesMutation = useMutation({
@@ -46,8 +50,8 @@ export default function SimulateSection() {
   const placeTradeMutation = useMutation({
     mutationFn: (tradeData: any) => apiRequest('POST', '/api/trades', tradeData),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['/api/trades/demo-user'] });
-      queryClient.invalidateQueries({ queryKey: ['/api/portfolio/demo-user'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/trades'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/portfolio'] });
       toast({
         title: "Trade Executed",
         description: "Your trade has been successfully executed",
@@ -77,8 +81,16 @@ export default function SimulateSection() {
     const btcPrice = Array.isArray(prices) ? prices.find((p: any) => p.symbol === "BTC")?.price || "45000" : "45000";
     const btcAmount = (parseFloat(buyAmount) / parseFloat(btcPrice)).toFixed(8);
 
+    if (!isAuthenticated) {
+      toast({
+        title: "Authentication Required",
+        description: "Please log in to start trading",
+        variant: "destructive",
+      });
+      return;
+    }
+
     placeTradeMutation.mutate({
-      userId: "demo-user",
       symbol: "BTC",
       type: "buy",
       amount: btcAmount,
@@ -100,8 +112,16 @@ export default function SimulateSection() {
     const btcPrice = Array.isArray(prices) ? prices.find((p: any) => p.symbol === "BTC")?.price || "45000" : "45000";
     const totalValue = (parseFloat(sellAmount) * parseFloat(btcPrice)).toFixed(2);
 
+    if (!isAuthenticated) {
+      toast({
+        title: "Authentication Required",
+        description: "Please log in to start trading",
+        variant: "destructive",
+      });
+      return;
+    }
+
     placeTradeMutation.mutate({
-      userId: "demo-user",
       symbol: "BTC",
       type: "sell",
       amount: sellAmount,
