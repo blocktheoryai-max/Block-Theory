@@ -2,20 +2,41 @@ import { Request, Response, NextFunction } from 'express';
 
 // Production environment validation
 export const validateEnvironment = () => {
+  // Critical variables that will cause app to exit if missing
   const required = [
     'DATABASE_URL',
-    'SENDGRID_API_KEY', 
-    'FROM_EMAIL',
-    'OPENAI_API_KEY',
     'SESSION_SECRET'
   ];
 
-  const missing = required.filter(key => !process.env[key]);
+  // Optional variables that will only show warnings if missing
+  const optional = [
+    'SENDGRID_API_KEY', 
+    'FROM_EMAIL',
+    'OPENAI_API_KEY'
+  ];
+
+  // Check required variables
+  const missingRequired = required.filter(key => !process.env[key]);
   
-  if (missing.length > 0) {
-    console.error('Missing required environment variables:', missing);
+  if (missingRequired.length > 0) {
+    console.error('Missing required environment variables:', missingRequired);
     if (process.env.NODE_ENV === 'production') {
       process.exit(1);
+    }
+  }
+
+  // Check optional variables and warn
+  const missingOptional = optional.filter(key => !process.env[key]);
+  
+  if (missingOptional.length > 0) {
+    console.warn('⚠️  Missing optional environment variables:', missingOptional);
+    console.warn('⚠️  Some features may be disabled without these variables:');
+    
+    if (missingOptional.includes('SENDGRID_API_KEY') || missingOptional.includes('FROM_EMAIL')) {
+      console.warn('   - Email functionality will be disabled');
+    }
+    if (missingOptional.includes('OPENAI_API_KEY')) {
+      console.warn('   - AI-powered features will be disabled');
     }
   }
 
