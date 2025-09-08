@@ -876,7 +876,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       // Get user info for the message
       const user = await storage.getUser(userId);
-      const username = user ? `${user.firstName || ''} ${user.lastName || ''}`.trim() || user.email : 'Anonymous';
+      const username = user ? `${user.firstName || ''} ${user.lastName || ''}`.trim() || user.email || 'Anonymous' : 'Anonymous';
 
       const message = await storage.createChatMessage({
         roomId,
@@ -2340,10 +2340,10 @@ Provide optimization in JSON format with:
   });
 
   // Wallet integration
-  app.post("/api/wallet/connect", async (req: any, res) => {
+  app.post("/api/wallet/connect", isAuthenticated, async (req: any, res) => {
     try {
       const { walletAddress } = req.body;
-      const userId = req.user?.id || "demo-user";
+      const userId = req.user.claims.sub;
       
       // Save wallet address to user profile
       res.json({
@@ -2357,9 +2357,9 @@ Provide optimization in JSON format with:
   });
 
   // AI Learning Path endpoints
-  app.get("/api/learning-path", async (req: any, res) => {
+  app.get("/api/learning-path", isAuthenticated, async (req: any, res) => {
     try {
-      const userId = req.user?.id || "demo-user";
+      const userId = req.user.claims.sub;
       
       // Mock learning path data
       res.json({
