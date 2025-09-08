@@ -19,13 +19,13 @@ export async function seedDatabase() {
           stripePriceIdMonthly: null,
           stripePriceIdYearly: null,
           features: [
-            "First 5 beginner lessons",
+            "First 3 beginner lessons",
             "Basic trading simulator ($1K portfolio)",
             "Community forum (read-only)",
             "Sample market analysis",
             "Basic portfolio view"
           ],
-          maxLessons: 5,
+          maxLessons: 3,
           hasSimulator: true,
           hasCommunity: true,
           hasAnalytics: false,
