@@ -14,103 +14,91 @@ export async function seedDatabase() {
         {
           tier: "free",
           name: "Free",
-          priceMonthly: "0",
-          priceYearly: "0",
+          priceMonthly: "0.00",
+          priceYearly: null,
+          stripePriceIdMonthly: null,
+          stripePriceIdYearly: null,
           features: [
-            "Access to 10 foundation lessons",
-            "Basic trading simulator ($1K virtual)",
-            "Community forum access",
-            "Weekly market updates",
-            "Basic portfolio tracking"
+            "First 5 beginner lessons",
+            "Basic trading simulator ($1K portfolio)",
+            "Community forum (read-only)",
+            "Sample market analysis",
+            "Basic portfolio view"
           ],
+          maxLessons: 5,
           hasSimulator: true,
           hasCommunity: true,
           hasAnalytics: false,
           hasLiveTrading: false,
-          hasSignals: false,
-
+          hasSignals: false
         },
         {
           tier: "starter",
           name: "Starter",
           priceMonthly: "9.99",
           priceYearly: "99.99",
+          stripePriceIdMonthly: "price_1S58xNKiPBcddi5DAvQfkfq6",
+          stripePriceIdYearly: "price_1S59wiKiPBcddi5D78MJyipn",
           features: [
-            "Access to 20 foundation lessons",
-            "Basic trading simulator ($5K virtual)",
+            "20 foundation lessons",
+            "Basic trading simulator ($5K portfolio)",
             "Community forum access",
             "Weekly market updates",
             "Basic portfolio tracking",
-            "Mobile app features",
-            "Copy trading (view only)"
+            "Mobile app access",
+            "Copy trading (view-only mode)"
           ],
+          maxLessons: 20,
           hasSimulator: true,
           hasCommunity: true,
           hasAnalytics: false,
           hasLiveTrading: false,
-          hasSignals: false,
-          maxLessons: 20
+          hasSignals: false
         },
         {
           tier: "basic",
           name: "Basic",
           priceMonthly: "24.99",
-          priceYearly: "249.99",
+          priceYearly: "199.99",
+          stripePriceIdMonthly: "price_1S58yiKiPBcddi5DsP9SqbAy",
+          stripePriceIdYearly: "price_1S59wKKiPBcddi5DHyfpGoAM",
           features: [
-            "Complete lesson library (50+ lessons)",
-            "Advanced trading simulator ($10K virtual)",
+            "Complete video library (100+ lessons)",
+            "Advanced trading simulator ($10K portfolio)",
             "Progress tracking & analytics",
+            "Community forum access",
+            "Weekly market reports (email)",
             "Technical analysis tools",
-            "Community access",
-            "Email support"
+            "Email support (48hr response)"
           ],
+          maxLessons: null,
           hasSimulator: true,
           hasCommunity: true,
           hasAnalytics: true,
           hasLiveTrading: false,
-          hasSignals: false,
-
+          hasSignals: false
         },
         {
           tier: "pro",
           name: "Pro", 
           priceMonthly: "49.99",
           priceYearly: "499.99",
+          stripePriceIdMonthly: "price_1S591FKiPBcddi5DNfJAIyZU",
+          stripePriceIdYearly: "price_1S59vqKiPBcddi5DelVtsvyR",
           features: [
             "Everything in Basic",
-            "Real-time market data & alerts",
-            "AI-powered trading signals",
+            "Live trading sessions",
+            "Trading signals & alerts",
             "Advanced analytics dashboard",
-            "Whale activity tracking",
-            "Priority support"
+            "Exchange API connections",
+            "Priority customer support"
           ],
+          maxLessons: null,
           hasSimulator: true,
           hasCommunity: true,
           hasAnalytics: true,
           hasLiveTrading: true,
-          hasSignals: true,
-
-        },
-        {
-          tier: "elite",
-          name: "Elite",
-          priceMonthly: "99.99",
-          priceYearly: "999.99", 
-          features: [
-            "Everything in Pro",
-            "Exclusive premium content",
-            "Early access to new features",
-            "Advanced market insights",
-            "Custom alerts & notifications",
-            "VIP community access",
-            "Dedicated support channel"
-          ],
-          hasSimulator: true,
-          hasCommunity: true,
-          hasAnalytics: true,
-          hasLiveTrading: true,
-          hasSignals: true,
-
+          hasSignals: true
         }
       ]);
       console.log("✅ Subscription plans created");
