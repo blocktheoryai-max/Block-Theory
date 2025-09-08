@@ -197,7 +197,7 @@ export default function Pricing() {
                     ))}
                   </div>
                   
-                  <Link href={plan.name === "Free" ? "/learn" : "/checkout"}>
+                  <Link href={plan.name === "Free" ? "/learn" : `/checkout?planId=${plan.name.toLowerCase()}&planName=${encodeURIComponent(plan.name)}`}>
                     <Button 
                       variant={plan.buttonVariant} 
                       className={`w-full mt-6 ${plan.popular ? 'bg-primary hover:bg-primary/90' : ''}`}

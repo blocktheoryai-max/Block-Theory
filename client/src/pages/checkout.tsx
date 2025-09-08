@@ -86,6 +86,10 @@ function CheckoutForm({ planId, isYearly, planName, amount }: CheckoutFormProps)
           variant: "destructive",
         });
       } else if (paymentIntent?.status === 'succeeded') {
+        // Store plan name for success page
+        if (planName) {
+          localStorage.setItem('checkoutPlan', planName);
+        }
         confirmPayment.mutate(paymentIntent.id);
       }
     } catch (err) {
@@ -170,6 +174,7 @@ export default function Checkout() {
     // Get checkout details from URL params or localStorage
     const urlParams = new URLSearchParams(window.location.search);
     const planId = urlParams.get('planId');
+    const planName = urlParams.get('planName');
     const isYearly = urlParams.get('yearly') === 'true';
     
     if (!planId) {

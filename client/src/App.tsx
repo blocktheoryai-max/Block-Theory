@@ -30,6 +30,7 @@ import Rewards from "@/pages/Rewards";
 import Competitions from "@/pages/Competitions";
 import CopyTrading from "@/pages/copy-trading";
 import Achievements from "@/pages/achievements";
+import CheckoutSuccess from "@/pages/checkout-success";
 import { useAuth } from "@/hooks/useAuth";
 import Navigation from "@/components/Navigation";
 import MobileBottomNav from "@/components/MobileBottomNav";
@@ -65,6 +66,7 @@ function Router() {
         <Route path="/community" component={Community} />
         <Route path="/pricing" component={Pricing} />
         <Route path="/checkout" component={Checkout} />
+        <Route path="/checkout-success" component={CheckoutSuccess} />
         <Route path="/whale-tracker" component={WhaleTracker} />
         <Route path="/whitepaper-analyzer" component={WhitepaperAnalyzer} />
         <Route path="/technical-analysis" component={TechnicalAnalysis} />

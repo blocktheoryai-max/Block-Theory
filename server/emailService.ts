@@ -1,11 +1,9 @@
-import sgMail from '@sendgrid/mail';
+import { Resend } from 'resend';
 
-// Initialize SendGrid
-if (process.env.SENDGRID_API_KEY) {
-  sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-}
+// Initialize Resend
+const resend = new Resend(process.env.RESEND_API_KEY);
 
-const FROM_EMAIL = process.env.FROM_EMAIL || 'blocktheoryai@gmail.com';
+const FROM_EMAIL = process.env.FROM_EMAIL || 'onboarding@resend.dev';
 const PLATFORM_NAME = 'Block Theory';
 const PLATFORM_URL = process.env.REPLIT_DOMAINS?.split(',')[0] ? `https://${process.env.REPLIT_DOMAINS.split(',')[0]}` : 'https://blocktheory.com';
 
@@ -27,21 +25,26 @@ export class EmailService {
   }
 
   async sendEmail(options: EmailOptions): Promise<boolean> {
-    if (!process.env.SENDGRID_API_KEY) {
-      console.warn('SendGrid API key not configured. Email not sent:', options.subject);
+    if (!process.env.RESEND_API_KEY) {
+      console.warn('Resend API key not configured. Email not sent:', options.subject);
       return false;
     }
 
     try {
-      await sgMail.send({
-        to: options.to,
+      const { data, error } = await resend.emails.send({
+        to: [options.to],
         from: FROM_EMAIL,
         subject: options.subject,
         html: options.html,
         text: options.text || this.stripHtml(options.html),
       });
       
-      console.log(`Email sent successfully: ${options.subject} to ${options.to}`);
+      if (error) {
+        console.error('Resend API error:', error);
+        return false;
+      }
+      
+      console.log(`Email sent successfully: ${options.subject} to ${options.to}`, data);
       return true;
     } catch (error) {
       console.error('Failed to send email:', error);
