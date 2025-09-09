@@ -26,9 +26,12 @@ export default function Rewards() {
                 <h1 className="text-2xl md:text-4xl font-bold mb-2 flex items-center gap-2 md:gap-3">
                   <Gift className="w-8 h-8 md:w-10 md:h-10 text-yellow-500" />
                   Rewards Center
+                  <Badge className="bg-orange-600 text-white text-sm px-3 py-1">
+                    Coming Soon
+                  </Badge>
                 </h1>
                 <p className="text-base md:text-lg text-gray-300 mb-4">
-                  Learn, compete, and earn rewards while mastering trading
+                  Reward features are currently in development. Focus on learning our complete crypto curriculum!
                 </p>
                 <div className="grid grid-cols-2 md:flex gap-2 md:gap-4">
                   <Card className="bg-black/50 border-green-500/50 relative">
@@ -41,16 +44,24 @@ export default function Rewards() {
                       <p className="text-lg md:text-2xl font-bold text-green-400 opacity-50">$0</p>
                     </CardContent>
                   </Card>
-                  <Card className="bg-black/50 border-blue-500/50">
+                  <Card className="bg-black/50 border-blue-500/50 relative">
                     <CardContent className="p-2 md:p-3">
+                      <Badge className="absolute -top-2 -right-2 bg-yellow-600 text-xs px-2 py-0.5">
+                        <Clock className="w-3 h-3 mr-1" />
+                        Soon
+                      </Badge>
                       <p className="text-xs md:text-sm text-gray-400">Global Rank</p>
-                      <p className="text-lg md:text-2xl font-bold text-blue-400">#247</p>
+                      <p className="text-lg md:text-2xl font-bold text-blue-400 opacity-50">--</p>
                     </CardContent>
                   </Card>
-                  <Card className="bg-black/50 border-purple-500/50 col-span-2 md:col-span-1">
+                  <Card className="bg-black/50 border-purple-500/50 col-span-2 md:col-span-1 relative">
                     <CardContent className="p-2 md:p-3">
+                      <Badge className="absolute -top-2 -right-2 bg-yellow-600 text-xs px-2 py-0.5">
+                        <Clock className="w-3 h-3 mr-1" />
+                        Soon
+                      </Badge>
                       <p className="text-xs md:text-sm text-gray-400">Achievements</p>
-                      <p className="text-lg md:text-2xl font-bold text-purple-400">42</p>
+                      <p className="text-lg md:text-2xl font-bold text-purple-400 opacity-50">0</p>
                     </CardContent>
                   </Card>
                 </div>
@@ -85,21 +96,27 @@ export default function Rewards() {
           <Card className="bg-gradient-to-br from-blue-900/20 to-cyan-900/20 border-blue-500/30">
             <CardContent className="p-4 text-center">
               <BookOpen className="w-8 h-8 mx-auto mb-2 text-blue-400" />
-              <p className="text-2xl font-bold text-blue-400">84</p>
+              <p className="text-2xl font-bold text-blue-400">0</p>
               <p className="text-sm text-gray-400">Lessons Completed</p>
             </CardContent>
           </Card>
           <Card className="bg-gradient-to-br from-purple-900/20 to-pink-900/20 border-purple-500/30">
             <CardContent className="p-4 text-center">
               <Trophy className="w-8 h-8 mx-auto mb-2 text-purple-400" />
-              <p className="text-2xl font-bold text-purple-400">12</p>
+              <Badge className="bg-yellow-600 text-xs px-2 py-0.5 mb-1">
+                Coming Soon
+              </Badge>
+              <p className="text-2xl font-bold text-purple-400 opacity-50">0</p>
               <p className="text-sm text-gray-400">Competitions Won</p>
             </CardContent>
           </Card>
           <Card className="bg-gradient-to-br from-orange-900/20 to-red-900/20 border-orange-500/30">
             <CardContent className="p-4 text-center">
               <Users className="w-8 h-8 mx-auto mb-2 text-orange-400" />
-              <p className="text-2xl font-bold text-orange-400">28</p>
+              <Badge className="bg-yellow-600 text-xs px-2 py-0.5 mb-1">
+                Coming Soon
+              </Badge>
+              <p className="text-2xl font-bold text-orange-400 opacity-50">0</p>
               <p className="text-sm text-gray-400">Referrals</p>
             </CardContent>
           </Card>
