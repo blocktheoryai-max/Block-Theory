@@ -75,7 +75,7 @@ async function upsertUser(claims: any) {
   
   // Send welcome email to new users
   if (isNewUser && userData.email) {
-    const userName = userData.firstName || userData.username;
+    const userName = userData.firstName || 'User';
     await emailService.sendWelcomeEmail(userData.email, userName);
   }
 }
